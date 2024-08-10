@@ -18,7 +18,6 @@ function calculateResult(boardState) {
 			boardState[a] === boardState[b] &&
 			boardState[a] === boardState[c]
 		) {
-			1;
 			return boardState[a];
 		} else if (!boardState.includes(null)) {
 			return "Tie";
@@ -58,17 +57,19 @@ function Board({ xIsNext, boardState, onPlay }) {
 	return (
 		<div>
 			<div>{status}</div>
-			{Array(9)
-				.fill(null)
-				.map((_, i) => (
-					<Square
-						key={i}
-						value={boardState[i]}
-						onSquareClick={() => {
-							boardState[i] ? null : handleSquareClick(i);
-						}}
-					/>
-				))}
+			<div className="block size-48 grid-cols-3">
+				{Array(9)
+					.fill(null)
+					.map((_, i) => (
+						<Square
+							key={i}
+							value={boardState[i]}
+							onSquareClick={() => {
+								boardState[i] ? null : handleSquareClick(i);
+							}}
+						/>
+					))}
+			</div>
 		</div>
 	);
 }
