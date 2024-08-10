@@ -1,6 +1,6 @@
 function Square({ value, onSquareClick }) {
 	return (
-		<button onClick={onSquareClick}>
+		<button className="border border black" onClick={onSquareClick}>
 			{value}
 		</button>
 	);

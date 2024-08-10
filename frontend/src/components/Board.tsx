@@ -27,18 +27,13 @@ function calculateResult(boardState) {
 	return result;
 }
 
-function Board({ xIsNext, boardState, onPlay }) {
+function Board({ playerTurn, boardState, onPlay }) {
 	function handleSquareClick(i) {
 		if (calculateResult(boardState)) {
 			return;
 		}
-
 		const nextSquares = boardState.slice();
-		if (xIsNext) {
-			nextSquares[i] = "X";
-		} else {
-			nextSquares[i] = "O";
-		}
+		nextSquares[i] = playerTurn;
 		onPlay(nextSquares);
 	}
 
@@ -51,13 +46,13 @@ function Board({ xIsNext, boardState, onPlay }) {
 	} else if (result) {
 		status = "Winner: " + result;
 	} else {
-		status = "Next player: " + (xIsNext ? "X" : "O");
+		status = `Current player: ${playerTurn}`;
 	}
 
 	return (
 		<div>
 			<div>{status}</div>
-			<div className="block size-48 grid-cols-3">
+			<div className="grid size-48 grid-cols-3">
 				{Array(9)
 					.fill(null)
 					.map((_, i) => (
