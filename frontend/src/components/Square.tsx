@@ -1,8 +1,10 @@
+import { Button } from "./ui/button";
+
 function Square({ value, onSquareClick }) {
 	return (
-		<button onClick={onSquareClick}>
+		<Button variant="outline" className="size-16 text-5xl" onClick={onSquareClick}>
 			{value}
-		</button>
+		</Button>
 	);
 }
 

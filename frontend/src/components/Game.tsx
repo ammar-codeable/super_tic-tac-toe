@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Board from "./Board";
+import { Button } from "./ui/button";
 
 export default function Game() {
 	const [moveHistory, setMoveHistory] = useState([Array(9).fill(null)]);
@@ -8,7 +9,7 @@ export default function Game() {
 	const currentSquares = moveHistory[currentMove];
 
 	function handlePlay(nextSquares) {
-		setMoveHistory([...moveHistory, nextSquares]);
+		setMoveHistory([...moveHistory.slice(0, currentMove + 1), nextSquares]);
 		setCurrentMove(currentMove + 1);
 	}
 
@@ -21,14 +22,16 @@ export default function Game() {
 		}
 		return (
 			<li key={move}>
-				<button onClick={() => setCurrentMove(move)}>{moveDescription}</button>
+				<Button className="m-1" onClick={() => setCurrentMove(move)}>
+					{moveDescription}
+				</Button>
 			</li>
 		);
 	});
 
 	return (
-		<div>
-			<div>
+		<div className="flex h-screen flex-col place-content-center place-items-center">
+			<div className="m-4">
 				<Board
 					playerTurn={currentPlayer}
 					boardState={currentSquares}
@@ -36,7 +39,7 @@ export default function Game() {
 				/>
 			</div>
 			<div>
-				<ol>{moves}</ol>
+				<ol className="flex flex-wrap">{moves}</ol>
 			</div>
 		</div>
 	);

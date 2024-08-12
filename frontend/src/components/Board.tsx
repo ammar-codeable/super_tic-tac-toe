@@ -51,8 +51,7 @@ function Board({ playerTurn, boardState, onPlay }) {
 
 	return (
 		<div>
-			<div>{status}</div>
-			<div className="grid size-48 grid-cols-3">
+			<div className="grid size-48 grid-cols-3 gap-1">
 				{Array(9)
 					.fill(null)
 					.map((_, i) => (
@@ -65,6 +64,7 @@ function Board({ playerTurn, boardState, onPlay }) {
 						/>
 					))}
 			</div>
+			<div>{status}</div>
 		</div>
 	);
 }
