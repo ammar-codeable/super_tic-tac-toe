@@ -31,16 +31,17 @@ function SubBoard({
 		subBoard.current?.classList.add("hidden");
 	}
 
-	if (activeSubBoard  || !subBoardState.includes("null")) {
+	if (activeSubBoard && !subBoardState.includes("null")) {
 		subBoardContainer.current?.classList.remove("opacity-50");
 	} else {
+		console.log(subBoardContainer.current?.classList);
 		subBoardContainer.current?.classList.add("opacity-50");
 	}
 
 	return (
 		<div
 			ref={subBoardContainer}
-			className="flex size-64 items-center justify-center border"
+			className="flex size-64 items-center justify-center border-2"
 		>
 			<div
 				ref={subBoard}
