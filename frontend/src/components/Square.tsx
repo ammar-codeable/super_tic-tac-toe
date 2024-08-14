@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Button } from "./ui/button";
 
-function Square({ value, onSquareClick }) {
+function Square({ value, onSquareClick, cellId, boardId, activeSubBoard }) {
 	return (
 		<motion.div whileTap={{ scale: 1.2 }}>
 			<Button
