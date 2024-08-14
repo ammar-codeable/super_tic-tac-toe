@@ -1,4 +1,4 @@
-import { useContext, useRef } from "react";
+import { useRef } from "react";
 import SubBoard from "./Sub-Board";
 
 function MainBoard({
@@ -6,6 +6,7 @@ function MainBoard({
 	reducedMainBoardState,
 	mainBoardState,
 	onPlay,
+	result,
 }) {
 	let nextActiveBoard = useRef(-1);
 	function handlePlay(nextSquares, boardId: number, cellId: number) {
@@ -33,9 +34,12 @@ function MainBoard({
 							handlePlay={handlePlay}
 							playerTurn={currentPlayer}
 							activeSubBoard={
-								nextActiveBoard.current === i || nextActiveBoard.current === -1
-									? true
-									: false
+								result
+									? false
+									: nextActiveBoard.current === i ||
+										  nextActiveBoard.current === -1
+										? true
+										: null
 							}
 						/>
 					))}
