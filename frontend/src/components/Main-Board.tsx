@@ -1,39 +1,45 @@
-import calculateResult from "../utils/calculateResult";
+import { useContext, useRef } from "react";
 import SubBoard from "./Sub-Board";
 
-function MainBoard({ playerTurn, mainBoardState, onPlay }) {
-	const reducedMainBoardState = mainBoardState.map((subBoard) => {
-		return calculateResult(subBoard);
-	});
-
-	let result = calculateResult(reducedMainBoardState);
-	let status;
-	if (result === "X") {
-		status = "Player X wins!";
-	} else if (result === "O") {
-		status = "Player O wins!";
-	} else if (result === "Tie") {
-		status = "It's a tie!";
-	} else {
-		status = `Player ${playerTurn}'s turn`;
+function MainBoard({
+	currentPlayer,
+	reducedMainBoardState,
+	mainBoardState,
+	onPlay,
+}) {
+	let nextActiveBoard = useRef(-1);
+	function handlePlay(nextSquares, boardId: number, cellId: number) {
+		nextActiveBoard.current = cellId;
+		if (
+			reducedMainBoardState[cellId] === "X" ||
+			reducedMainBoardState[cellId] === "O" ||
+			reducedMainBoardState[cellId] === "Tie"
+		) {
+			nextActiveBoard.current = -1;
+		}
+		onPlay(nextSquares, boardId);
 	}
 
 	return (
 		<div>
-			<div className="grid grid-cols-3 gap-12">
+			<div className="grid grid-cols-3 gap-0">
 				{Array(9)
 					.fill(null)
 					.map((_, i) => (
 						<SubBoard
 							key={i}
 							subBoardState={mainBoardState[i]}
-							boardId={i}
-							onPlay={onPlay}
-							playerTurn={playerTurn}
+							subBoardId={i}
+							handlePlay={handlePlay}
+							playerTurn={currentPlayer}
+							activeSubBoard={
+								nextActiveBoard.current === i || nextActiveBoard.current === -1
+									? true
+									: false
+							}
 						/>
 					))}
 			</div>
-			<div>{status}</div>
 		</div>
 	);
 }
