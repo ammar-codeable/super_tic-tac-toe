@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 function App() {
 	return (
-		<div>
+		<div className="flex flex-col gap-4">
 			<header className="flex items-center justify-between border-b p-2">
 				<div></div>
 				<motion.h1
