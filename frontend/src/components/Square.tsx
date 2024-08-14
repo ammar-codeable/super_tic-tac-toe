@@ -1,17 +1,17 @@
+import { motion } from "framer-motion";
 import { Button } from "./ui/button";
 
 function Square({ value, onSquareClick, cellId, boardId, activeSubBoard }) {
 	return (
+		<motion.div whileTap={{ scale: 1.2 }}>
 			<Button
-				disabled={!activeSubBoard && !value}
 				variant="outline"
 				className="size-16 text-5xl"
-				onClick={() => {
-					onSquareClick(cellId, boardId);
-				}}
+				onClick={onSquareClick}
 			>
 				{value}
 			</Button>
+		</motion.div>
 	);
 }
 
