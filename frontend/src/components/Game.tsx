@@ -41,19 +41,20 @@ export default function Game() {
 	}
 
 	return (
-		<div className="flex h-screen flex-col place-content-center place-items-center gap-y-4">
+		<div className="flex flex-col place-content-center place-items-center gap-4">
 			<MainBoard
 				currentPlayer={currentPlayer}
 				mainBoardState={mainBoardState}
 				onPlay={handlePlay}
 				reducedMainBoardState={reducedMainBoardState}
+				result={result}
 			/>
-			<MoveNavigator
+			{/* <MoveNavigator
 				moveHistory={moveHistory}
 				setMoveHistory={setMoveHistory}
 				currentMove={currentMove}
 				setCurrentMove={setCurrentMove}
-			/>
+			/> */}
 			<div className="text-5xl italic">{gameStatus}</div>
 		</div>
 	);
