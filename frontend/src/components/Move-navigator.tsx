@@ -1,6 +1,11 @@
 import { Button } from "./ui/button";
 
-function MoveNavigator({ moveHistory, setMoveHistory, currentMove, setCurrentMove }) {
+function MoveNavigator({
+	moveHistory,
+	setMoveHistory,
+	currentMove,
+	setCurrentMove,
+}) {
 	return (
 		<div>
 			<Button
@@ -15,15 +20,19 @@ function MoveNavigator({ moveHistory, setMoveHistory, currentMove, setCurrentMov
 				className="m-1"
 				onClick={() => {
 					currentMove > 0 ? setCurrentMove(currentMove - 1) : null;
-					
 				}}
 			>
 				Previous move
 			</Button>
-			<Button className="m-1" onClick={() => {
-				setCurrentMove(0);
-				setMoveHistory([Array(9).fill(Array(9).fill(null))]);
-			}}>Restart Game</Button>
+			<Button
+				className="m-1"
+				onClick={() => {
+					setCurrentMove(0);
+					setMoveHistory([Array(9).fill(Array(9).fill(null))]);
+				}}
+			>
+				Restart Game
+			</Button>
 			<Button
 				className="m-1"
 				onClick={() => {
