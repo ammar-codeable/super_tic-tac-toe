@@ -7,21 +7,15 @@ function SubBoard({
 	subBoardState,
 	subBoardId,
 	handlePlay,
-	currentPlayerTurn,
 	activeSubBoard,
+	currentPlayerTurn,
 }: {
 	subBoardState: string[];
 	subBoardId: number;
-	handlePlay: (nextSquares: string[], boardId: number, cellId: number, serverData: boolean) => void;
-	currentPlayerTurn: string;
+	handlePlay: (boardId: number, cellId: number, yourMove: boolean) => void;
 	activeSubBoard: boolean;
+	currentPlayerTurn: string;
 }) {
-	function handleSquareClick(cellId: number, boardId: number) {
-		const nextSquares = structuredClone(subBoardState);
-		nextSquares[cellId] = currentPlayerTurn;
-		handlePlay(nextSquares, boardId, cellId, false);
-	}
-
 	const gameEndedSubBoard = useRef<HTMLDivElement | null>(null);
 	const subBoard = useRef<HTMLDivElement | null>(null);
 
@@ -30,13 +24,17 @@ function SubBoard({
 	if (result) {
 		subBoard.current?.classList.add("hidden");
 		gameEndedSubBoard.current?.classList.remove("hidden");
+	} else {
+		subBoard.current?.classList.remove("hidden");
+		gameEndedSubBoard.current?.classList.add("hidden");
 	}
 
 	return (
 		<div className="flex size-64 items-center justify-center border-2">
 			<motion.div
 				ref={subBoard}
-				className="absolute grid size-48 grid-cols-3 items-center justify-center gap-2"
+				id="subBoard"
+				className="absolute grid size-48 grid-cols-3 items-center justify-center gap-2 peer-hover:visible"
 			>
 				{Array(9)
 					.fill(null)
@@ -44,14 +42,18 @@ function SubBoard({
 						<Square
 							key={i}
 							value={subBoardState[i]}
-							handleSquareClick={handleSquareClick}
+							handlePlay={handlePlay}
 							cellId={i}
 							boardId={subBoardId}
 							activeSubBoard={activeSubBoard}
+							currentPlayerTurn={currentPlayerTurn}
 						/>
 					))}
 			</motion.div>
-			<motion.div ref={gameEndedSubBoard} className="absolute hidden text-9xl">
+			<motion.div
+				ref={gameEndedSubBoard}
+				className="peer absolute text-9xl hover:hidden"
+			>
 				{result}
 			</motion.div>
 		</div>

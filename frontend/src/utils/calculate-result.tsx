@@ -29,6 +29,7 @@ function calculateResult(boardState) {
 	if (!boardState.includes(null) && !boardState.includes(undefined)) {
 		return "Tie";
 	}
+	return null;
 }
 
 export default calculateResult;

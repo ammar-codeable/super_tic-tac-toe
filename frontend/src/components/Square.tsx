@@ -1,24 +1,38 @@
 import { motion } from "framer-motion";
 import { Button } from "./ui/button";
 
-function Square({ value, handleSquareClick, cellId, boardId, activeSubBoard } : {
-	value: string,
-	handleSquareClick: (cellId: number, boardId: number) => void,
-	cellId: number,
-	boardId: number,
-	activeSubBoard: boolean
+function Square({
+	value,
+	handlePlay,
+	cellId,
+	boardId,
+	activeSubBoard,
+	currentPlayerTurn,
+}: {
+	value: string;
+	handlePlay: (boardId: number, cellId: number, serverData: boolean) => void;
+	cellId: number;
+	boardId: number;
+	activeSubBoard: boolean;
+	currentPlayerTurn: string;
 }) {
 	return (
 		<motion.div whileTap={{ scale: 0.9 }}>
 			<Button
-				disabled={!activeSubBoard || value}
+				disabled={!!(!activeSubBoard || value)}
 				variant={activeSubBoard ? "secondary" : "outline"}
 				className="size-16 text-5xl"
 				onClick={() => {
-					handleSquareClick(cellId, boardId);
+					handlePlay(boardId, cellId, true);
 				}}
 			>
-				{value}
+				{!activeSubBoard || value ? (
+					value
+				) : (
+					<motion.div className="text-base opacity-50">
+						{currentPlayerTurn}
+					</motion.div>
+				)}
 			</Button>
 		</motion.div>
 	);

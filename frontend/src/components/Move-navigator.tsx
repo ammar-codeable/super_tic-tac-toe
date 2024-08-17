@@ -1,57 +1,79 @@
 import { Button } from "./ui/button";
+import {
+	Pagination,
+	PaginationContent,
+	PaginationEllipsis,
+	PaginationItem,
+	PaginationNext,
+	PaginationPrevious,
+} from "./ui/pagination";
 
 function MoveNavigator({
 	moveHistory,
-	setMoveHistory,
 	currentMove,
 	setCurrentMove,
+	setMainBoardStateHistory,
+	setMoveHistory,
 }) {
 	return (
-		<div>
-			<Button
-				className="m-1"
-				onClick={() => {
-					setCurrentMove(0);
-				}}
-			>
-				Game Start
-			</Button>
-			<Button
-				className="m-1"
-				onClick={() => {
-					currentMove > 0 ? setCurrentMove(currentMove - 1) : null;
-				}}
-			>
-				Previous move
-			</Button>
-			<Button
-				className="m-1"
-				onClick={() => {
-					setCurrentMove(0);
-					setMoveHistory([Array(9).fill(Array(9).fill(null))]);
-				}}
-			>
-				Restart Game
-			</Button>
-			<Button
-				className="m-1"
-				onClick={() => {
-					currentMove < moveHistory.length - 1
-						? setCurrentMove(currentMove + 1)
-						: null;
-				}}
-			>
-				Next move
-			</Button>
-			<Button
-				className="m-1"
-				onClick={() => {
-					setCurrentMove(moveHistory.length - 1);
-				}}
-			>
-				Game End
-			</Button>
-		</div>
+		<Pagination>
+			<PaginationContent>
+				<PaginationItem>
+					<PaginationPrevious
+						onClick={() => {
+							console.log(currentMove);
+							setCurrentMove(0);
+						}}
+					/>
+				</PaginationItem>
+				<PaginationEllipsis />
+				<PaginationItem>
+					<PaginationPrevious
+						className="m-1"
+						value="Previous move"
+						onClick={() => {
+							currentMove > 0 ? setCurrentMove(currentMove - 1) : null;
+						}}
+					></PaginationPrevious>
+				</PaginationItem>
+				<PaginationItem>
+					<Button
+						className="m-1"
+						onClick={() => {
+							setCurrentMove(0);
+							setMainBoardStateHistory([Array(9).fill(Array(9).fill(null))]);
+							setMoveHistory([[-1, -1]]);
+						}}
+					>
+						Restart Game
+					</Button>
+				</PaginationItem>
+				<PaginationItem>
+					<PaginationNext
+						className="m-1"
+						value="Next move"
+						onClick={() => {
+							currentMove !== moveHistory.length - 1
+								? setCurrentMove(currentMove + 1)
+								: null;
+						}}
+					>
+						Next move
+					</PaginationNext>
+				</PaginationItem>
+				<PaginationEllipsis />
+				<PaginationItem>
+					<PaginationNext
+						className="m-1"
+						onClick={() => {
+							currentMove !== moveHistory.length - 1
+								? setCurrentMove(moveHistory.length - 1)
+								: null;
+						}}
+					></PaginationNext>
+				</PaginationItem>
+			</PaginationContent>
+		</Pagination>
 	);
 }
 
