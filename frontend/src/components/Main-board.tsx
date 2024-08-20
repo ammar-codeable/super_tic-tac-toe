@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import SubBoard from "./Sub-board";
 
 function MainBoard({
@@ -12,7 +13,12 @@ function MainBoard({
 	currentPlayerTurn: string;
 }) {
 	return (
-		<div className="grid min-w-[768px] max-w-[80vw] grid-cols-3 gap-0 second">
+		<motion.div
+			initial={{ scale: 0.75, opacity: 0 }}
+			animate={{ scale: 1, opacity: 1 }}
+			transition={{ duration: 1 }}
+			className="grid min-w-[768px] max-w-[80vw] grid-cols-3 bg-blend-normal"
+		>
 			{Array(9)
 				.fill(null)
 				.map((_, i) => (
@@ -27,7 +33,7 @@ function MainBoard({
 						currentPlayerTurn={currentPlayerTurn}
 					/>
 				))}
-		</div>
+		</motion.div>
 	);
 }
 

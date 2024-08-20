@@ -14,6 +14,8 @@ export function useSocket(
 
 		socket.onmessage = (message) => {
 			const { boardId, cellId } = JSON.parse(message.data);
+			console.log(boardId, cellId);
+
 			handlePlay(boardId, cellId, false);
 		};
 
@@ -22,5 +24,5 @@ export function useSocket(
 		};
 	}, []);
 
-    return socket;
+	return socket;
 }

@@ -1,4 +1,4 @@
-function calculateResult(boardState) {
+function calculateResult(boardState) : string | null{
 	const winConditions = [
 		[0, 1, 2],
 		[3, 4, 5],

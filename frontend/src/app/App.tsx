@@ -4,29 +4,21 @@ import { motion } from "framer-motion";
 
 function App() {
 	return (
-		<div className="flex flex-col gap-4">
-			<header className="flex items-center justify-between border-b p-2">
+		<>
+			<motion.header
+				initial={{ y: -100, opacity: 0 }}
+				animate={{ y: 0, opacity: 1 }}
+				transition={{ duration: 1 }}
+				className="mb-3 flex items-center justify-between border-b p-2"
+			>
 				<div></div>
-				<motion.h1
-					initial={{ y: 20, opacity: 0 }}
-					animate={{ y: 0, opacity: 1 }}
-					transition={{ duration: 0.3 }}
-					className="text-6xl font-bold"
-				>
-					TicTacToe
-				</motion.h1>
-				<motion.div
-					initial={{ x: 20, opacity: 0 }}
-					animate={{ x: 0, opacity: 1 }}
-					transition={{ duration: 0.3 }}
-				>
-					<ModeToggle />
-				</motion.div>
-			</header>
+				<h1 className="text-6xl">Super TicTacToe</h1>
+				<ModeToggle />
+			</motion.header>
 			<main>
 				<Game />
 			</main>
-		</div>
+		</>
 	);
 }
 

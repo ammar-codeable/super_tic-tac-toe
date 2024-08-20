@@ -14,6 +14,8 @@ function MoveNavigator({
 	setCurrentMove,
 	setMainBoardStateHistory,
 	setMoveHistory,
+	resetGame,
+	setPlayer,
 }) {
 	return (
 		<Pagination>
@@ -21,7 +23,6 @@ function MoveNavigator({
 				<PaginationItem>
 					<PaginationPrevious
 						onClick={() => {
-							console.log(currentMove);
 							setCurrentMove(0);
 						}}
 					/>
@@ -40,9 +41,7 @@ function MoveNavigator({
 					<Button
 						className="m-1"
 						onClick={() => {
-							setCurrentMove(0);
-							setMainBoardStateHistory([Array(9).fill(Array(9).fill(null))]);
-							setMoveHistory([[-1, -1]]);
+							resetGame(setMainBoardStateHistory, setMoveHistory, setCurrentMove, setPlayer);
 						}}
 					>
 						Restart Game
