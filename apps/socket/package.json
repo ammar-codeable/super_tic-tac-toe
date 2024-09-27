@@ -1,0 +1,27 @@
+{
+	"name": "backend",
+	"version": "1.0.0",
+	"description": "",
+	"main": "src/index.js",
+	"scripts": {
+		"dev": "tsx --watch src/index.ts",
+		"build": "esbuild src/index.ts --platform=node --bundle --minify --outfile=dist/index.ts",
+		"preview": "node dist/index.ts"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"@repo/utils": "workspace:*",
+		"express": "^4.19.2",
+		"ws": "^8.18.0"
+	},
+	"devDependencies": {
+		"@types/express": "^4.17.21",
+		"@types/node": "^22.5.4",
+		"@types/ws": "^8.5.12",
+		"esbuild": "^0.24.0",
+		"tsx": "^4.19.0",
+		"typescript": "^5.5.4"
+	}
+}
