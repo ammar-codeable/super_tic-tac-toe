@@ -40,6 +40,9 @@ function Game({
       <div className="flex flex-col items-center gap-y-2 lg:col-span-4 xl:col-span-3">
         <MainBoard
           mainBoardState={mainBoardState}
+          currentPlayerTurn={currentPlayerTurn}
+          lastClickedBoardId={moveHistory[currentMove][0]}
+          lastClickedCellId={moveHistory[currentMove][1]}
           nextActiveBoard={getActiveBoards(
             !!gameResult,
             reducedMainBoardState,
@@ -47,7 +50,6 @@ function Game({
             currentMove,
             isOnlineGame ? playerMark === currentPlayerTurn : undefined,
           )}
-          currentPlayerTurn={currentPlayerTurn}
           handlePlay={handlePlay}
         />
         {!isOnlineGame && (

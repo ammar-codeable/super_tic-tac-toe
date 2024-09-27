@@ -47,12 +47,14 @@ function SubBoardResult({
 function SubBoard({
   boardId,
   subBoardState,
+  lastClickedCellId,
   isActiveSubBoard,
   currentPlayerTurn,
   handlePlay,
 }: {
   boardId: number;
   subBoardState: (string | null)[];
+  lastClickedCellId: number | null;
   isActiveSubBoard: boolean;
   currentPlayerTurn: string;
   handlePlay: (boardId: number, cellId: number, yourMove: boolean) => void;
@@ -86,6 +88,7 @@ function SubBoard({
               cellValue={subBoardState[i]}
               boardId={boardId}
               isActiveSquare={isActiveSubBoard && !subBoardState[i]}
+              isLastClickedSquare={lastClickedCellId === i}
               currentPlayerTurn={currentPlayerTurn}
             />
           ))}

@@ -9,6 +9,7 @@ function Square({
   cellId,
   cellValue,
   isActiveSquare,
+  isLastClickedSquare,
   currentPlayerTurn,
 }: {
   handlePlay: (boardId: number, cellId: number, yourMove: boolean) => void;
@@ -16,6 +17,7 @@ function Square({
   cellId: number;
   cellValue: string | null;
   isActiveSquare: boolean;
+  isLastClickedSquare: boolean;
   currentPlayerTurn: string;
 }) {
   let value;
@@ -32,7 +34,13 @@ function Square({
     <motion.div whileTap={{ scale: 0.9 }}>
       <Button
         disabled={!isActiveSquare}
-        variant={isActiveSquare ? "secondary" : "outline"}
+        variant={
+          isLastClickedSquare
+            ? "default"
+            : isActiveSquare
+              ? "secondary"
+              : "outline"
+        }
         className={cn("aspect-square size-full", {
           "opacity-50": !isActiveSquare,
           "opacity-80": isActiveSquare || value,
