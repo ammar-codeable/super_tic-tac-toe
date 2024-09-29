@@ -1,4 +1,5 @@
 import imgUrl from "@/assets/logo.png";
+import playIcon from "@/assets/play-icon.png";
 import ThemeToggle from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
