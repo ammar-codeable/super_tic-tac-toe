@@ -10,7 +10,7 @@ export function useSocket(
   const [socket, setSocket] = useState<WebSocket | null>(null);
 
   useEffect(() => {
-    const socket = new WebSocket("ws://localhost:8080");
+    const socket = new WebSocket(import.meta.env.VITE_WEBSOCKET_SERVER_URL);
 
     socket.onopen = () => {
       setSocket(socket);
@@ -33,7 +33,7 @@ export function useSocket(
         handlePlay(boardId, cellId, false);
       }
 
-      if(messageData.result !== undefined) {
+      if (messageData.result !== undefined) {
         setGameResult(messageData.result);
       }
     };
