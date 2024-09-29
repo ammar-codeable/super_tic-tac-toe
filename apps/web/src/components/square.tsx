@@ -23,9 +23,9 @@ function Square({
   let value;
 
   if (cellValue === "X") {
-    value = <X />;
+    value = <X size="" />;
   } else if (cellValue === "O") {
-    value = <Circle />;
+    value = <Circle size="" />;
   } else if (isActiveSquare) {
     value = currentPlayerTurn === "X" ? <X /> : <Circle />;
   }
