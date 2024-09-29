@@ -35,17 +35,12 @@ function SideBar() {
       <Link to="/">
         <img src={imgUrl} alt="Logo" />
       </Link>
-      <NavLink
-        className={({ isActive }) => {
-          let style = "h-14 w-full";
-          style += isActive ? " " + "bg-accent" : "";
-          return style;
-        }}
-        to="/play"
-      >
+      <NavLink className="h-14 w-full" to="/play">
+        {({ isActive }) => {
+          return (
         <Button
-          variant="ghost"
-          className="size-full rounded-none text-lg font-extrabold"
+              variant={isActive ? "secondary" : "ghost"}
+              className="flex size-full items-center justify-center gap-4 rounded-none p-0 text-xl font-extrabold xl:justify-start"
         >
               <img className="ml-2 size-10" src={playIcon} alt="Play Icon" />
               <div className="hidden xl:block">Play</div>
