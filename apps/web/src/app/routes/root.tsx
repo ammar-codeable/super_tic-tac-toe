@@ -47,8 +47,12 @@ function SideBar() {
           variant="ghost"
           className="size-full rounded-none text-lg font-extrabold"
         >
-          Play
-        </Button>
+              <img className="ml-2 size-10" src={playIcon} alt="Play Icon" />
+              <div className="hidden xl:block">Play</div>
+              <div></div>
+            </Button>
+          );
+        }}
       </NavLink>
       <ThemeToggle className="m-3 mt-auto self-end" />
     </motion.div>
