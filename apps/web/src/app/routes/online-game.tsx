@@ -48,7 +48,8 @@ function OnlineGame() {
       </p>
     );
   }
-  if (playerMark === null) {
+  
+  if (!disconnected && !playerMark) {
     return <ChoosePlayerModal socket={socket} />;
   }
 

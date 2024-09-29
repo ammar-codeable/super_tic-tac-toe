@@ -20,7 +20,7 @@ function Game({
   setMoveHistory: (moveHistory: number[][]) => void;
   handlePlay: (boardId: number, cellId: number, yourMove: boolean) => void;
   gameResult?: string | null;
-  playerMark?: string;
+  playerMark?: string | null;
 }) {
   const currentPlayerTurn = currentMove % 2 === 0 ? "X" : "O";
 
