@@ -1,4 +1,4 @@
-import imgUrl from "@/assets/logo.png";
+import logo from "@/assets/logo.png";
 import playIcon from "@/assets/play-icon.png";
 import ThemeToggle from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
@@ -19,7 +19,7 @@ function Header({ className }: { className: string }) {
         <Menu size="44" />
       </Button>
       <Link to="/" className="h-4/5">
-        <img src={imgUrl} alt="Logo" className="h-full" />
+        <img src={logo} alt="Logo" className="h-full" />
       </Link>
     </motion.div>
   );
@@ -34,7 +34,7 @@ function SideBar() {
       className="flex h-screen w-20 flex-col justify-start gap-8 border-r-2 xl:w-40"
     >
       <Link to="/">
-        <img src={imgUrl} alt="Logo" />
+        <img src={logo} alt="Logo" />
       </Link>
       <NavLink className="h-14 w-full" to="/play">
         {({ isActive }) => {
