@@ -1,6 +1,6 @@
 import calculateResult from "@repo/utils/calculate-result";
 import ws from "ws";
-import { Game, Player } from "./game-types";
+import { Game, Player } from "../types/game-types";
 
 const games: Game[] = [];
 
@@ -46,7 +46,7 @@ function findGameByPlayer(player: ws): Game | undefined {
 	);
 }
 
-function getPlayers(game: Game, currentPlayer: ws): [Player, Player] {
+function getPlayersByGame(game: Game, currentPlayer: ws): [Player, Player] {
 	return game.players.player1.socket === currentPlayer
 		? [game.players.player1, game.players.player2]
 		: [game.players.player2, game.players.player1];
@@ -73,8 +73,9 @@ export {
 	findGameByPlayer,
 	games,
 	getCurrentGame,
-	getPlayers as getPlayersByGame,
+	getPlayersByGame,
 	hasAvailableGame,
 	removeGame,
-	updateGameState,
+	updateGameState
 };
+
