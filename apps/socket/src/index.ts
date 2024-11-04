@@ -42,15 +42,7 @@ wss.on("connection", (ws) => {
 		const message = JSON.parse(data.toString());
 
 		if (message.player) {
-			if (!opponent.mark) {
-				currentPlayer.mark = message.player;
-			} else if (opponent.mark === message.player) {
-				currentPlayer.mark = Math.random() > 0.5 ? "X" : "O";
-				opponent.mark = currentPlayer.mark === "X" ? "O" : "X";
-			} else if (opponent.mark && opponent.mark !== message.player) {
-				currentPlayer.mark = message.player;
-				opponent.mark = currentPlayer.mark === "X" ? "O" : "X";
-			}
+			assignMark(currentPlayer, opponent, message.player);
 
 			if (currentPlayer.mark && opponent.mark) {
 				currentPlayer.socket!.send(
@@ -118,3 +110,25 @@ wss.on("connection", (ws) => {
 		opponent.socket!.close();
 	});
 });
+
+function assignMark(
+	currentPlayer: Player,
+	opponent: Player,
+	requestedMark: string
+) {
+	if (!opponent.mark) {
+		currentPlayer.mark = requestedMark;
+		return;
+	}
+
+	if (opponent.mark === requestedMark) {
+		currentPlayer.mark = Math.random() > 0.5 ? "X" : "O";
+		opponent.mark = currentPlayer.mark === "X" ? "O" : "X";
+		return;
+	}
+
+	if (opponent.mark !== requestedMark) {
+		currentPlayer.mark = requestedMark;
+		opponent.mark = currentPlayer.mark === "X" ? "O" : "X";
+	}
+}
