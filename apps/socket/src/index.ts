@@ -8,8 +8,8 @@ import {
 	hasAvailableGame,
 	removeGame,
 	updateGameState,
-} from "./types/game-state";
-import { Player } from "./types/game-types";
+} from "./managers/game-manager";
+import { assignMark } from "./utils/assign-mark";
 
 const app = express();
 const port = 8080;
@@ -90,25 +90,3 @@ wss.on("connection", (ws) => {
 		}
 	});
 });
-
-function assignMark(
-	currentPlayer: Player,
-	opponent: Player,
-	requestedMark: string
-) {
-	if (!opponent.mark) {
-		currentPlayer.mark = requestedMark;
-		return;
-	}
-
-	if (opponent.mark === requestedMark) {
-		currentPlayer.mark = Math.random() > 0.5 ? "X" : "O";
-		opponent.mark = currentPlayer.mark === "X" ? "O" : "X";
-		return;
-	}
-
-	if (opponent.mark !== requestedMark) {
-		currentPlayer.mark = requestedMark;
-		opponent.mark = currentPlayer.mark === "X" ? "O" : "X";
-	}
-}
