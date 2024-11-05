@@ -1,6 +1,6 @@
 import calculateResult from "@repo/utils/calculate-result";
 import ws from "ws";
-import { Game, Player } from "../types/game-types";
+import { Game, Player, GameResult } from "../types/game-types";
 
 const games: Game[] = [];
 
@@ -68,6 +68,11 @@ function updateGameState(game: Game, boardId: number, cellId: number) {
 	return game.result;
 }
 
+function handleResign(game: Game, resigningPlayer: ws): GameResult {
+  const [player] = getPlayersByGame(game, resigningPlayer);
+  return player.mark === "X" ? "X_RESIGNED" : "O_RESIGNED";
+}
+
 export {
 	addGame,
 	findGameByPlayer,
@@ -76,6 +81,7 @@ export {
 	getPlayersByGame,
 	hasAvailableGame,
 	removeGame,
-	updateGameState
+	updateGameState,
+	handleResign
 };
 

@@ -8,6 +8,7 @@ import {
 	hasAvailableGame,
 	removeGame,
 	updateGameState,
+	handleResign,
 } from "./managers/game-manager";
 import { assignMark } from "./utils/assign-mark";
 
@@ -74,6 +75,22 @@ wss.on("connection", (ws) => {
 					})
 				);
 			}
+		}
+
+		if (message.resign) {
+			const result = handleResign(game, ws);
+			
+			currentPlayer.socket!.send(
+				JSON.stringify({
+					result,
+				})
+			);
+			
+			opponent.socket!.send(
+				JSON.stringify({
+					result,
+				})
+			);
 		}
 	});
 

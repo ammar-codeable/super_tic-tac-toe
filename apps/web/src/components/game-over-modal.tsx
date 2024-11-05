@@ -11,20 +11,23 @@ import {
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-function GameOverModal({
-  gameResult,
-}: {
-  gameResult: string | null;
-}) {
+function GameOverModal({ gameResult }: { gameResult: string | null }) {
   let gameStatus: string | undefined;
 
-  if (gameResult === "X") {
+  if (gameResult === "X_RESIGNED") {
+    gameStatus = "Player X resigned!";
+  } else if (gameResult === "O_RESIGNED") {
+    gameStatus = "Player O resigned!";
+  } else if (gameResult === "X") {
     gameStatus = "Player X wins!";
   } else if (gameResult === "O") {
     gameStatus = "Player O wins!";
-  } else if (gameResult === "Tie") {
+  } else if (gameResult === "DRAW") {
     gameStatus = "It's a tie...";
   }
+
+  console.log(gameResult);
+  
 
   const [open, setOpen] = useState(!!gameResult);
 

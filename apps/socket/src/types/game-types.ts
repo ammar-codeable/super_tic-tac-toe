@@ -14,3 +14,5 @@ export type Game = {
 	reducedMainBoardState: (string | null)[];
 	result: string | null;
 };
+
+export type GameResult = "X" | "O" | "DRAW" | "X_RESIGNED" | "O_RESIGNED" | null;

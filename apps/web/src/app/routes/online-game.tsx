@@ -1,17 +1,21 @@
 import ChoosePlayerModal from "@/components/choose-player-modal";
 import DisconnectModal from "@/components/disconnect-modal";
 import Game from "@/components/game";
+import ResignConfirmationModal from "@/components/resign-confirmation-modal";
 import { useSocket } from "@/hooks/use-socket";
-import { useRef, useState } from "react";
+import { useState } from "react";
 
 function OnlineGame() {
   const [waiting, setWaiting] = useState<boolean | undefined>();
   const [disconnected, setDisconnected] = useState(false);
+  const [showResignModal, setShowResignModal] = useState(false);
 
   const [playerMark, setPlayerMark] = useState<string | null>(null);
 
-  const currentMove = useRef(0);
-  const [moveHistory, setMoveHistory] = useState([[-1, -1]]);
+  const [currentMove, setCurrentMove] = useState(0);
+  console.log(currentMove);
+
+  const [moveHistory, setMoveHistory] = useState<number[][]>([[-1, -1]]);
 
   const [gameResult, setGameResult] = useState<string | null>(null);
 
@@ -20,9 +24,9 @@ function OnlineGame() {
     cellId: number,
     yourMove: boolean = true,
   ) {
-    currentMove.current++;
-    setMoveHistory((moveHistory) => [
-      ...moveHistory.slice(0, currentMove.current + 1),
+    setCurrentMove((currentMove) => currentMove + 1);
+    setMoveHistory((moveHistory: number[][]) => [
+      ...moveHistory,
       [boardId, cellId],
     ]);
 
@@ -30,6 +34,11 @@ function OnlineGame() {
       socket!.send(JSON.stringify({ move: [boardId, cellId] }));
     }
   }
+
+  const handleResign = () => {
+    socket?.send(JSON.stringify({ resign: true }));
+    setGameResult(playerMark === "X" ? "O" : "X");
+  };
 
   const socket = useSocket(
     setWaiting,
@@ -48,7 +57,7 @@ function OnlineGame() {
       </p>
     );
   }
-  
+
   if (!disconnected && !playerMark) {
     return <ChoosePlayerModal socket={socket} />;
   }
@@ -56,17 +65,21 @@ function OnlineGame() {
   return (
     <>
       <Game
-        currentMove={currentMove.current}
-        setCurrentMove={(newMove: number) => {
-          currentMove.current = newMove;
-        }}
+        currentMove={currentMove}
+        setCurrentMove={setCurrentMove}
         moveHistory={moveHistory}
         setMoveHistory={setMoveHistory}
         handlePlay={handleOnlinePlay}
         gameResult={gameResult}
         playerMark={playerMark}
+        onResign={() => setShowResignModal(true)}
       />
       {disconnected && !gameResult && <DisconnectModal />}
+      <ResignConfirmationModal
+        open={showResignModal}
+        onOpenChange={setShowResignModal}
+        handleResign={handleResign}
+      />
     </>
   );
 }

@@ -13,6 +13,7 @@ function Game({
   handlePlay,
   gameResult,
   playerMark,
+  onResign,
 }: {
   currentMove: number;
   setCurrentMove: (currentMove: number) => void;
@@ -21,6 +22,7 @@ function Game({
   handlePlay: (boardId: number, cellId: number, yourMove: boolean) => void;
   gameResult?: string | null;
   playerMark?: string | null;
+  onResign?: () => void;
 }) {
   const currentPlayerTurn = currentMove % 2 === 0 ? "X" : "O";
 
@@ -35,6 +37,8 @@ function Game({
   }
 
   const isOnlineGame = !!playerMark;
+  const canPlay = !isOnlineGame || currentMove === moveHistory.length - 1;
+
   return (
     <div className="grid size-full content-start gap-x-8 p-4 lg:grid-cols-6">
       <div className="flex flex-col items-center gap-y-2 lg:col-span-4 xl:col-span-3">
@@ -44,7 +48,7 @@ function Game({
           lastClickedBoardId={moveHistory[currentMove][0]}
           lastClickedCellId={moveHistory[currentMove][1]}
           nextActiveBoard={getActiveBoards(
-            !!gameResult,
+            !canPlay || !!gameResult,
             reducedMainBoardState,
             moveHistory,
             currentMove,
@@ -52,18 +56,19 @@ function Game({
           )}
           handlePlay={handlePlay}
         />
-        {!isOnlineGame && (
-          <MoveNavigator
-            moveHistory={moveHistory}
-            setMoveHistory={setMoveHistory}
-            currentMove={currentMove}
-            setCurrentMove={setCurrentMove}
-          />
-        )}
+        <MoveNavigator
+          moveHistory={moveHistory}
+          currentMove={currentMove}
+          setCurrentMove={setCurrentMove}
+          setMoveHistory={setMoveHistory}
+          isOnlineGame={isOnlineGame}
+          onResign={onResign}
+        />
       </div>
       <div></div>
       {gameResult && <GameOverModal gameResult={gameResult} />}
     </div>
   );
 }
+
 export default Game;
