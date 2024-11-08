@@ -13,7 +13,6 @@ function OnlineGame() {
   const [playerMark, setPlayerMark] = useState<string | null>(null);
 
   const [currentMove, setCurrentMove] = useState(0);
-  console.log(currentMove);
 
   const [moveHistory, setMoveHistory] = useState<number[][]>([[-1, -1]]);
 

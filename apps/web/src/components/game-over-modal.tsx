@@ -26,9 +26,6 @@ function GameOverModal({ gameResult }: { gameResult: string | null }) {
     gameStatus = "It's a tie...";
   }
 
-  console.log(gameResult);
-  
-
   const [open, setOpen] = useState(!!gameResult);
 
   return (
