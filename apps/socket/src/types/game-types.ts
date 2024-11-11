@@ -1,7 +1,7 @@
 import ws from "ws";
 
 export type Player = {
-	mark?: string;
+    mark?: "X" | "O";
 	socket?: ws;
 };
 
@@ -12,7 +12,7 @@ export type Game = {
 	currentMove: number;
 	mainBoardState: (string | null)[][];
 	reducedMainBoardState: (string | null)[];
-	result: string | null;
+    result: GameResult;
 };
 
 export type GameResult = "X" | "O" | "DRAW" | "X_RESIGNED" | "O_RESIGNED" | null;
