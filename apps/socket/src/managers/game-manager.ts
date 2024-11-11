@@ -4,22 +4,25 @@ import { Game, Player, GameResult } from "../types/game-types";
 
 const games: Game[] = [];
 
+function createNewGame(): Game {
+    return {
+        gameId: games.length,
+        players: {
+            player1: { mark: undefined, socket: undefined },
+            player2: { mark: undefined, socket: undefined },
+        },
+        moveHistory: [[-1, -1]],
+        currentMove: 0,
+        mainBoardState: Array(9).fill(null).map(() => Array(9).fill(null)),
+        reducedMainBoardState: Array(9).fill(null),
+        result: null,
+    };
+}
+
 function addGame(player: ws) {
-	const game: Game = {
-		gameId: games.length,
-		players: {
-			player1: { mark: undefined, socket: player },
-			player2: { mark: undefined, socket: undefined },
-		},
-		moveHistory: [[-1, -1]],
-		currentMove: 0,
-		mainBoardState: Array(9)
-			.fill(null)
-			.map(() => Array(9).fill(null)),
-		reducedMainBoardState: Array(9).fill(null),
-		result: null,
-	};
-	games.push(game);
+    const game = createNewGame();
+    game.players.player1.socket = player;
+    games.push(game);
 }
 
 function removeGame(gameId: number) {
