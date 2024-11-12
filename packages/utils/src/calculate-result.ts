@@ -28,7 +28,7 @@ function calculateResult(boardState: (string | null)[]) {
 		return "O";
 	}
 	if (!boardState.includes(null)) {
-		return "Tie";
+		return "DRAW";
 	}
 	return null;
 }
