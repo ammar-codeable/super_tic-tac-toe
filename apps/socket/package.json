@@ -6,7 +6,7 @@
 	"scripts": {
 		"dev": "tsx --watch src/index.ts",
 		"build": "esbuild src/index.ts --platform=node --bundle --minify --outfile=dist/index.ts",
-		"preview": "node dist/index.ts"
+		"preview": "node dist/index.js"
 	},
 	"keywords": [],
 	"author": "",
