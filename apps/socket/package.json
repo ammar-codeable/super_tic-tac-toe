@@ -5,7 +5,7 @@
 	"main": "src/index.js",
 	"scripts": {
 		"dev": "tsx --watch src/index.ts",
-		"build": "esbuild src/index.ts --platform=node --bundle --minify --outfile=dist/index.ts",
+		"build": "esbuild src/index.ts --platform=node --bundle --minify --outfile=dist/index.js",
 		"preview": "node dist/index.js"
 	},
 	"keywords": [],
