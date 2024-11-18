@@ -8,7 +8,7 @@
 		"persistent": true,
 		"cache": false
 	  },
-	  "deploy": {
+	  "start": {
 	  }
 	}
   }
