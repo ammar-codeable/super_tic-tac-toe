@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview --host"
+    "deploy": "vite preview --host & > dist/log.txt"
   },
   "dependencies": {
     "@radix-ui/react-alert-dialog": "^1.1.1",
