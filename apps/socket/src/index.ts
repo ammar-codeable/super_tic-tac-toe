@@ -1,25 +1,36 @@
-import express from "express";
+import { config } from "dotenv";
+import { readFileSync } from "fs";
+import http from "http";
+import https from "https";
 import { WebSocketServer } from "ws";
 import {
 	addGame,
 	findGameByPlayer,
 	getCurrentGame,
 	getPlayersByGame,
+	handleResign,
 	hasAvailableGame,
 	removeGame,
 	updateGameState,
-	handleResign,
 } from "./managers/game-manager";
 import { assignMark } from "./utils/assign-mark";
 
-const app = express();
-const port = 8080;
+config();
 
-const httpServer = app.listen(port, () => {
-	console.log(`Server is running on port ${port}`);
-});
+const port = process.env.PORT;
 
-const wss = new WebSocketServer({ server: httpServer });
+let server;
+if (process.env.NODE_ENV === "production") {
+	server = https.createServer({
+		cert: readFileSync("/root/ssl/certificate.pem"),
+		key: readFileSync("/root/ssl/key.pem"),
+	});
+} else {
+	server = http.createServer();
+}
+
+
+const wss = new WebSocketServer({ server });
 
 wss.on("connection", (ws) => {
 	if (hasAvailableGame()) {
@@ -36,15 +47,15 @@ wss.on("connection", (ws) => {
 
 	ws.on("message", (data) => {
 		const message = JSON.parse(data.toString());
-
+		
 		const game = findGameByPlayer(ws);
 		if (!game) return;
-
+		
 		const [currentPlayer, opponent] = getPlayersByGame(game, ws);
-
+		
 		if (message.player) {
 			assignMark(currentPlayer, opponent, message.player);
-
+			
 			if (currentPlayer.mark && opponent.mark) {
 				currentPlayer.socket!.send(
 					JSON.stringify({ mark: currentPlayer.mark })
@@ -52,17 +63,17 @@ wss.on("connection", (ws) => {
 				opponent.socket!.send(JSON.stringify({ mark: opponent.mark }));
 			}
 		}
-
+		
 		if (message.move) {
 			const [boardId, cellId] = message.move;
 			const result = updateGameState(game, boardId, cellId);
-
+			
 			opponent.socket!.send(
 				JSON.stringify({
 					game,
 				})
 			);
-
+			
 			if (result) {
 				currentPlayer.socket!.send(
 					JSON.stringify({
@@ -76,7 +87,7 @@ wss.on("connection", (ws) => {
 				);
 			}
 		}
-
+		
 		if (message.resign) {
 			const result = handleResign(game, ws);
 			
@@ -93,17 +104,22 @@ wss.on("connection", (ws) => {
 			);
 		}
 	});
-
+	
 	ws.on("close", () => {
 		const game = findGameByPlayer(ws);
 		if (!game) return;
-
+		
 		const [_, opponent] = getPlayersByGame(game, ws);
-
+		
 		removeGame(game.gameId);
-
+		
 		if (opponent.socket) {
 			opponent.socket.close();
 		}
 	});
 });
+
+server.listen(port, () => {
+	console.log(`Server is running on port ${port}`);
+});
+
