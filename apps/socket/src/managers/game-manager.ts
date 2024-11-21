@@ -1,28 +1,29 @@
 import calculateResult from "@repo/utils/calculate-result";
 import ws from "ws";
-import { Game, Player, GameResult } from "../types/game-types";
+import { Game, GameResult, Player } from "../types/game-types";
 
 const games: Game[] = [];
 
-function createNewGame(): Game {
-    return {
-        gameId: games.length,
-        players: {
-            player1: { mark: undefined, socket: undefined },
-            player2: { mark: undefined, socket: undefined },
-        },
-        moveHistory: [[-1, -1]],
-        currentMove: 0,
-        mainBoardState: Array(9).fill(null).map(() => Array(9).fill(null)),
-        reducedMainBoardState: Array(9).fill(null),
-        result: null,
-    };
+function createNewGame(ws: ws): Game {
+	return {
+		gameId: games.length,
+		players: {
+			player1: { mark: undefined, socket: ws },
+			player2: undefined,
+		},
+		moveHistory: [[-1, -1]],
+		currentMove: 0,
+		mainBoardState: Array(9)
+			.fill(null)
+			.map(() => Array(9).fill(null)),
+		reducedMainBoardState: Array(9).fill(null),
+		result: null,
+	};
 }
 
 function addGame(player: ws) {
-    const game = createNewGame();
-    game.players.player1.socket = player;
-    games.push(game);
+	const game = createNewGame(player);
+	games.push(game);
 }
 
 function removeGame(gameId: number) {
@@ -32,9 +33,7 @@ function removeGame(gameId: number) {
 
 function hasAvailableGame(): boolean {
 	const current = getCurrentGame();
-	return Boolean(
-		current?.players.player1.socket && !current?.players.player2.socket
-	);
+	return Boolean(current?.players.player1.socket && !current?.players.player2);
 }
 
 function getCurrentGame(): Game | undefined {
@@ -45,11 +44,11 @@ function findGameByPlayer(player: ws): Game | undefined {
 	return games.find(
 		(game) =>
 			game.players.player1.socket === player ||
-			game.players.player2.socket === player
+			game.players.player2?.socket === player
 	);
 }
 
-function getPlayersByGame(game: Game, currentPlayer: ws): [Player, Player] {
+function getPlayersByGame(game: Game, currentPlayer: ws): [Player | undefined, Player | undefined] {
 	return game.players.player1.socket === currentPlayer
 		? [game.players.player1, game.players.player2]
 		: [game.players.player2, game.players.player1];
@@ -72,8 +71,8 @@ function updateGameState(game: Game, boardId: number, cellId: number) {
 }
 
 function handleResign(game: Game, resigningPlayer: ws): GameResult {
-  const [player] = getPlayersByGame(game, resigningPlayer);
-  return player.mark === "X" ? "X_RESIGNED" : "O_RESIGNED";
+	const [player] = getPlayersByGame(game, resigningPlayer);
+	return player!.mark === "X" ? "X_RESIGNED" : "O_RESIGNED";
 }
 
 export {
@@ -82,9 +81,8 @@ export {
 	games,
 	getCurrentGame,
 	getPlayersByGame,
+	handleResign,
 	hasAvailableGame,
 	removeGame,
 	updateGameState,
-	handleResign
 };
-

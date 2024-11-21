@@ -29,14 +29,16 @@ if (process.env.NODE_ENV === "production") {
 	server = http.createServer();
 }
 
-
 const wss = new WebSocketServer({ server });
 
 wss.on("connection", (ws) => {
 	if (hasAvailableGame()) {
 		const game = getCurrentGame()!;
 
-		game.players.player2.socket = ws;
+		game.players.player2 = {
+			mark: undefined,
+			socket: ws,
+		};
 
 		ws.send(JSON.stringify({ waiting: false }));
 		game.players.player1.socket!.send(JSON.stringify({ waiting: false }));
@@ -52,6 +54,8 @@ wss.on("connection", (ws) => {
 		if (!game) return;
 		
 		const [currentPlayer, opponent] = getPlayersByGame(game, ws);
+
+		if (!currentPlayer || !opponent) return
 		
 		if (message.player) {
 			assignMark(currentPlayer, opponent, message.player);
@@ -112,8 +116,8 @@ wss.on("connection", (ws) => {
 		const [_, opponent] = getPlayersByGame(game, ws);
 		
 		removeGame(game.gameId);
-		
-		if (opponent.socket) {
+
+		if (opponent) {
 			opponent.socket.close();
 		}
 	});

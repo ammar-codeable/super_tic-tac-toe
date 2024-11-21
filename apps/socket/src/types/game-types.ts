@@ -1,12 +1,14 @@
 import ws from "ws";
 
+export type Mark = "X" | "O";
+
 export type Player = {
-    mark?: "X" | "O";
-	socket?: ws;
+    mark?: Mark;
+	socket: ws;
 };
 
 export type Game = {
-	players: { player1: Player; player2: Player };
+	players: { player1: Player; player2?: Player };
 	gameId: number;
 	moveHistory: number[][];
 	currentMove: number;

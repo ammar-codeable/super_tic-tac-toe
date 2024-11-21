@@ -1,9 +1,9 @@
-import { Player } from "../types/game-types";
+import { Mark, Player } from "../types/game-types";
 
 export function assignMark(
 	currentPlayer: Player,
 	opponent: Player,
-	requestedMark: string
+	requestedMark: Mark
 ) {
 	if (!opponent.mark) {
 		currentPlayer.mark = requestedMark;
