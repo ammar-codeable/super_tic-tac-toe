@@ -5,6 +5,7 @@ import https from "https";
 import { WebSocketServer } from "ws";
 import {
 	addGame,
+	addMessage,
 	findGameByPlayer,
 	getCurrentGame,
 	getPlayersByGame,
@@ -64,8 +65,8 @@ wss.on("connection", (ws) => {
 		
 		const [currentPlayer, opponent] = getPlayersByGame(game, ws);
 
-		if (!currentPlayer || !opponent) return
-		
+		if (!currentPlayer || !opponent) return;
+
 		if (message.player) {
 			assignMark(currentPlayer, opponent, message.player);
 			
@@ -115,6 +116,13 @@ wss.on("connection", (ws) => {
 					result,
 				})
 			);
+		}
+
+		if (message.chat) {
+			console.log(message.chat);
+			addMessage(game, message.chat);
+
+			opponent.socket.send(JSON.stringify({ chat: game.messages }));
 		}
 	});
 	

@@ -1,6 +1,7 @@
 import calculateResult from "@repo/utils/calculate-result";
 import getActiveBoards from "@repo/utils/get-active-boards";
 import getMainBoardState from "@repo/utils/get-main-board-state";
+import Chat from "./chat";
 import GameOverModal from "./game-over-modal";
 import MainBoard from "./main-board";
 import MoveNavigator from "./move-navigator";
@@ -14,6 +15,9 @@ function Game({
   gameResult,
   playerMark,
   onResign,
+  messages,
+  setMessages,
+  socket,
 }: {
   currentMove: number;
   setCurrentMove: (currentMove: number) => void;
@@ -23,6 +27,9 @@ function Game({
   gameResult?: string | null;
   playerMark?: string | null;
   onResign?: () => void;
+  messages: string[];
+  setMessages: React.Dispatch<React.SetStateAction<string[]>>;
+  socket: WebSocket | null;
 }) {
   const currentPlayerTurn = currentMove % 2 === 0 ? "X" : "O";
 
@@ -65,7 +72,11 @@ function Game({
           onResign={onResign}
         />
       </div>
-      <div></div>
+      <div className="h-[87%] self-center lg:col-span-2">
+        {isOnlineGame && (
+          <Chat messages={messages} setMessages={setMessages} socket={socket} />
+        )}
+      </div>
       {gameResult && <GameOverModal gameResult={gameResult} />}
     </div>
   );

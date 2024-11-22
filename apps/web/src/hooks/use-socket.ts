@@ -5,6 +5,7 @@ export function useSocket(
   setPlayerMark: React.Dispatch<React.SetStateAction<string | null>>,
   setDisconnected: React.Dispatch<React.SetStateAction<boolean>>,
   setGameResult: React.Dispatch<React.SetStateAction<string | null>>,
+  setMessages: React.Dispatch<React.SetStateAction<string[]>>,
   handlePlay: (boardId: number, cellId: number, yourMove: boolean) => void,
 ) {
   const [socket, setSocket] = useState<WebSocket | null>(null);
@@ -35,6 +36,10 @@ export function useSocket(
 
       if (messageData.result !== undefined) {
         setGameResult(messageData.result);
+      }
+
+      if (messageData.chat !== undefined) {
+        setMessages(messageData.chat);
       }
     };
 

@@ -18,6 +18,7 @@ function createNewGame(ws: ws): Game {
 			.map(() => Array(9).fill(null)),
 		reducedMainBoardState: Array(9).fill(null),
 		result: null,
+		messages: [],
 	};
 }
 
@@ -75,8 +76,13 @@ function handleResign(game: Game, resigningPlayer: ws): GameResult {
 	return player!.mark === "X" ? "X_RESIGNED" : "O_RESIGNED";
 }
 
+function addMessage(game: Game, message: string) {
+	game.messages.push(message);
+}
+
 export {
 	addGame,
+	addMessage,
 	findGameByPlayer,
 	games,
 	getCurrentGame,

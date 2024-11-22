@@ -19,6 +19,8 @@ function OnlineGame() {
 
   const [gameResult, setGameResult] = useState<string | null>(null);
 
+  const [messages, setMessages] = useState<string[]>([]);
+
   function handleOnlinePlay(
     boardId: number,
     cellId: number,
@@ -45,6 +47,7 @@ function OnlineGame() {
     setPlayerMark,
     setDisconnected,
     setGameResult,
+    setMessages,
     handleOnlinePlay,
   );
 
@@ -71,6 +74,9 @@ function OnlineGame() {
         gameResult={gameResult}
         playerMark={playerMark}
         onResign={() => setShowResignModal(true)}
+        messages={messages}
+        setMessages={setMessages}
+        socket={socket}
       />
       {disconnected && !gameResult && <DisconnectModal />}
       <ResignConfirmationModal

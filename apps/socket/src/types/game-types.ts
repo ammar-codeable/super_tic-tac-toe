@@ -15,6 +15,7 @@ export type Game = {
 	mainBoardState: (string | null)[][];
 	reducedMainBoardState: (string | null)[];
     result: GameResult;
+    messages: string[];
 };
 
 export type GameResult = "X" | "O" | "DRAW" | "X_RESIGNED" | "O_RESIGNED" | null;
