@@ -11,6 +11,7 @@ function Square({
   isActiveSquare,
   isLastClickedSquare,
   currentPlayerTurn,
+  globalIndex, // Add this prop
 }: {
   handlePlay: (boardId: number, cellId: number, yourMove: boolean) => void;
   boardId: number;
@@ -19,6 +20,7 @@ function Square({
   isActiveSquare: boolean;
   isLastClickedSquare: boolean;
   currentPlayerTurn: string;
+  globalIndex: number;
 }) {
   let value;
 
@@ -30,8 +32,17 @@ function Square({
     value = currentPlayerTurn === "X" ? <X /> : <Circle />;
   }
 
+  const item = {
+    hidden: { opacity: 0, scale: 0.3 },
+    show: { opacity: 1, scale: 1 }
+  };
+
   return (
-    <motion.div whileTap={{ scale: 0.9 }}>
+    <motion.div 
+      custom={globalIndex}
+      variants={item}
+      whileTap={{ scale: 0.9, transition: { duration: 0.1 } }}
+    >
       <Button
         disabled={!isActiveSquare}
         variant={

@@ -51,6 +51,7 @@ function SubBoard({
   isActiveSubBoard,
   currentPlayerTurn,
   handlePlay,
+  getGlobalSquareIndex,
 }: {
   boardId: number;
   subBoardState: (string | null)[];
@@ -58,20 +59,14 @@ function SubBoard({
   isActiveSubBoard: boolean;
   currentPlayerTurn: string;
   handlePlay: (boardId: number, cellId: number, yourMove: boolean) => void;
+  getGlobalSquareIndex: (boardId: number, squareId: number) => number;
 }) {
   const subGameResult = calculateResult(subBoardState);
 
   const [isAnimationComplete, setIsAnimationComplete] = useState(false);
 
   return (
-    <div
-      className={cn("group flex items-center justify-center border-2", {
-        "border-t-0": boardId < 3,
-        "border-l-0": boardId % 3 === 0,
-        "border-r-0": boardId % 3 === 2,
-        "border-b-0": boardId > 5,
-      })}
-    >
+    <div className="group relative flex items-center justify-center">
       <div
         className={cn("grid size-full grid-cols-3 gap-1 p-2 2xl:gap-2", {
           hidden: subGameResult && subGameResult !== "Tie",
@@ -90,6 +85,7 @@ function SubBoard({
               isActiveSquare={isActiveSubBoard && !subBoardState[i]}
               isLastClickedSquare={lastClickedCellId === i}
               currentPlayerTurn={currentPlayerTurn}
+              globalIndex={getGlobalSquareIndex(boardId, i)}
             />
           ))}
       </div>
