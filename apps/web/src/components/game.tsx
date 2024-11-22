@@ -40,8 +40,8 @@ function Game({
   const canPlay = !isOnlineGame || currentMove === moveHistory.length - 1;
 
   return (
-    <div className="grid size-full content-start gap-x-8 p-4 lg:grid-cols-6">
-      <div className="flex flex-col items-center gap-y-2 lg:col-span-4 xl:col-span-3">
+    <div className="grid h-full lg:grid-cols-6">
+      <div className="flex w-11/12 flex-col gap-y-4 self-center lg:col-span-4 xl:col-span-3">
         <MainBoard
           mainBoardState={mainBoardState}
           currentPlayerTurn={currentPlayerTurn}
