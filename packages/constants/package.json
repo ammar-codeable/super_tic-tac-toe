@@ -1,0 +1,10 @@
+{
+	"name": "@repo/constants",
+	"version": "1.0.0",
+	"exports": {
+		"./game-tips": "./src/game-tips.ts"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC"
+}
