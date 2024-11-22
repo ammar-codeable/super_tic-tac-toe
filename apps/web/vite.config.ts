@@ -1,5 +1,8 @@
 import react from "@vitejs/plugin-react-swc";
+import { config } from "dotenv";
 import { defineConfig } from "vite";
+
+config();
 
 export default defineConfig(() => {
   if (process.env.NODE_ENV === "production") {
