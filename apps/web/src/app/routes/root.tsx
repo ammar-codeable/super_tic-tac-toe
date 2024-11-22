@@ -1,9 +1,11 @@
 import logo from "@/assets/logo.png";
 import playIcon from "@/assets/play-icon.png";
+import TutorialModal from "@/components/rules-modal";
 import ThemeToggle from "@/components/theme-toggle";
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarHeader,
   SidebarMenu,
@@ -13,7 +15,8 @@ import {
 } from "@/components/ui/sidebar";
 import { useIsMobile } from "@/hooks/use-is-mobile";
 import { motion } from "framer-motion";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, HelpCircle } from "lucide-react";
+import { useState } from "react";
 import { Link, NavLink, Outlet } from "react-router-dom";
 
 function MobileHeader() {
@@ -49,10 +52,7 @@ function NavigationItems() {
           <SidebarMenuItem key={href}>
             <NavLink to={href}>
               {({ isActive }) => (
-                <SidebarMenuButton
-                  isActive={isActive}
-                  tooltip={label}
-                >
+                <SidebarMenuButton isActive={isActive} tooltip={label}>
                   <img className="size-12" src={icon} alt={`${label} Icon`} />
                   <span className="text-xl">{label}</span>
                   <ChevronRight className="ml-auto" />
@@ -68,6 +68,8 @@ function NavigationItems() {
 
 function AppSidebar() {
   const isMobile = useIsMobile();
+  const [showRules, setShowRules] = useState(false);
+
   return (
     <>
       <Sidebar collapsible={isMobile ? "offcanvas" : "icon"}>
@@ -79,7 +81,18 @@ function AppSidebar() {
         <SidebarContent>
           <NavigationItems />
         </SidebarContent>
+        <SidebarFooter>
+          <SidebarMenuButton
+            onClick={() => setShowRules(true)}
+            tooltip="Game Rules"
+          >
+            <HelpCircle className="size-6" />
+            <span>How to Play?</span>
+          </SidebarMenuButton>
+        </SidebarFooter>
       </Sidebar>
+
+      <TutorialModal open={showRules} onOpenChange={setShowRules} />
     </>
   );
 }
