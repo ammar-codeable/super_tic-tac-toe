@@ -1,6 +1,7 @@
 import ChoosePlayerModal from "@/components/choose-player-modal";
 import DisconnectModal from "@/components/disconnect-modal";
 import Game from "@/components/game";
+import Loader from "@/components/loader";
 import ResignConfirmationModal from "@/components/resign-confirmation-modal";
 import { useSocket } from "@/hooks/use-socket";
 import { useState } from "react";
@@ -47,14 +48,12 @@ function OnlineGame() {
     handleOnlinePlay,
   );
 
-  if (waiting !== false) {
-    return (
-      <p className="flex w-full items-center justify-center">
-        {waiting === undefined
-          ? "Waiting for Connection"
-          : "Waiting for player 2"}
-      </p>
-    );
+  if (waiting === undefined) {
+    return <Loader message="Connecting to server..." />;
+  }
+
+  if (waiting === true) {
+    return <Loader message="Waiting for another player..." />;
   }
 
   if (!disconnected && !playerMark) {
