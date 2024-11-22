@@ -31,8 +31,8 @@ if (process.env.NODE_ENV === "production") {
 	}
 
 	server = https.createServer({
-		cert: readFileSync(process.env.SSL_CERT_PATH),
-		key: readFileSync(process.env.SSL_KEY_PATH),
+		cert: readFileSync(certPath),
+		key: readFileSync(keyPath),
 	});
 } else {
 	server = http.createServer();
