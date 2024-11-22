@@ -11,7 +11,7 @@ import {
   SidebarMenuItem,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { useIsMobile } from "@/hooks/use-mobile";
+import { useIsMobile } from "@/hooks/use-is-mobile";
 import { motion } from "framer-motion";
 import { ChevronRight } from "lucide-react";
 import { Link, NavLink, Outlet } from "react-router-dom";
