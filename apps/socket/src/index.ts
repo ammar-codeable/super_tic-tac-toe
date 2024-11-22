@@ -21,6 +21,15 @@ const port = process.env.PORT;
 
 let server;
 if (process.env.NODE_ENV === "production") {
+	const certPath = process.env.SSL_CERT_PATH;
+	const keyPath = process.env.SSL_KEY_PATH;
+
+	if (!certPath || !keyPath) {
+		throw new Error(
+			"SSL certificate paths not configured in environment variables"
+		);
+	}
+
 	server = https.createServer({
 		cert: readFileSync(process.env.SSL_CERT_PATH),
 		key: readFileSync(process.env.SSL_KEY_PATH),

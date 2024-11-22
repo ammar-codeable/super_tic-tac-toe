@@ -4,9 +4,9 @@
 	"description": "",
 	"main": "src/index.js",
 	"scripts": {
-		"dev": "tsx --watch src/index.ts",
+		"dev": "NODE_ENV=development tsx --watch src/index.ts",
 		"build": "esbuild src/index.ts --platform=node --bundle --minify --outfile=dist/index.js",
-		"start": "node dist/index.js & > dist/log.txt"
+		"start": "NODE_ENV=production node dist/index.js > dist/log.txt"
 	},
 	"keywords": [],
 	"author": "",

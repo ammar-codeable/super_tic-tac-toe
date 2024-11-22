@@ -1,8 +1,15 @@
 import react from "@vitejs/plugin-react-swc";
 import { defineConfig } from "vite";
 
-// https://vitejs.dev/config/
 export default defineConfig(() => {
+  if (process.env.NODE_ENV === "production") {
+    if (!process.env.VITE_SSL_CERT_PATH || !process.env.VITE_SSL_KEY_PATH) {
+      throw new Error(
+        "SSL certificate paths not configured in environment variables",
+      );
+    }
+  }
+
   const commonConfig = {
     plugins: [react()],
     resolve: {
