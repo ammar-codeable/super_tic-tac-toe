@@ -1,5 +1,6 @@
 import react from "@vitejs/plugin-react-swc";
 import { config } from "dotenv";
+import path from "path";
 import { defineConfig } from "vite";
 
 config();
@@ -18,6 +19,9 @@ export default defineConfig(() => {
     resolve: {
       alias: {
         "@": "/src",
+        "@repo/constants": path.resolve(__dirname, "../../packages/constants/src"),
+        "@repo/utils": path.resolve(__dirname, "../../packages/utils/src"),
+        "@repo/types": path.resolve(__dirname, "../../packages/types/src"),
       },
     },
     preview: {
@@ -32,3 +36,4 @@ export default defineConfig(() => {
 
   return commonConfig;
 });
+
