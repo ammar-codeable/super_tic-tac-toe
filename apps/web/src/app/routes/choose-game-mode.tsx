@@ -1,117 +1,16 @@
+import { GameModeCard } from "@/components/game-mode-card";
 import { Badge } from "@/components/ui/badge";
-import {
-  Card,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { cn } from "@/lib/utils";
+import { usePlayerCount } from "@/hooks/use-player-count";
 import { GAME_TIPS, getRandomTip } from "@repo/constants/game-tips";
 import { motion } from "framer-motion";
-import { Globe, Timer, Users, Wifi, WifiOff, Zap } from "lucide-react";
+import { Globe, MessageSquare, Timer, Users, Wifi, WifiOff, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { usePlayerCount } from '@/hooks/use-player-count';
+import { useNavigate } from "react-router-dom";
 
 const item = {
   hidden: { opacity: 0, y: 20 },
   show: { opacity: 1, y: 0 },
 };
-
-function checkWinner(squares: string[]): {
-  winner: string | null;
-  line: number[] | null;
-} {
-  const lines = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
-
-  for (const line of lines) {
-    const [a, b, c] = line;
-    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return { winner: squares[a], line };
-    }
-  }
-  return { winner: null, line: null };
-}
-
-function GameModePreview() {
-  const [board, setBoard] = useState<string[]>(Array(9).fill(""));
-  const [moves, setMoves] = useState<number[]>([]);
-  const [winningLine, setWinningLine] = useState<number[] | null>(null);
-
-  useEffect(() => {
-    const resetGame = () => {
-      setBoard(Array(9).fill(""));
-      setMoves([]);
-      setWinningLine(null);
-    };
-
-    const makeMove = () => {
-      const available = board
-        .map((v, i) => (v ? -1 : i))
-        .filter((i) => i !== -1);
-
-      if (!available.length) {
-        setTimeout(resetGame, 1000);
-        return;
-      }
-
-      const move = available[Math.floor(Math.random() * available.length)];
-      const newBoard = [...board];
-      newBoard[move] = moves.length % 2 === 0 ? "X" : "O";
-
-      const { winner, line } = checkWinner(newBoard);
-
-      if (winner) {
-        setBoard(newBoard);
-        setWinningLine(line);
-        setTimeout(resetGame, 1000);
-        return;
-      }
-
-      setBoard(newBoard);
-      setMoves((prev) => [...prev, 1]);
-    };
-
-    const timeoutId = setTimeout(makeMove, 800);
-    return () => clearTimeout(timeoutId);
-  }, [board, moves]);
-
-  return (
-    <div className="mx-auto mb-4 grid h-24 w-24 select-none grid-cols-3 gap-1 rounded-lg border border-primary/10 p-2">
-      {board.map((value, i) => (
-        <div
-          key={i}
-          className={cn(
-            "flex aspect-square items-center justify-center rounded-sm text-xs",
-            value && "bg-primary/5",
-            winningLine?.includes(i) && "animate-pulse bg-primary/20",
-          )}
-        >
-          {value && (
-            <motion.span
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.3 }}
-              className={value === "X" ? "text-primary/70" : "text-primary/70"}
-            >
-              {value}
-            </motion.span>
-          )}
-        </div>
-      ))}
-    </div>
-  );
-}
 
 function ChooseGameMode() {
   const navigate = useNavigate();
@@ -140,6 +39,42 @@ function ChooseGameMode() {
     return () => clearInterval(interval);
   }, []);
 
+  const gameModes = {
+    offline: {
+      icon: <Users />,
+      title: "Offline Mode",
+      badge: {
+        icon: <WifiOff className="mr-1 h-3 w-3" />,
+        text: "No Internet Required",
+      },
+      description:
+        "Challenge a friend sitting next to you in a local multiplayer game",
+      features: [
+        { icon: <Timer className="h-4 w-4" />, text: "No Time Limit" },
+        { icon: <Zap className="h-4 w-4" />, text: "Instant Start" },
+      ],
+    },
+    online: {
+      icon: <Globe />,
+      title: "Online Mode",
+      badge: {
+        icon: <Wifi className="mr-1 h-3 w-3" />,
+        text: "Real-time Multiplayer",
+      },
+      description:
+        "Connect with players worldwide and compete in real-time matches",
+      features: [
+        { icon: <Users className="h-4 w-4" />, text: "Match Making" },
+        { icon: <MessageSquare className="h-4 w-4" />, text: "Live Chat" },
+      ],
+      extraBadge: (
+        <Badge variant="destructive" className="animate-pulse">
+          LIVE
+        </Badge>
+      ),
+    },
+  };
+
   return (
     <motion.div
       initial="hidden"
@@ -153,7 +88,7 @@ function ChooseGameMode() {
           },
         },
       }}
-      className="flex min-h-screen flex-col items-center justify-center"
+      className="flex min-h-screen flex-col items-center justify-center p-2 pt-10 lg:pt-0"
     >
       <motion.h1
         className="mb-6 text-4xl font-bold"
@@ -198,87 +133,14 @@ function ChooseGameMode() {
       </motion.div>
 
       <div className="grid w-full max-w-4xl grid-cols-1 gap-6 md:grid-cols-2">
-        <motion.div
-          variants={item}
-          whileTap={{ scale: 0.98 }}
-          className="h-full"
-        >
-          <Link to="/play/offline" className="group block h-full">
-            <Card
-              className={`h-full cursor-pointer border-2 p-6 transition-all ${selectedMode === "offline" ? "scale-105 border-primary shadow-lg" : "border-transparent"} hover:scale-105 hover:border-primary hover:shadow-lg`}
-            >
-              <GameModePreview />
-              <CardHeader className="items-center gap-4 text-center">
-                <Users className="h-12 w-12 text-primary transition-transform group-hover:scale-110" />
-                <div className="space-y-2">
-                  <CardTitle>Offline Mode</CardTitle>
-                  <Badge variant="secondary" className="mb-2">
-                    <WifiOff className="mr-1 h-3 w-3" /> No Internet Required
-                  </Badge>
-                  <CardDescription>
-                    Challenge a friend sitting next to you in a local
-                    multiplayer game
-                  </CardDescription>
-                </div>
-              </CardHeader>
-              <CardFooter className="flex-col gap-2 pt-4">
-                <div className="flex justify-center gap-4 text-sm text-muted-foreground">
-                  <span className="flex items-center gap-1">
-                    <Timer className="h-4 w-4" /> No Time Limit
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <Zap className="h-4 w-4" /> Instant Start
-                  </span>
-                </div>
-              </CardFooter>
-              <motion.div
-                className="absolute inset-0 -z-10 bg-gradient-to-r from-primary/10 to-transparent opacity-0 group-hover:opacity-100"
-                initial={false}
-                animate={{ opacity: selectedMode === "offline" ? 0.1 : 0 }}
-                transition={{ duration: 0.3 }}
-              />
-            </Card>
-          </Link>
-        </motion.div>
-
-        <motion.div
-          variants={item}
-          whileTap={{ scale: 0.98 }}
-          className="h-full"
-        >
-          <Link to="/play/online" className="group block h-full">
-            <Card
-              className={`relative h-full cursor-pointer border-2 p-6 transition-all ${selectedMode === "online" ? "scale-105 border-primary shadow-lg" : "border-transparent"} hover:scale-105 hover:border-primary hover:shadow-lg`}
-            >
-              <GameModePreview />
-              <div className="absolute right-2 top-2">
-                <Badge variant="destructive" className="animate-pulse">
-                  LIVE
-                </Badge>
-              </div>
-              <CardHeader className="items-center gap-4 text-center">
-                <Globe className="h-12 w-12 text-primary transition-transform group-hover:scale-110" />
-                <div className="space-y-2">
-                  <CardTitle>Online Mode</CardTitle>
-                  <Badge variant="secondary" className="mb-2">
-                    <Wifi className="mr-1 h-3 w-3" /> Real-time Multiplayer
-                  </Badge>
-                  <CardDescription>
-                    Connect with players worldwide and compete in real-time
-                    matches
-                  </CardDescription>
-                </div>
-              </CardHeader>
-              <CardFooter className="flex-col gap-2 pt-4">
-                <div className="flex justify-center gap-4 text-sm text-muted-foreground">
-                  <span className="flex items-center gap-1">
-                    <Users className="h-4 w-4" /> Match Making
-                  </span>
-                </div>
-              </CardFooter>
-            </Card>
-          </Link>
-        </motion.div>
+        {(["offline", "online"] as const).map((mode) => (
+          <GameModeCard
+            key={mode}
+            mode={mode}
+            isSelected={selectedMode === mode}
+            {...gameModes[mode]}
+          />
+        ))}
       </div>
 
       <motion.div
