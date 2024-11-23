@@ -83,3 +83,21 @@
     @apply bg-background text-foreground;
   }
 }
+
+@keyframes moveBg {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 100% 100%;
+  }
+}
+
+@keyframes float {
+  from {
+    transform: translate(0, 0) rotate(var(--rotation));
+  }
+  to {
+    transform: translate(100px, 100px) rotate(var(--rotation));
+  }
+}
