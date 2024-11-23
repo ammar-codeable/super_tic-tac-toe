@@ -12,6 +12,7 @@ import { motion } from "framer-motion";
 import { Globe, Timer, Users, Wifi, WifiOff, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { usePlayerCount } from '@/hooks/use-player-count';
 
 const item = {
   hidden: { opacity: 0, y: 20 },
@@ -86,7 +87,7 @@ function GameModePreview() {
   }, [board, moves]);
 
   return (
-    <div className="mx-auto mb-4 grid h-24 w-24 select-none grid-cols-3 gap-1 rounded-lg border border-primary/10 p-1">
+    <div className="mx-auto mb-4 grid h-24 w-24 select-none grid-cols-3 gap-1 rounded-lg border border-primary/10 p-2">
       {board.map((value, i) => (
         <div
           key={i}
@@ -118,6 +119,7 @@ function ChooseGameMode() {
     null,
   );
   const [currentTip, setCurrentTip] = useState(GAME_TIPS[0]);
+  const playerCount = usePlayerCount();
 
   useEffect(() => {
     const handleKeyboard = (e: KeyboardEvent) => {
@@ -190,7 +192,7 @@ function ChooseGameMode() {
         <div className="inline-flex items-center gap-2">
           <Wifi className="h-4 w-4 animate-pulse text-green-500" />
           <span className="text-sm text-muted-foreground">
-            {Math.floor(Math.random() * 100) + 50} players online
+            {playerCount} players online
           </span>
         </div>
       </motion.div>

@@ -12,12 +12,16 @@
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
-		"@repo/utils": "workspace:*",
 		"@repo/types": "workspace:*",
+		"@repo/utils": "workspace:*",
+		"express": "^4.21.1",
+		"cors": "^2.8.5",
 		"dotenv": "^16.4.5",
 		"ws": "^8.18.0"
 	},
 	"devDependencies": {
+		"@types/express": "^5.0.0",
+		"@types/cors": "^2.8.17",
 		"@types/node": "^22.5.4",
 		"@types/ws": "^8.5.12",
 		"esbuild": "^0.24.0",
