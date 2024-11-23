@@ -97,11 +97,44 @@ function AppSidebar() {
   );
 }
 
+function TicTacToeBackground() {
+
+  return (
+    <div
+      className="fixed inset-0 -z-10 opacity-[0.03]"
+      style={{
+        background: `
+          linear-gradient(to right, currentColor 1px, transparent 1px),
+          linear-gradient(to bottom, currentColor 1px, transparent 1px)
+        `,
+        backgroundSize: "33.33% 33.33%",
+        animation: "moveBg 60s linear infinite",
+      }}
+    >
+      {Array.from({ length: 6 }).map((_, i) => (
+        <div
+          key={i}
+          className="absolute text-6xl font-bold opacity-30"
+          style={{
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+            transform: `rotate(${Math.random() * 360}deg)`,
+            animation: `float ${5 + Math.random() * 5}s infinite alternate ease-in-out`,
+          }}
+        >
+          {Math.random() > 0.5 ? "X" : "O"}
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function Root() {
   const isMobile = useIsMobile();
 
   return (
-    <div className="flex w-screen">
+    <div className="flex w-screen overflow-hidden">
+      <TicTacToeBackground />
       <AppSidebar />
       <main className="flex flex-1">
         <div className="relative flex flex-1">
