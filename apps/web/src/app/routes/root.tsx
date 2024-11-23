@@ -119,6 +119,7 @@ function TicTacToeBackground() {
           style={{
             left: `${Math.random() * 100}%`,
             top: `${Math.random() * 100}%`,
+            "--rotation": `${Math.random() * 360}deg`,
             transform: `rotate(${Math.random() * 360}deg)`,
             animation: `float ${5 + Math.random() * 5}s infinite alternate ease-in-out`,
           }}
