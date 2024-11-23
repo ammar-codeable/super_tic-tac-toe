@@ -18,6 +18,7 @@ import { motion } from "framer-motion";
 import { ChevronRight, HelpCircle } from "lucide-react";
 import { useState } from "react";
 import { Link, NavLink, Outlet } from "react-router-dom";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 function MobileHeader() {
   return (
@@ -133,28 +134,29 @@ function Root() {
   const isMobile = useIsMobile();
 
   return (
-    <div className="flex w-screen overflow-hidden">
+    <div className="flex h-screen w-screen overflow-hidden">
       <TicTacToeBackground />
       <AppSidebar />
-      <main className="flex flex-1">
-        <div className="relative flex flex-1">
-          {!isMobile && (
-            <>
-              <div className="flex h-full flex-col pl-2 pt-2">
-                <SidebarTrigger />
-              </div>
-              <div className="absolute right-3 top-3 z-50">
-                <ThemeToggle />
-              </div>
-            </>
-          )}
-
-          <div className="flex flex-1 flex-col">
-            {isMobile && <MobileHeader />}
-            <Outlet />
+      <ScrollArea className="h-full flex-1">
+        <main className="h-full flex-1">
+          <div className="relative flex flex-1">
+            {!isMobile && (
+              <>
+                <div className="flex h-full flex-col pl-2 pt-2">
+                  <SidebarTrigger />
+                </div>
+                <div className="absolute right-3 top-3 z-50">
+                  <ThemeToggle />
+                </div>
+              </>
+            )}
+            <div className="flex flex-1 flex-col">
+              {isMobile && <MobileHeader />}
+              <Outlet />
+            </div>
           </div>
-        </div>
-      </main>
+        </main>
+      </ScrollArea>
     </div>
   );
 }
