@@ -134,15 +134,15 @@ function Root() {
   const isMobile = useIsMobile();
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden">
+    <div className="fixed inset-0 flex overflow-hidden">
       <TicTacToeBackground />
       <AppSidebar />
-      <ScrollArea className="h-full flex-1">
-        <main className="h-full flex-1">
-          <div className="relative flex flex-1">
+      <ScrollArea className="h-full w-full">
+        <main className="min-h-full w-full">
+          <div className="relative flex flex-1 h-screen">
             {!isMobile && (
               <>
-                <div className="flex h-full flex-col pl-2 pt-2">
+                <div className="flex flex-col pl-2 pt-2">
                   <SidebarTrigger />
                 </div>
                 <div className="absolute right-3 top-3 z-50">
@@ -150,7 +150,7 @@ function Root() {
                 </div>
               </>
             )}
-            <div className="flex flex-1 flex-col">
+            <div className="flex flex-1 flex-col h-full">
               {isMobile && <MobileHeader />}
               <Outlet />
             </div>
