@@ -142,7 +142,7 @@ function Root() {
           <div className="relative flex flex-1 h-screen">
             {!isMobile && (
               <>
-                <div className="flex flex-col pl-2 pt-2">
+                <div className="flex h-full flex-col pl-2 pt-2">
                   <SidebarTrigger />
                 </div>
                 <div className="absolute right-3 top-3 z-50">
@@ -150,7 +150,7 @@ function Root() {
                 </div>
               </>
             )}
-            <div className="flex flex-1 flex-col h-full">
+            <div className="flex flex-1 flex-col">
               {isMobile && <MobileHeader />}
               <Outlet />
             </div>
