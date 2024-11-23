@@ -1,4 +1,5 @@
 import ws from "ws";
+import { ChatMessage } from "@repo/types/chat-types";
 
 export type Mark = "X" | "O";
 
@@ -15,7 +16,7 @@ export type Game = {
 	mainBoardState: (string | null)[][];
 	reducedMainBoardState: (string | null)[];
     result: GameResult;
-    messages: string[];
+    messages: ChatMessage[];
 };
 
 export type GameResult = "X" | "O" | "DRAW" | "X_RESIGNED" | "O_RESIGNED" | null;

@@ -14,6 +14,7 @@ import {
 	removeGame,
 	updateGameState,
 } from "./managers/game-manager";
+import { ChatMessage } from "@repo/types/chat-types";
 import { assignMark } from "./utils/assign-mark";
 
 config();
@@ -119,10 +120,14 @@ wss.on("connection", (ws) => {
 		}
 
 		if (message.chat) {
-			console.log(message.chat);
-			addMessage(game, message.chat);
-
-			opponent.socket.send(JSON.stringify({ chat: game.messages }));
+			const senderRole =
+				currentPlayer === game.players.player1 ? "player1" : "player2";
+			const chatMessage: ChatMessage = {
+				text: message.chat.text,
+				sender: senderRole,
+			};
+			addMessage(game, chatMessage);
+			opponent.socket.send(JSON.stringify({ chat: [chatMessage] }));
 		}
 	});
 	

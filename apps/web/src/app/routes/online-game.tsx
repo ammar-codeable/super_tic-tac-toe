@@ -4,6 +4,7 @@ import Game from "@/components/game";
 import Loader from "@/components/loader";
 import ResignConfirmationModal from "@/components/resign-confirmation-modal";
 import { useSocket } from "@/hooks/use-socket";
+import { ChatMessage } from "@repo/types/chat-types";
 import { useState } from "react";
 
 function OnlineGame() {
@@ -19,7 +20,7 @@ function OnlineGame() {
 
   const [gameResult, setGameResult] = useState<string | null>(null);
 
-  const [messages, setMessages] = useState<string[]>([]);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
 
   function handleOnlinePlay(
     boardId: number,

@@ -1,3 +1,4 @@
+import { ChatMessage } from "@repo/types/chat-types";
 import { useRef } from "react";
 import { Textarea } from "./ui/textarea";
 
@@ -5,20 +6,27 @@ function Chat({
   messages,
   setMessages,
   socket,
+  playerMark,
 }: {
-  messages: string[];
-  setMessages: React.Dispatch<React.SetStateAction<string[]>>;
+  messages: ChatMessage[];
+  setMessages: React.Dispatch<React.SetStateAction<ChatMessage[]>>;
   socket: WebSocket | null;
+  playerMark: string | null;
 }) {
-  const textareaRef = useRef<HTMLTextAreaElement>();
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const message = textareaRef.current?.value.trim();
-    if (message) {
+    const text = textareaRef.current?.value.trim();
+    if (text && socket) {
       textareaRef.current!.value = "";
-      setMessages((messages) => [...messages, message]);
-      socket!.send(JSON.stringify({ chat: message }));
+      const newMessage = {
+        text,
+        sender:
+          playerMark === "X" ? "player1" : ("player2" as "player1" | "player2"),
+      };
+      setMessages((prev) => [...prev, newMessage]);
+      socket.send(JSON.stringify({ chat: { text } }));
     }
   };
 
@@ -36,9 +44,13 @@ function Chat({
           {messages.map((message, index) => (
             <div
               key={index}
-              className="player ml-auto max-w-[80%] break-words rounded-lg bg-primary p-2 text-primary-foreground"
+              className={`max-w-[80%] break-words rounded-lg p-2 ${
+                (playerMark === "X" ? "player1" : "player2") === message.sender
+                  ? "ml-auto bg-primary text-primary-foreground"
+                  : "mr-auto bg-secondary text-secondary-foreground"
+              }`}
             >
-              {message}
+              {message.text}
             </div>
           ))}
         </div>

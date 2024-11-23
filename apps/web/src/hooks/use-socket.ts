@@ -1,3 +1,4 @@
+import { ChatMessage } from "@repo/types/chat-types";
 import React, { useEffect, useState } from "react";
 
 export function useSocket(
@@ -5,7 +6,7 @@ export function useSocket(
   setPlayerMark: React.Dispatch<React.SetStateAction<string | null>>,
   setDisconnected: React.Dispatch<React.SetStateAction<boolean>>,
   setGameResult: React.Dispatch<React.SetStateAction<string | null>>,
-  setMessages: React.Dispatch<React.SetStateAction<string[]>>,
+  setMessages: React.Dispatch<React.SetStateAction<ChatMessage[]>>,
   handlePlay: (boardId: number, cellId: number, yourMove: boolean) => void,
 ) {
   const [socket, setSocket] = useState<WebSocket | null>(null);
@@ -39,7 +40,7 @@ export function useSocket(
       }
 
       if (messageData.chat !== undefined) {
-        setMessages(messageData.chat);
+        setMessages((prev) => [...prev, ...messageData.chat]);
       }
     };
 

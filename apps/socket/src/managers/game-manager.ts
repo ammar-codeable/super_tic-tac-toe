@@ -1,3 +1,4 @@
+import { ChatMessage } from "@repo/types/chat-types";
 import calculateResult from "@repo/utils/calculate-result";
 import ws from "ws";
 import { Game, GameResult, Player } from "../types/game-types";
@@ -49,7 +50,10 @@ function findGameByPlayer(player: ws): Game | undefined {
 	);
 }
 
-function getPlayersByGame(game: Game, currentPlayer: ws): [Player | undefined, Player | undefined] {
+function getPlayersByGame(
+	game: Game,
+	currentPlayer: ws
+): [Player | undefined, Player | undefined] {
 	return game.players.player1.socket === currentPlayer
 		? [game.players.player1, game.players.player2]
 		: [game.players.player2, game.players.player1];
@@ -76,7 +80,7 @@ function handleResign(game: Game, resigningPlayer: ws): GameResult {
 	return player!.mark === "X" ? "X_RESIGNED" : "O_RESIGNED";
 }
 
-function addMessage(game: Game, message: string) {
+function addMessage(game: Game, message: ChatMessage) {
 	game.messages.push(message);
 }
 

@@ -14,6 +14,9 @@ importers:
 
   apps/socket:
     dependencies:
+      '@repo/types':
+        specifier: workspace:*
+        version: link:../../packages/types
       '@repo/utils':
         specifier: workspace:*
         version: link:../../packages/utils
@@ -69,6 +72,9 @@ importers:
       '@repo/constants':
         specifier: workspace:*
         version: link:../../packages/constants
+      '@repo/types':
+        specifier: workspace:*
+        version: link:../../packages/types
       '@repo/utils':
         specifier: workspace:*
         version: link:../../packages/utils
@@ -141,6 +147,8 @@ importers:
         version: 5.4.2(@types/node@22.5.4)
 
   packages/constants: {}
+
+  packages/types: {}
 
   packages/utils:
     dependencies:

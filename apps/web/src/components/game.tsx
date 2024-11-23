@@ -1,3 +1,4 @@
+import { ChatMessage } from "@repo/types/chat-types";
 import calculateResult from "@repo/utils/calculate-result";
 import getActiveBoards from "@repo/utils/get-active-boards";
 import getMainBoardState from "@repo/utils/get-main-board-state";
@@ -27,9 +28,9 @@ function Game({
   gameResult?: string | null;
   playerMark?: string | null;
   onResign?: () => void;
-  messages: string[];
-  setMessages: React.Dispatch<React.SetStateAction<string[]>>;
-  socket: WebSocket | null;
+  messages?: ChatMessage[] | undefined;
+  setMessages?: React.Dispatch<React.SetStateAction<ChatMessage[]>> | undefined;
+  socket?: WebSocket | null;
 }) {
   const currentPlayerTurn = currentMove % 2 === 0 ? "X" : "O";
 
@@ -47,8 +48,8 @@ function Game({
   const canPlay = !isOnlineGame || currentMove === moveHistory.length - 1;
 
   return (
-    <div className="grid h-full lg:grid-cols-6">
-      <div className="flex w-11/12 flex-col gap-y-4 self-center lg:col-span-4 xl:col-span-3">
+    <div className="grid h-full gap-4 px-4 sm:px-6 lg:grid-cols-6">
+      <div className="flex w-full flex-col gap-y-4 self-center justify-self-center lg:col-span-4 xl:col-span-3">
         <MainBoard
           mainBoardState={mainBoardState}
           currentPlayerTurn={currentPlayerTurn}
@@ -72,11 +73,16 @@ function Game({
           onResign={onResign}
         />
       </div>
-      <div className="h-[87%] self-center lg:col-span-2">
-        {isOnlineGame && (
-          <Chat messages={messages} setMessages={setMessages} socket={socket} />
-        )}
-      </div>
+      {isOnlineGame && messages && setMessages && socket && (
+        <div className="h-96 self-center lg:col-span-2 lg:h-[87%]">
+          <Chat
+            messages={messages}
+            setMessages={setMessages}
+            socket={socket}
+            playerMark={playerMark!}
+          />
+        </div>
+      )}
       {gameResult && <GameOverModal gameResult={gameResult} />}
     </div>
   );

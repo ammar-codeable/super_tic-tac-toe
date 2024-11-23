@@ -1,0 +1,10 @@
+{
+	"name": "@repo/types",
+	"version": "1.0.0",
+	"exports": {
+		"./chat-types": "./src/chat-types.ts"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC"
+}
