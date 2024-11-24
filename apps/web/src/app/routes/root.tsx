@@ -102,7 +102,7 @@ function TicTacToeBackground() {
 
   return (
     <div
-      className="fixed inset-0 -z-10 opacity-[0.03]"
+      className="fixed inset-0 -z-10 opacity-[0.06]"
       style={{
         background: `
           linear-gradient(to right, currentColor 1px, transparent 1px),
@@ -115,7 +115,7 @@ function TicTacToeBackground() {
       {Array.from({ length: 6 }).map((_, i) => (
         <div
           key={i}
-          className="absolute text-6xl font-bold opacity-30"
+          className="absolute text-6xl font-bold opacity-100"
           style={{
             left: `${Math.random() * 100}%`,
             top: `${Math.random() * 100}%`,
