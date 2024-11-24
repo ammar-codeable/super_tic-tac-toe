@@ -69,7 +69,7 @@ function SubBoard({
     <div className="group relative flex items-center justify-center">
       <div
         className={cn("grid size-full grid-cols-3 gap-1 p-2 2xl:gap-2", {
-          hidden: subGameResult && subGameResult !== "Tie",
+          hidden: subGameResult && subGameResult !== "DRAW",
           "group-hover:grid": subGameResult && isAnimationComplete,
         })}
       >
