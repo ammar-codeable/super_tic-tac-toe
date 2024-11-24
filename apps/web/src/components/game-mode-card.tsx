@@ -107,7 +107,7 @@ export function GameModeCard({ mode, isSelected, icon, title, badge, description
     <motion.div variants={item} whileTap={{ scale: 0.98 }} className="h-full">
       <Link to={`/play/${mode}`} className="group block h-full">
         <Card className={cn(
-          "relative h-full cursor-pointer border-2 p-6 transition-all hover:scale-105 hover:border-primary hover:shadow-lg",
+          "relative h-full my-3 cursor-pointer border-2 p-6 transition-all hover:scale-105 hover:border-primary hover:shadow-lg",
           isSelected ? "scale-105 border-primary shadow-lg" : "border-transparent"
         )}>
           {extraBadge && (

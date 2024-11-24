@@ -92,7 +92,7 @@ function MainBoard({
 
   return (
     <motion.div
-      className="relative grid size-full grid-cols-3 gap-0 xl:min-h-[33rem] xl:min-w-[33rem]"
+      className="relative grid w-full grid-cols-3 gap-0 xl:min-h-[33rem] xl:min-w-[33rem]"
       variants={container}
       initial="hidden"
       animate="show"

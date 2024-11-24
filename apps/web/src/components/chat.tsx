@@ -38,7 +38,7 @@ function Chat({
   };
 
   return (
-    <div className="flex h-full flex-col gap-2 rounded-md border p-2">
+    <div className="flex h-full flex-col gap-2 rounded-md border m-3">
       <div className="flex-1 overflow-y-auto">
         <div className="flex flex-col gap-2">
           {messages.map((message, index) => (

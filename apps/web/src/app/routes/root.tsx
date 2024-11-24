@@ -2,6 +2,7 @@ import logo from "@/assets/logo.png";
 import playIcon from "@/assets/play-icon.png";
 import TutorialModal from "@/components/rules-modal";
 import ThemeToggle from "@/components/theme-toggle";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Sidebar,
   SidebarContent,
@@ -18,7 +19,6 @@ import { motion } from "framer-motion";
 import { ChevronRight, HelpCircle } from "lucide-react";
 import { useState } from "react";
 import { Link, NavLink, Outlet } from "react-router-dom";
-import { ScrollArea } from "@/components/ui/scroll-area";
 
 function MobileHeader() {
   return (
@@ -26,7 +26,7 @@ function MobileHeader() {
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 1 }}
-      className="flex h-16 items-center justify-between border-b border-sidebar-border bg-sidebar"
+      className="flex h-16 w-screen items-center justify-between border-b border-sidebar-border bg-sidebar mb-4"
     >
       <SidebarTrigger className="ml-2" />
       <Link to="/" className="h-full">
@@ -99,7 +99,6 @@ function AppSidebar() {
 }
 
 function TicTacToeBackground() {
-
   return (
     <div
       className="fixed inset-0 -z-10 opacity-[0.06]"
@@ -135,27 +134,30 @@ function Root() {
   const isMobile = useIsMobile();
 
   return (
-    <div className="fixed inset-0 flex overflow-hidden">
+    <div className="fixed inset-0 flex">
       <TicTacToeBackground />
       <AppSidebar />
-      <ScrollArea className="h-full w-full">
-        <main className="min-h-full w-full">
-          <div className="relative flex flex-1 h-screen">
-            {!isMobile && (
-              <>
-                <div className="flex h-full flex-col pl-2 pt-2">
-                  <SidebarTrigger />
-                </div>
-                <div className="absolute right-3 top-3 z-50">
+      <ScrollArea className="flex w-full">
+        <main className="flex h-screen">
+          {!isMobile && (
+            <>
+              <div className="flex h-full flex-col pl-2 pt-2">
+                <SidebarTrigger />
+              </div>
+              <div className="flex w-full flex-col">
+                <div className="flex justify-end pr-2 pt-2">
                   <ThemeToggle />
                 </div>
-              </>
-            )}
-            <div className="flex flex-1 flex-col">
-              {isMobile && <MobileHeader />}
+                  <Outlet />
+              </div>
+            </>
+          )}
+          {isMobile && (
+            <div className="flex flex-col">
+              <MobileHeader />
               <Outlet />
             </div>
-          </div>
+          )}
         </main>
       </ScrollArea>
     </div>

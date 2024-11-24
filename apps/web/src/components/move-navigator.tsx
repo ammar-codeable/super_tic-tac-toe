@@ -35,7 +35,7 @@ function MoveNavigator({
               }}
             />
           </PaginationItem>
-          <PaginationEllipsis />
+          <PaginationEllipsis className="hidden md:block" />
           <PaginationItem>
             <PaginationPrevious
               className="w-36"
@@ -71,7 +71,7 @@ function MoveNavigator({
               }}
             />
           </PaginationItem>
-          <PaginationEllipsis />
+          <PaginationEllipsis className="hidden md:block" />
           <PaginationItem>
             <PaginationNext
               onClick={() => {

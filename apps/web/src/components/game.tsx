@@ -48,8 +48,8 @@ function Game({
   const canPlay = !isOnlineGame || currentMove === moveHistory.length - 1;
 
   return (
-    <div className="grid h-full gap-4 px-4 sm:px-6 lg:grid-cols-6">
-      <div className="flex w-full flex-col gap-y-4 self-center justify-self-center lg:col-span-4 xl:col-span-3">
+    <div className="grid h-full w-full lg:grid-cols-6">
+      <div className="flex w-full flex-col items-center gap-y-3 max-w-[100vw] md:max-w-[800px] lg:col-span-4 xl:col-span-3">
         <MainBoard
           mainBoardState={mainBoardState}
           currentPlayerTurn={currentPlayerTurn}
@@ -74,7 +74,7 @@ function Game({
         />
       </div>
       {isOnlineGame && messages && setMessages && socket && (
-        <div className="h-96 self-center lg:col-span-2 lg:h-[87%]">
+        <div className="h-96 w-full px-4 lg:col-span-2 lg:h-[85%]">
           <Chat
             messages={messages}
             setMessages={setMessages}
