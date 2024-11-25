@@ -153,9 +153,9 @@ function Root() {
           </>
         )}
         {isMobile && (
-          <div className="flex w-full flex-col">
+          <div className="flex w-full flex-col h-full">
             <MobileHeader />
-            <div className="flex-1 overflow-hidden">
+            <div className="flex-1 overflow-y-auto overflow-x-hidden">
               <Outlet />
             </div>
           </div>

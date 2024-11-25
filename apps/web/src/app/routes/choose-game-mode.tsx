@@ -24,7 +24,7 @@ function ChooseGameMode() {
     const handleKeyboard = (e: KeyboardEvent) => {
       if (e.key === "ArrowLeft") setSelectedMode("offline");
       if (e.key === "ArrowRight") setSelectedMode("online");
-      if (e.key === "Enter") {
+      if (e.key === "Enter" && selectedMode) {
         navigate(`/play/${selectedMode}`);
       }
     };

@@ -52,7 +52,7 @@ function Square({
               ? "secondary"
               : "outline"
         }
-        className={cn("aspect-square size-full", {
+        className={cn("aspect-square md:size-full size-11/12 p-2 md:rounded-md rounded-sm", {
           "opacity-50": !isActiveSquare,
           "opacity-80": isActiveSquare || value,
         })}
