@@ -47,6 +47,10 @@ export function useSocket(
           case "chat":
             setMessages((prev) => [...prev, ...msg.chat]);
             break;
+
+          case "error":
+            console.error("Server error:", msg.error);
+            break;
         }
       } catch (error) {
         console.error('Invalid message received:', error);

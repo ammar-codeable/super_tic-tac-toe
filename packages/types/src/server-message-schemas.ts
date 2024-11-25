@@ -25,6 +25,10 @@ export const ServerMessageSchema = z.discriminatedUnion("type", [
 		type: z.literal("chat"),
 		chat: z.array(ChatMessageSchema),
 	}),
+	z.object({
+		type: z.literal("error"),
+		error: z.string()
+	}),
 ]);
 
 export type ServerMessage = z.infer<typeof ServerMessageSchema>;

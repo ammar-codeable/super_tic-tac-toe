@@ -9,11 +9,11 @@ import ws, { WebSocketServer } from "ws";
 import {
 	addGame,
 	addMessage,
-createNewGame,
+	createNewGame,
 	findGameByPlayer,
-		getPlayersByGame,
+	getPlayersByGame,
 	handleResign,
-		removeGame,
+	removeGame,
 	updateGameState,
 } from "./managers/game-manager";
 import { ClientMessageSchema } from "./schemas/socket-schemas";
@@ -58,7 +58,7 @@ const pendingPlayers: ws[] = [];
 
 wss.on("connection", (ws) => {
 	pendingPlayers.push(ws);
-		ws.send(JSON.stringify({ type: "waiting", waiting: true }));
+	ws.send(JSON.stringify({ type: "waiting", waiting: true }));
 
 	if (pendingPlayers.length >= 2) {
 		const player1Socket = pendingPlayers.shift()!;
@@ -76,15 +76,23 @@ wss.on("connection", (ws) => {
 		const message = validateMessage(data.toString(), ClientMessageSchema);
 
 		const game = findGameByPlayer(ws);
-		if (!game) return;
+		if (!game) {
+			ws.send(
+				JSON.stringify({
+					type: "error",
+					error: "Waiting for an opponent to connect.",
+				})
+			);
+			return;
+		}
 
 		const [currentPlayer, opponent] = getPlayersByGame(game, ws);
 		if (!currentPlayer || !opponent) return;
 
 		if (
-["move", "resign", "chat"].includes(message.type) &&
-!currentPlayer.mark
-) {
+			["move", "resign", "chat"].includes(message.type) &&
+			!currentPlayer.mark
+		) {
 			currentPlayer.socket.send(
 				JSON.stringify({ type: "error", error: "Player not initialized." })
 			);
