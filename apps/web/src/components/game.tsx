@@ -1,7 +1,8 @@
-import { ChatMessage } from "@repo/types/chat-types";
+import { ChatMessage } from "@repo/types/chat-schemas";
 import calculateResult from "@repo/utils/calculate-result";
 import getActiveBoards from "@repo/utils/get-active-boards";
 import getMainBoardState from "@repo/utils/get-main-board-state";
+import { useRef } from "react";
 import Chat from "./chat";
 import GameOverModal from "./game-over-modal";
 import MainBoard from "./main-board";
@@ -47,10 +48,18 @@ function Game({
   const isOnlineGame = !!playerMark;
   const canPlay = !isOnlineGame || currentMove === moveHistory.length - 1;
 
+  const mainBoardKey = useRef(0);
+  const handleRestart = () => {
+    mainBoardKey.current += 1;
+    setMoveHistory([[-1, -1]]);
+    setCurrentMove(0);
+  };
+
   return (
     <div className="grid h-full w-full lg:grid-cols-6">
-      <div className="flex w-full flex-col items-center gap-y-3 max-w-[100vw] md:max-w-[800px] lg:col-span-4 xl:col-span-3">
+      <div className="flex w-full max-w-[100vw] flex-col items-center gap-y-3 md:max-w-[800px] lg:col-span-4 xl:col-span-3">
         <MainBoard
+          key={mainBoardKey.current}
           mainBoardState={mainBoardState}
           currentPlayerTurn={currentPlayerTurn}
           lastClickedBoardId={moveHistory[currentMove][0]}
@@ -68,9 +77,9 @@ function Game({
           moveHistory={moveHistory}
           currentMove={currentMove}
           setCurrentMove={setCurrentMove}
-          setMoveHistory={setMoveHistory}
           isOnlineGame={isOnlineGame}
           onResign={onResign}
+          onRestart={handleRestart}
         />
       </div>
       {isOnlineGame && messages && setMessages && socket && (

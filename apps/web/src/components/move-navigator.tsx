@@ -7,22 +7,21 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import resetGame from "@repo/utils/reset-game";
 
 function MoveNavigator({
   moveHistory,
   currentMove,
   setCurrentMove,
-  setMoveHistory,
   isOnlineGame,
   onResign,
+  onRestart,
 }: {
   moveHistory: number[][];
   currentMove: number;
   setCurrentMove: (currentMove: number) => void;
-  setMoveHistory?: (moveHistory: number[][]) => void;
   isOnlineGame?: boolean;
   onResign?: () => void;
+  onRestart: () => void;
 }) {
   return (
     <>
@@ -51,13 +50,7 @@ function MoveNavigator({
                 Resign Game
               </Button>
             ) : (
-              <Button
-                onClick={() => {
-                  resetGame(setMoveHistory!, setCurrentMove);
-                }}
-              >
-                Restart Game
-              </Button>
+              <Button onClick={onRestart}>Restart Game</Button>
             )}
           </PaginationItem>
           <PaginationItem>
