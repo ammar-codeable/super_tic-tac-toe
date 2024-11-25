@@ -2,7 +2,6 @@ import logo from "@/assets/logo.png";
 import playIcon from "@/assets/play-icon.png";
 import TutorialModal from "@/components/rules-modal";
 import ThemeToggle from "@/components/theme-toggle";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Sidebar,
   SidebarContent,
@@ -134,32 +133,34 @@ function Root() {
   const isMobile = useIsMobile();
 
   return (
-    <div className="fixed inset-0 flex">
+    <div className="fixed inset-0 flex overflow-hidden">
       <TicTacToeBackground />
       <AppSidebar />
-      <ScrollArea className="flex w-full">
-        <main className="flex h-screen">
-          {!isMobile && (
-            <>
-              <div className="flex h-full flex-col pl-2 pt-2">
-                <SidebarTrigger />
+      <div className="flex flex-1">
+        {!isMobile && (
+          <>
+            <div className="flex h-full flex-col pl-2 pt-2">
+              <SidebarTrigger />
+            </div>
+            <div className="flex flex-1 flex-col">
+              <div className="flex justify-end pr-2 pt-2">
+                <ThemeToggle />
               </div>
-              <div className="flex w-full flex-col">
-                <div className="flex justify-end pr-2 pt-2">
-                  <ThemeToggle />
-                </div>
-                  <Outlet />
+              <div className="flex-1 overflow-hidden">
+                <Outlet />
               </div>
-            </>
-          )}
-          {isMobile && (
-            <div className="flex flex-col">
-              <MobileHeader />
+            </div>
+          </>
+        )}
+        {isMobile && (
+          <div className="flex w-full flex-col">
+            <MobileHeader />
+            <div className="flex-1 overflow-hidden">
               <Outlet />
             </div>
-          )}
-        </main>
-      </ScrollArea>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

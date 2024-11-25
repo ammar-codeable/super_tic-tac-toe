@@ -16,12 +16,12 @@ function ThemeToggle({ className } : { className?: string }) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
-          className={cn("border-2", className)}
+          className={cn("relative border-2", className)}
           variant="ghost"
           size="icon"
         >
-          <Sun className="transition-all dark:-rotate-90 dark:scale-0" />
-          <Moon className="absolute w-[1.2rem] scale-0 transition-all dark:rotate-0 dark:scale-100" />
+          <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+          <Moon className="absolute left-1/2 top-1/2 h-[1.2rem] w-[1.2rem] -translate-x-1/2 -translate-y-1/2 scale-0 transition-all dark:rotate-0 dark:scale-100" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
