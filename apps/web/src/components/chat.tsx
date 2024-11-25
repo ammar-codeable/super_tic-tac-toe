@@ -1,5 +1,6 @@
 import { ChatMessage } from "@repo/types/chat-schemas";
 import { useRef } from "react";
+import { ScrollArea } from "./ui/scroll-area";
 import { Textarea } from "./ui/textarea";
 
 function Chat({
@@ -43,8 +44,8 @@ function Chat({
         <h2 className="font-semibold">Chat</h2>
       </div>
       
-      <div className="flex-1 overflow-y-auto bg-background/20 p-4">
-        <div className="flex flex-col gap-3 ">
+      <ScrollArea className="flex-1">
+        <div className="flex flex-col gap-3 p-4">
           {messages.map((message, index) => (
             <div
               key={index}
@@ -66,7 +67,7 @@ function Chat({
             </div>
           ))}
         </div>
-      </div>
+      </ScrollArea>
 
       <div className="border-t bg-muted/30 p-3">
         <form onSubmit={handleSubmit} className="flex gap-2">
