@@ -1,5 +1,6 @@
 import { ChatMessage } from "@repo/types/chat-schemas";
 import { ServerMessageSchema } from "@repo/types/server-message-schemas";
+import { validateMessage } from "@repo/utils/validate-message";
 import React, { useEffect, useState } from "react";
 
 export function useSocket(
@@ -21,8 +22,7 @@ export function useSocket(
 
     socket.onmessage = (message) => {
       try {
-        const messageData = JSON.parse(message.data);
-        const msg = ServerMessageSchema.parse(messageData);
+        const msg = validateMessage(message.data, ServerMessageSchema);
 
         switch (msg.type) {
           case "waiting":
