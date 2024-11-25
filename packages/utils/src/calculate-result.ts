@@ -1,5 +1,5 @@
-function calculateResult(boardState: (string | null)[]) {
-	const winConditions = [
+function calculateResult(boardState: (string | null)[]): "X" | "O" | "DRAW" | null {
+	const WIN_CONDITIONS = [
 		[0, 1, 2],
 		[3, 4, 5],
 		[6, 7, 8],
@@ -8,29 +8,19 @@ function calculateResult(boardState: (string | null)[]) {
 		[2, 5, 8],
 		[0, 4, 8],
 		[2, 4, 6],
-	];
-	const result = winConditions.map((condition) => {
-		const [a, b, c] = condition;
+	] as const;
+
+	for (const [a, b, c] of WIN_CONDITIONS) {
 		if (
 			boardState[a] &&
 			boardState[a] === boardState[b] &&
 			boardState[a] === boardState[c]
 		) {
-			return boardState[a];
+			return boardState[a] as "X" | "O";
 		}
-		return null;
-	});
-	
-	if (result.includes("X")) {
-		return "X";
 	}
-	if (result.includes("O")) {
-		return "O";
-	}
-	if (!boardState.includes(null)) {
-		return "DRAW";
-	}
-	return null;
+
+	return boardState.includes(null) ? null : "DRAW";
 }
 
 export default calculateResult;
