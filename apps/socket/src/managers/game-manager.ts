@@ -5,12 +5,12 @@ import { Game, GameResult, Player } from "../types/game-types";
 
 const games: Game[] = [];
 
-function createNewGame(ws: ws): Game {
+function createNewGame(player1Socket: ws, player2Socket: ws): Game {
 	return {
 		gameId: games.length,
 		players: {
-			player1: { mark: undefined, socket: ws },
-			player2: undefined,
+			player1: { mark: undefined, socket: player1Socket },
+			player2: { mark: undefined, socket: player2Socket },
 		},
 		moveHistory: [[-1, -1]],
 		currentMove: 0,
@@ -23,23 +23,13 @@ function createNewGame(ws: ws): Game {
 	};
 }
 
-function addGame(player: ws) {
-	const game = createNewGame(player);
+function addGame(game: Game) {
 	games.push(game);
 }
 
 function removeGame(gameId: number) {
 	const index = games.findIndex((game) => game.gameId === gameId);
 	if (index !== -1) games.splice(index, 1);
-}
-
-function hasAvailableGame(): boolean {
-	const current = getCurrentGame();
-	return Boolean(current?.players.player1.socket && !current?.players.player2);
-}
-
-function getCurrentGame(): Game | undefined {
-	return games[games.length - 1];
 }
 
 function findGameByPlayer(player: ws): Game | undefined {
@@ -89,10 +79,9 @@ export {
 	addMessage,
 	findGameByPlayer,
 	games,
-	getCurrentGame,
 	getPlayersByGame,
 	handleResign,
-	hasAvailableGame,
 	removeGame,
 	updateGameState,
+	createNewGame,
 };

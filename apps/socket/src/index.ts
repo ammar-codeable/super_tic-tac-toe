@@ -5,16 +5,15 @@ import { config } from "dotenv";
 import express from "express";
 import { readFileSync } from "fs";
 import https from "https";
-import { WebSocketServer } from "ws";
+import ws, { WebSocketServer } from "ws";
 import {
 	addGame,
 	addMessage,
+createNewGame,
 	findGameByPlayer,
-	getCurrentGame,
-	getPlayersByGame,
+		getPlayersByGame,
 	handleResign,
-	hasAvailableGame,
-	removeGame,
+		removeGame,
 	updateGameState,
 } from "./managers/game-manager";
 import { ClientMessageSchema } from "./schemas/socket-schemas";
@@ -55,22 +54,22 @@ app.get("/player-count", (_, res) => {
 	res.json({ count: wss.clients.size });
 });
 
+const pendingPlayers: ws[] = [];
+
 wss.on("connection", (ws) => {
-	if (hasAvailableGame()) {
-		const game = getCurrentGame()!;
-
-		game.players.player2 = {
-			mark: undefined,
-			socket: ws,
-		};
-
-		ws.send(JSON.stringify({ type: "waiting", waiting: false }));
-		game.players.player1.socket!.send(
-			JSON.stringify({ type: "waiting", waiting: false })
-		);
-	} else {
-		addGame(ws);
+	pendingPlayers.push(ws);
 		ws.send(JSON.stringify({ type: "waiting", waiting: true }));
+
+	if (pendingPlayers.length >= 2) {
+		const player1Socket = pendingPlayers.shift()!;
+		const player2Socket = pendingPlayers.shift()!;
+
+		const game = createNewGame(player1Socket, player2Socket);
+		addGame(game);
+
+		// Notify both players that the game is starting
+		player1Socket.send(JSON.stringify({ type: "waiting", waiting: false }));
+		player2Socket.send(JSON.stringify({ type: "waiting", waiting: false }));
 	}
 
 	ws.on("message", (data) => {
@@ -82,8 +81,10 @@ wss.on("connection", (ws) => {
 		const [currentPlayer, opponent] = getPlayersByGame(game, ws);
 		if (!currentPlayer || !opponent) return;
 
-		// Add check for player's mark before processing game actions
-		if (["move", "resign", "chat"].includes(message.type) && !currentPlayer.mark) {
+		if (
+["move", "resign", "chat"].includes(message.type) &&
+!currentPlayer.mark
+) {
 			currentPlayer.socket.send(
 				JSON.stringify({ type: "error", error: "Player not initialized." })
 			);
@@ -92,13 +93,23 @@ wss.on("connection", (ws) => {
 
 		switch (message.type) {
 			case "player":
+				if (!game.players.player1 || !game.players.player2) {
+					currentPlayer.socket.send(
+						JSON.stringify({
+							type: "error",
+							error: "Both players must be connected before selecting a mark.",
+						})
+					);
+					return;
+				}
+
 				assignMark(currentPlayer, opponent, message.player);
 
 				if (currentPlayer.mark && opponent.mark) {
-					currentPlayer.socket!.send(
+					currentPlayer.socket.send(
 						JSON.stringify({ type: "mark", mark: currentPlayer.mark })
 					);
-					opponent.socket!.send(
+					opponent.socket.send(
 						JSON.stringify({ type: "mark", mark: opponent.mark })
 					);
 				}
@@ -150,6 +161,11 @@ wss.on("connection", (ws) => {
 	});
 
 	ws.on("close", () => {
+		const index = pendingPlayers.indexOf(ws);
+		if (index !== -1) {
+			pendingPlayers.splice(index, 1);
+		}
+
 		const game = findGameByPlayer(ws);
 		if (game) {
 			const [_, opponent] = getPlayersByGame(game, ws);
