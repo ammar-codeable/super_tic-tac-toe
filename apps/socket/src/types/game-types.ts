@@ -1,5 +1,5 @@
 import ws from "ws";
-import { ChatMessage } from "@repo/types/chat-types";
+import { ChatMessage } from "@repo/types/chat-schemas";
 
 export type Mark = "X" | "O";
 

@@ -1,4 +1,4 @@
-import { ChatMessage } from "@repo/types/chat-types";
+import { ChatMessage } from "@repo/types/chat-schemas";
 import { useRef } from "react";
 import { Textarea } from "./ui/textarea";
 
@@ -26,7 +26,7 @@ function Chat({
           playerMark === "X" ? "player1" : ("player2" as "player1" | "player2"),
       };
       setMessages((prev) => [...prev, newMessage]);
-      socket.send(JSON.stringify({ chat: { text } }));
+      socket.send(JSON.stringify({ type: "chat", chat: { text } }));
     }
   };
 
@@ -38,7 +38,7 @@ function Chat({
   };
 
   return (
-    <div className="flex h-full flex-col gap-2 rounded-md border m-3">
+    <div className="m-3 flex h-full flex-col gap-2 rounded-md border">
       <div className="flex-1 overflow-y-auto">
         <div className="flex flex-col gap-2">
           {messages.map((message, index) => (

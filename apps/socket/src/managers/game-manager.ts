@@ -1,4 +1,4 @@
-import { ChatMessage } from "@repo/types/chat-types";
+import { ChatMessage } from "@repo/types/chat-schemas";
 import calculateResult from "@repo/utils/calculate-result";
 import ws from "ws";
 import { Game, GameResult, Player } from "../types/game-types";

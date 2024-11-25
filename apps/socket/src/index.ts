@@ -1,7 +1,8 @@
-import { ChatMessage } from "@repo/types/chat-types";
+import { ChatMessage } from "@repo/types/chat-schemas";
+import { validateMessage } from "@repo/utils/validate-message";
+import cors from "cors";
 import { config } from "dotenv";
 import express from "express";
-import cors from 'cors';
 import { readFileSync } from "fs";
 import https from "https";
 import { WebSocketServer } from "ws";
@@ -16,6 +17,7 @@ import {
 	removeGame,
 	updateGameState,
 } from "./managers/game-manager";
+import { ClientMessageSchema } from "./schemas/socket-schemas";
 import { assignMark } from "./utils/assign-mark";
 
 config();
@@ -63,87 +65,87 @@ wss.on("connection", (ws) => {
 		};
 
 		ws.send(JSON.stringify({ type: "waiting", waiting: false }));
-		game.players.player1.socket!.send(JSON.stringify({ type: "waiting", waiting: false }));
+		game.players.player1.socket!.send(
+			JSON.stringify({ type: "waiting", waiting: false })
+		);
 	} else {
 		addGame(ws);
 		ws.send(JSON.stringify({ type: "waiting", waiting: true }));
 	}
 
 	ws.on("message", (data) => {
-		const message = JSON.parse(data.toString());
+		const message = validateMessage(data.toString(), ClientMessageSchema);
 
 		const game = findGameByPlayer(ws);
 		if (!game) return;
 
 		const [currentPlayer, opponent] = getPlayersByGame(game, ws);
-
 		if (!currentPlayer || !opponent) return;
 
-		if (message.player) {
-			assignMark(currentPlayer, opponent, message.player);
-
-			if (currentPlayer.mark && opponent.mark) {
-				currentPlayer.socket!.send(
-					JSON.stringify({ type: "mark", mark: currentPlayer.mark })
-				);
-				opponent.socket!.send(JSON.stringify({ type: "mark", mark: opponent.mark }));
-			}
+		// Add check for player's mark before processing game actions
+		if (["move", "resign", "chat"].includes(message.type) && !currentPlayer.mark) {
+			currentPlayer.socket.send(
+				JSON.stringify({ type: "error", error: "Player not initialized." })
+			);
+			return;
 		}
 
-		if (message.move) {
-			const [boardId, cellId] = message.move;
-			const result = updateGameState(game, boardId, cellId);
+		switch (message.type) {
+			case "player":
+				assignMark(currentPlayer, opponent, message.player);
 
-			opponent.socket!.send(
-				JSON.stringify({
-					type: "game",
-					game,
-				})
-			);
+				if (currentPlayer.mark && opponent.mark) {
+					currentPlayer.socket!.send(
+						JSON.stringify({ type: "mark", mark: currentPlayer.mark })
+					);
+					opponent.socket!.send(
+						JSON.stringify({ type: "mark", mark: opponent.mark })
+					);
+				}
+				break;
 
-			if (result) {
-				currentPlayer.socket!.send(
-					JSON.stringify({
-						type: "result",
-						result,
-					})
-				);
+			case "move":
+				const [boardId, cellId] = message.move;
+				const result = updateGameState(game, boardId, cellId);
+
 				opponent.socket!.send(
 					JSON.stringify({
-						type: "result",
-						result,
+						type: "game",
+						game,
 					})
 				);
-			}
-		}
 
-		if (message.resign) {
-			const result = handleResign(game, ws);
+				if (result) {
+					currentPlayer.socket!.send(
+						JSON.stringify({ type: "result", result })
+					);
+					opponent.socket!.send(JSON.stringify({ type: "result", result }));
+				}
+				break;
 
-			currentPlayer.socket!.send(
-				JSON.stringify({
-					type: "result",
-					result,
-				})
-			);
+			case "resign":
+				const resignResult = handleResign(game, ws);
 
-			opponent.socket!.send(
-				JSON.stringify({
-					type: "result",
-					result,
-				})
-			);
-		}
+				currentPlayer.socket!.send(
+					JSON.stringify({ type: "result", result: resignResult })
+				);
+				opponent.socket!.send(
+					JSON.stringify({ type: "result", result: resignResult })
+				);
+				break;
 
-		if (message.chat) {
-			const senderRole =
-				currentPlayer === game.players.player1 ? "player1" : "player2";
-			const chatMessage: ChatMessage = {
-				text: message.chat.text,
-				sender: senderRole,
-			};
-			addMessage(game, chatMessage);
-			opponent.socket.send(JSON.stringify({ type: "chat", chat: [chatMessage] }));
+			case "chat":
+				const senderRole =
+					currentPlayer === game.players.player1 ? "player1" : "player2";
+				const chatMessage: ChatMessage = {
+					text: message.chat.text,
+					sender: senderRole,
+				};
+				addMessage(game, chatMessage);
+				opponent.socket.send(
+					JSON.stringify({ type: "chat", chat: [chatMessage] })
+				);
+				break;
 		}
 	});
 

@@ -34,12 +34,15 @@ function OnlineGame() {
     ]);
 
     if (yourMove) {
-      socket!.send(JSON.stringify({ move: [boardId, cellId] }));
+      socket?.send(JSON.stringify({
+        type: "move",
+        move: [boardId, cellId]
+      }));
     }
   }
 
   const handleResign = () => {
-    socket?.send(JSON.stringify({ resign: true }));
+    socket?.send(JSON.stringify({ type: "resign" }));
     setGameResult(playerMark === "X" ? "O" : "X");
   };
 

@@ -14,14 +14,15 @@
 	"dependencies": {
 		"@repo/types": "workspace:*",
 		"@repo/utils": "workspace:*",
-		"express": "^4.21.1",
 		"cors": "^2.8.5",
 		"dotenv": "^16.4.5",
-		"ws": "^8.18.0"
+		"express": "^4.21.1",
+		"ws": "^8.18.0",
+		"zod": "^3.23.8"
 	},
 	"devDependencies": {
-		"@types/express": "^5.0.0",
 		"@types/cors": "^2.8.17",
+		"@types/express": "^5.0.0",
 		"@types/node": "^22.5.4",
 		"@types/ws": "^8.5.12",
 		"esbuild": "^0.24.0",

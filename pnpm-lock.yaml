@@ -32,6 +32,9 @@ importers:
       ws:
         specifier: ^8.18.0
         version: 8.18.0
+      zod:
+        specifier: ^3.23.8
+        version: 3.23.8
     devDependencies:
       '@types/cors':
         specifier: ^2.8.17
@@ -177,6 +180,9 @@ importers:
       react:
         specifier: ^18.3.1
         version: 18.3.1
+      zod:
+        specifier: ^3.23.8
+        version: 3.23.8
 
 packages:
 

@@ -31,7 +31,7 @@ function ChoosePlayerModal({ socket }: { socket: WebSocket | null }) {
               variant={chosenMark === "X" ? "secondary" : "default"}
               onClick={() => {
                 setChosenMark("X");
-                socket!.send(JSON.stringify({ player: "X" }));
+                socket!.send(JSON.stringify({ type: "player", player: "X" }));
               }}
             >
               Player X
@@ -42,7 +42,7 @@ function ChoosePlayerModal({ socket }: { socket: WebSocket | null }) {
               variant={chosenMark === "O" ? "secondary" : "default"}
               onClick={() => {
                 setChosenMark("O");
-                socket!.send(JSON.stringify({ player: "O" }));
+                socket!.send(JSON.stringify({ type: "player", player: "O" }));
               }}
             >
               Player O

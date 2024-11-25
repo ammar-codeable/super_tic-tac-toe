@@ -5,13 +5,15 @@
 		"./calculate-result": "./src/calculate-result.ts",
 		"./get-active-boards": "./src/get-active-boards.ts",
 		"./get-main-board-state": "./src/get-main-board-state.ts",
-		"./reset-game": "./src/reset-game.ts"
+		"./reset-game": "./src/reset-game.ts",
+		"./validate-message": "./src/validate-message.ts"
 	},
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
 		"@types/react": "^18.3.3",
-		"react": "^18.3.1"
+		"react": "^18.3.1",
+		"zod": "^3.23.8"
 	}
 }
