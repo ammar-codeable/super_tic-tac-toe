@@ -4,7 +4,7 @@ import Game from "@/components/game";
 import Loader from "@/components/loader";
 import ResignConfirmationModal from "@/components/resign-confirmation-modal";
 import { useSocket } from "@/hooks/use-socket";
-import { ChatMessage } from "@repo/types/chat-types";
+import { ChatMessage } from "@repo/types/chat-schemas";
 import { useState } from "react";
 
 function OnlineGame() {
@@ -12,7 +12,7 @@ function OnlineGame() {
   const [disconnected, setDisconnected] = useState(false);
   const [showResignModal, setShowResignModal] = useState(false);
 
-  const [playerMark, setPlayerMark] = useState<string | null>(null);
+  const [playerMark, setPlayerMark] = useState<"X" | "O" |null>(null);
 
   const [currentMove, setCurrentMove] = useState(0);
 

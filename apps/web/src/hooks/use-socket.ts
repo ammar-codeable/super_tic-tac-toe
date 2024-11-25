@@ -1,9 +1,10 @@
-import { ChatMessage } from "@repo/types/chat-types";
+import { ChatMessage } from "@repo/types/chat-schemas";
+import { ServerMessageSchema } from "@repo/types/server-message-schemas";
 import React, { useEffect, useState } from "react";
 
 export function useSocket(
   setWaiting: React.Dispatch<React.SetStateAction<boolean | undefined>>,
-  setPlayerMark: React.Dispatch<React.SetStateAction<string | null>>,
+  setPlayerMark: React.Dispatch<React.SetStateAction<"X" | "O" | null>>,
   setDisconnected: React.Dispatch<React.SetStateAction<boolean>>,
   setGameResult: React.Dispatch<React.SetStateAction<string | null>>,
   setMessages: React.Dispatch<React.SetStateAction<ChatMessage[]>>,
@@ -19,28 +20,37 @@ export function useSocket(
     };
 
     socket.onmessage = (message) => {
-      const messageData = JSON.parse(message.data);
-      if (messageData.waiting !== undefined) {
-        setWaiting(messageData.waiting);
-      }
+      try {
+        const messageData = JSON.parse(message.data);
+        const msg = ServerMessageSchema.parse(messageData);
 
-      if (messageData.mark !== undefined) {
-        setPlayerMark(messageData.mark);
-      }
+        switch (msg.type) {
+          case "waiting":
+            setWaiting(msg.waiting);
+            break;
 
-      if (messageData.game !== undefined) {
-        const gameState = messageData.game;
-        const [boardId, cellId] = gameState.moveHistory[gameState.currentMove];
+          case "mark":
+            setPlayerMark(msg.mark);
+            break;
 
-        handlePlay(boardId, cellId, false);
-      }
+          case "game": {
+            const { moveHistory, currentMove } = msg.game;
+            const [boardId, cellId] = moveHistory[currentMove];
+            handlePlay(boardId, cellId, false);
+            break;
+          }
 
-      if (messageData.result !== undefined) {
-        setGameResult(messageData.result);
-      }
+          case "result":
+            setGameResult(msg.result);
+            break;
 
-      if (messageData.chat !== undefined) {
-        setMessages((prev) => [...prev, ...messageData.chat]);
+          case "chat":
+            setMessages((prev) => [...prev, ...msg.chat]);
+            break;
+        }
+      } catch (error) {
+        console.error('Invalid message received:', error);
+        throw error;
       }
     };
 

@@ -2,9 +2,13 @@
 	"name": "@repo/types",
 	"version": "1.0.0",
 	"exports": {
-		"./chat-types": "./src/chat-types.ts"
+		"./chat-schemas": "./src/chat-schemas.ts",
+		"./server-message-schemas": "./src/server-message-schemas.ts"
 	},
 	"keywords": [],
 	"author": "",
-	"license": "ISC"
+	"license": "ISC",
+	"dependencies": {
+		"zod": "^3.23.8"
+	}
 }

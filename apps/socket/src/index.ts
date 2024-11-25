@@ -62,11 +62,11 @@ wss.on("connection", (ws) => {
 			socket: ws,
 		};
 
-		ws.send(JSON.stringify({ waiting: false }));
-		game.players.player1.socket!.send(JSON.stringify({ waiting: false }));
+		ws.send(JSON.stringify({ type: "waiting", waiting: false }));
+		game.players.player1.socket!.send(JSON.stringify({ type: "waiting", waiting: false }));
 	} else {
 		addGame(ws);
-		ws.send(JSON.stringify({ waiting: true }));
+		ws.send(JSON.stringify({ type: "waiting", waiting: true }));
 	}
 
 	ws.on("message", (data) => {
@@ -84,9 +84,9 @@ wss.on("connection", (ws) => {
 
 			if (currentPlayer.mark && opponent.mark) {
 				currentPlayer.socket!.send(
-					JSON.stringify({ mark: currentPlayer.mark })
+					JSON.stringify({ type: "mark", mark: currentPlayer.mark })
 				);
-				opponent.socket!.send(JSON.stringify({ mark: opponent.mark }));
+				opponent.socket!.send(JSON.stringify({ type: "mark", mark: opponent.mark }));
 			}
 		}
 
@@ -96,6 +96,7 @@ wss.on("connection", (ws) => {
 
 			opponent.socket!.send(
 				JSON.stringify({
+					type: "game",
 					game,
 				})
 			);
@@ -103,11 +104,13 @@ wss.on("connection", (ws) => {
 			if (result) {
 				currentPlayer.socket!.send(
 					JSON.stringify({
+						type: "result",
 						result,
 					})
 				);
 				opponent.socket!.send(
 					JSON.stringify({
+						type: "result",
 						result,
 					})
 				);
@@ -119,12 +122,14 @@ wss.on("connection", (ws) => {
 
 			currentPlayer.socket!.send(
 				JSON.stringify({
+					type: "result",
 					result,
 				})
 			);
 
 			opponent.socket!.send(
 				JSON.stringify({
+					type: "result",
 					result,
 				})
 			);
@@ -138,7 +143,7 @@ wss.on("connection", (ws) => {
 				sender: senderRole,
 			};
 			addMessage(game, chatMessage);
-			opponent.socket.send(JSON.stringify({ chat: [chatMessage] }));
+			opponent.socket.send(JSON.stringify({ type: "chat", chat: [chatMessage] }));
 		}
 	});
 
