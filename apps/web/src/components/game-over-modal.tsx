@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -11,7 +10,15 @@ import {
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-function GameOverModal({ gameResult }: { gameResult: string | null }) {
+function GameOverModal({
+  gameResult,
+  onRestart,
+  isOnlineGame,
+}: {
+  gameResult: "X_RESIGNED" | "O_RESIGNED" | "X" | "O" | "DRAW" | null;
+  onRestart: () => void;
+  isOnlineGame?: boolean;
+}) {
   let gameStatus: string | undefined;
 
   if (gameResult === "X_RESIGNED") {
@@ -36,14 +43,14 @@ function GameOverModal({ gameResult }: { gameResult: string | null }) {
           <DialogDescription>Game Over</DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <DialogClose asChild>
-            <Button type="button" variant={"secondary"}>
-              Go back to game
-            </Button>
-          </DialogClose>
           <Link to="/play">
-            <Button>Go back to home</Button>
+            <Button variant={"secondary"}>Go back to home</Button>
           </Link>
+          {!isOnlineGame && (
+            <Button type="button" onClick={onRestart}>
+              Start New Game
+            </Button>
+          )}
         </DialogFooter>
       </DialogContent>
     </Dialog>

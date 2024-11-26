@@ -92,7 +92,13 @@ function Game({
           />
         </div>
       )}
-      {gameResult && <GameOverModal gameResult={gameResult} />}
+      {gameResult && (
+        <GameOverModal 
+          gameResult={gameResult} 
+          onRestart={handleRestart} 
+          isOnlineGame={isOnlineGame} 
+        />
+      )}
     </div>
   );
 }
