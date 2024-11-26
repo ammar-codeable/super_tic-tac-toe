@@ -88,7 +88,7 @@ function ChooseGameMode() {
           },
         },
       }}
-      className="flex flex-1 flex-col items-center justify-center p-4 md:min-h-screen md:p-8"
+      className="flex flex-1 flex-col items-center justify-center p-6"
     >
       <motion.h1
         className="mb-6 text-4xl font-bold"

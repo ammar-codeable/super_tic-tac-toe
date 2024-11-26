@@ -2,6 +2,7 @@ import logo from "@/assets/logo.png";
 import playIcon from "@/assets/play-icon.png";
 import TutorialModal from "@/components/rules-modal";
 import ThemeToggle from "@/components/theme-toggle";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Sidebar,
   SidebarContent,
@@ -15,20 +16,20 @@ import {
 } from "@/components/ui/sidebar";
 import { useIsMobile } from "@/hooks/use-is-mobile";
 import { motion } from "framer-motion";
-import { ChevronRight, HelpCircle } from "lucide-react";
+import { ChevronRight, Github, HelpCircle } from "lucide-react";
 import { useState } from "react";
 import { Link, NavLink, Outlet } from "react-router-dom";
 
-function MobileHeader() {
+function Header() {
   return (
     <motion.header
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 1 }}
-      className="flex h-16 w-screen items-center justify-between border-b border-sidebar-border bg-sidebar mb-4"
+      className="flex h-16 items-center justify-between border-sidebar border-b-sidebar bg-sidebar md:h-12 md:justify-end md:bg-inherit"
     >
-      <SidebarTrigger className="ml-2" />
-      <Link to="/" className="h-full">
+      <SidebarTrigger className="ml-2 block md:hidden" />
+      <Link to="/" className="block h-full md:hidden">
         <img src={logo} alt="Logo" className="h-full" />
       </Link>
       <ThemeToggle className="mr-2" />
@@ -91,7 +92,7 @@ function AppSidebar() {
           </SidebarMenuButton>
         </SidebarFooter>
       </Sidebar>
-
+      <SidebarTrigger className="ml-1 mt-2 hidden md:block" />
       <TutorialModal open={showRules} onOpenChange={setShowRules} />
     </>
   );
@@ -129,39 +130,39 @@ function TicTacToeBackground() {
   );
 }
 
-function Root() {
-  const isMobile = useIsMobile();
-
+function Footer() {
   return (
-    <div className="fixed inset-0 flex overflow-hidden">
+    <motion.footer
+      className="flex h-8 items-center justify-end px-4"
+      initial={{ y: 100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 1 }}
+    >
+      <a
+        href="https://github.com/ammar-codeable/super_tic-tac-toe"
+        target="_blank"
+        className="text-md flex items-center gap-2 transition-transform hover:scale-105"
+      >
+        <Github className="size-4" />
+        <span>View on GitHub</span>
+      </a>
+    </motion.footer>
+  );
+}
+
+function Root() {
+  return (
+    <ScrollArea className="w-screen">
       <TicTacToeBackground />
-      <AppSidebar />
-      <div className="flex flex-1">
-        {!isMobile && (
-          <>
-            <div className="flex h-full flex-col pl-2 pt-2">
-              <SidebarTrigger />
-            </div>
-            <div className="flex flex-1 flex-col">
-              <div className="flex justify-end pr-2 pt-2">
-                <ThemeToggle />
-              </div>
-              <div className="flex-1 overflow-hidden">
-                <Outlet />
-              </div>
-            </div>
-          </>
-        )}
-        {isMobile && (
-          <div className="flex w-full flex-col h-full">
-            <MobileHeader />
-            <div className="flex-1 overflow-y-auto overflow-x-hidden">
-              <Outlet />
-            </div>
-          </div>
-        )}
+      <div className="flex h-screen w-full">
+        <AppSidebar />
+        <div className="flex flex-1 flex-col justify-between">
+          <Header />
+          <Outlet />
+          <Footer />
+        </div>
       </div>
-    </div>
+    </ScrollArea>
   );
 }
 
