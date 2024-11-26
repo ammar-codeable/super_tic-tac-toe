@@ -42,6 +42,7 @@ function Square({
       custom={globalIndex}
       variants={item}
       whileTap={{ scale: 0.9, transition: { duration: 0.1 } }}
+      className="flex items-center justify-center"
     >
       <Button
         disabled={!isActiveSquare}
@@ -52,7 +53,7 @@ function Square({
               ? "secondary"
               : "outline"
         }
-        className={cn("aspect-square md:size-full size-11/12 p-2 md:rounded-md rounded-sm", {
+        className={cn("aspect-square md:size-full size-11/12 p-2 md:p-4 md:rounded-md rounded-sm", {
           "opacity-50": !isActiveSquare,
           "opacity-80": isActiveSquare || value,
         })}
