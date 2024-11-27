@@ -61,7 +61,7 @@ function GameModePreview() {
   }, [board, moves]);
 
   return (
-    <div className="mx-auto mb-4 grid h-24 w-24 select-none grid-cols-3 gap-1 rounded-lg border border-primary/10 p-2">
+    <div className="mx-auto mb-2 grid h-16 w-16 select-none grid-cols-3 gap-1 rounded-lg border border-primary/10">
       {board.map((value, i) => (
         <div
           key={i}
@@ -88,7 +88,7 @@ function GameModePreview() {
 }
 
 export function GameModeCard({ mode, isSelected, icon, title, badge, description, features, extraBadge }: {
-	mode: "online" | "offline";
+	mode: "online" | "offline" | "classic";
 	isSelected: boolean;
 	icon: React.ReactNode;
 	title: string;
@@ -107,7 +107,7 @@ export function GameModeCard({ mode, isSelected, icon, title, badge, description
     <motion.div variants={item} whileTap={{ scale: 0.98 }} className="h-full">
       <Link to={`/play/${mode}`} className="group block h-full">
         <Card className={cn(
-          "relative h-full my-3 cursor-pointer border-2 p-6 transition-all hover:scale-105 hover:border-primary hover:shadow-lg",
+          "relative h-full cursor-pointer border-2 p-2 transition-all hover:scale-105 hover:border-primary hover:shadow-lg",
           isSelected ? "scale-105 border-primary shadow-lg" : "border-transparent"
         )}>
           {extraBadge && (
@@ -120,11 +120,11 @@ export function GameModeCard({ mode, isSelected, icon, title, badge, description
               <GameModePreview />
             </div>
           </div>
-          <CardHeader className="items-center gap-4 text-center">
+          <CardHeader className="items-center gap-2 p-3 text-center">
             {cloneElement(icon as React.ReactElement, {
-              className: "h-12 w-12 text-primary transition-transform group-hover:scale-110"
+              className: "h-8 w-8 text-primary transition-transform group-hover:scale-110"
             })}
-            <div className="space-y-2">
+            <div className="space-y-1">
               <CardTitle>{title}</CardTitle>
               <Badge variant="secondary" className="mb-2">
                 {badge.icon} {badge.text}
@@ -132,7 +132,7 @@ export function GameModeCard({ mode, isSelected, icon, title, badge, description
               <CardDescription>{description}</CardDescription>
             </div>
           </CardHeader>
-          <CardFooter className="flex-col gap-2 pt-4">
+          <CardFooter className="flex-col gap-2 p-3">
             <div className="flex justify-center gap-4 text-sm text-muted-foreground">
               {features.map((feature, index) => (
                 <span key={index} className="flex items-center gap-1">

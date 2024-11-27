@@ -52,6 +52,7 @@ function SubBoard({
   currentPlayerTurn,
   handlePlay,
   getGlobalSquareIndex,
+  showWinAnimation = true,
 }: {
   boardId: number;
   subBoardState: (string | null)[];
@@ -60,6 +61,7 @@ function SubBoard({
   currentPlayerTurn: string;
   handlePlay: (boardId: number, cellId: number, yourMove: boolean) => void;
   getGlobalSquareIndex: (boardId: number, squareId: number) => number;
+  showWinAnimation?: boolean;
 }) {
   const subGameResult = calculateResult(subBoardState);
 
@@ -69,8 +71,8 @@ function SubBoard({
     <div className="group relative flex items-center justify-center">
       <div
         className={cn("grid size-full grid-cols-3 md:gap-1 md:p-2 p-1 2xl:gap-2", {
-          hidden: subGameResult && subGameResult !== "DRAW",
-          "group-hover:grid": subGameResult && isAnimationComplete,
+          hidden: showWinAnimation && subGameResult && subGameResult !== "DRAW",
+          "group-hover:grid": showWinAnimation && subGameResult && isAnimationComplete,
         })}
       >
         {Array(9)
@@ -89,7 +91,7 @@ function SubBoard({
             />
           ))}
       </div>
-      {subGameResult && (
+      {showWinAnimation && subGameResult && (
         <div
           className={cn({
             "group-hover:hidden": isAnimationComplete,
