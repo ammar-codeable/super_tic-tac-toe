@@ -73,7 +73,7 @@ function AppSidebar() {
 
   return (
     <>
-      <Sidebar collapsible={isMobile ? "offcanvas" : "icon"}>
+      <Sidebar collapsible={isMobile ? "offcanvas" : "icon"} variant="floating">
         <SidebarHeader>
           <Link to="/">
             <img src={logo} alt="Logo" className="h-16" />
