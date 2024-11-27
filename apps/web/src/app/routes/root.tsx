@@ -111,7 +111,7 @@ function TicTacToeBackground() {
         animation: "moveBg 60s linear infinite",
       }}
     >
-      {Array.from({ length: 6 }).map((_, i) => (
+      {Array.from({ length: 10 }).map((_, i) => (
         <div
           key={i}
           className="absolute text-6xl font-bold opacity-100"
