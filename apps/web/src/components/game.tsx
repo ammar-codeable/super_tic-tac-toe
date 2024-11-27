@@ -83,7 +83,7 @@ function Game({
         />
       </div>
       {isOnlineGame && messages && setMessages && socket && (
-        <div className="h-96 w-full px-4 lg:col-span-2 lg:h-[85%]">
+        <div className="h-96 w-full px-4 lg:col-span-2 lg:h-full">
           <Chat
             messages={messages}
             setMessages={setMessages}

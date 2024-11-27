@@ -39,11 +39,11 @@ function Chat({
   };
 
   return (
-    <div className="m-3 flex h-[calc(100vh-9rem)] flex-col rounded-md border bg-background/60 shadow-md">
-      <div className="border-b p-3 shrink-0">
+    <div className="mb-3 flex h-full flex-col rounded-md border bg-background/60 shadow-md">
+      <div className="shrink-0 border-b p-3">
         <h2 className="font-semibold">Chat</h2>
       </div>
-      
+
       <div className="flex-1 overflow-hidden">
         <ScrollArea className="h-full">
           <div className="flex flex-col gap-3 p-4">
@@ -51,14 +51,16 @@ function Chat({
               <div
                 key={index}
                 className={`flex ${
-                  (playerMark === "X" ? "player1" : "player2") === message.sender
+                  (playerMark === "X" ? "player1" : "player2") ===
+                  message.sender
                     ? "justify-end"
                     : "justify-start"
                 }`}
               >
                 <div
-                  className={`max-w-[80%] break-words rounded-2xl px-4 py-2 ${
-                    (playerMark === "X" ? "player1" : "player2") === message.sender
+                  className={`break-words rounded-2xl px-4 py-2 ${
+                    (playerMark === "X" ? "player1" : "player2") ===
+                    message.sender
                       ? "bg-primary text-primary-foreground"
                       : "bg-muted text-muted-foreground"
                   }`}
@@ -71,12 +73,12 @@ function Chat({
         </ScrollArea>
       </div>
 
-      <div className="border-t bg-muted/30 p-3 shrink-0">
+      <div className="shrink-0 border-t bg-muted/30 p-3">
         <form onSubmit={handleSubmit} className="flex gap-2">
           <Textarea
             ref={textareaRef}
             placeholder="Type your message..."
-            className="min-h-[50px] max-h-[100px] resize-none rounded-xl bg-background"
+            className="max-h-[100px] min-h-[50px] resize-none rounded-xl bg-background"
             onKeyDown={handleKeyDown}
           />
           <button
