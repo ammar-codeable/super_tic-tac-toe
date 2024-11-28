@@ -1,7 +1,7 @@
 import { ChatMessage } from "@repo/types/chat-schemas";
 import { ServerMessageSchema } from "@repo/types/server-message-schemas";
 import { validateMessage } from "@repo/utils/validate-message";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef } from "react";
 
 export function useSocket(
   setWaiting: React.Dispatch<React.SetStateAction<boolean | undefined>>,
@@ -11,16 +11,9 @@ export function useSocket(
   setMessages: React.Dispatch<React.SetStateAction<ChatMessage[]>>,
   handlePlay: (boardId: number, cellId: number, yourMove: boolean) => void,
 ) {
-  const [socket, setSocket] = useState<WebSocket | null>(null);
+  const socketRef = useRef<WebSocket | null>(null);
 
-  useEffect(() => {
-    const socket = new WebSocket(import.meta.env.VITE_WEBSOCKET_SERVER_URL);
-
-    socket.onopen = () => {
-      setSocket(socket);
-    };
-
-    socket.onmessage = (message) => {
+  const handleMessage = (message: MessageEvent) => {
       try {
         const msg = validateMessage(message.data, ServerMessageSchema);
 
@@ -58,6 +51,14 @@ export function useSocket(
       }
     };
 
+  useEffect(() => {
+    socketRef.current = new WebSocket(
+      import.meta.env.VITE_WEBSOCKET_SERVER_URL,
+    );
+    const socket = socketRef.current;
+
+    socket.onmessage = handleMessage;
+
     socket.onclose = () => {
       setDisconnected(true);
     };
@@ -67,5 +68,5 @@ export function useSocket(
     };
   }, []);
 
-  return socket;
+  return socketRef.current;
 }
