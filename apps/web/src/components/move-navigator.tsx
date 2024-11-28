@@ -8,6 +8,7 @@ function MoveNavigator({
   isOnlineGame,
   onResign,
   onRestart,
+  onDrawOffer,
 }: {
   moveHistory: number[][];
   currentMove: number;
@@ -15,6 +16,7 @@ function MoveNavigator({
   isOnlineGame?: boolean;
   onResign?: () => void;
   onRestart: () => void;
+  onDrawOffer?: () => void;
 }) {
   return (
     <div className="bg-secondary/30 backdrop-blur-md border border-border/40 rounded-xl py-1 w-full sm:py-2 px-0.5 sm:px-3 shadow-lg">
@@ -41,13 +43,22 @@ function MoveNavigator({
         </Button>
 
         {isOnlineGame ? (
-          <Button 
-            variant="destructive" 
-            className="h-5 sm:h-9 px-1 sm:px-4 text-[9px] sm:text-sm shadow-md hover:shadow-lg hover:scale-105 active:scale-95 transition-all"
-            onClick={onResign}
-          >
-            Resign
-          </Button>
+          <div className="flex gap-1">
+            <Button 
+              variant="secondary" 
+              className="h-5 sm:h-9 px-1 sm:px-4 text-[9px] sm:text-sm shadow-md hover:shadow-lg hover:scale-105 active:scale-95 transition-all"
+              onClick={onDrawOffer}
+            >
+              Offer Draw
+            </Button>
+            <Button 
+              variant="destructive" 
+              className="h-5 sm:h-9 px-1 sm:px-4 text-[9px] sm:text-sm shadow-md hover:shadow-lg hover:scale-105 active:scale-95 transition-all"
+              onClick={onResign}
+            >
+              Resign
+            </Button>
+          </div>
         ) : (
           <Button 
             className="h-5 sm:h-9 px-1 sm:px-4 text-[9px] sm:text-sm shadow-md hover:shadow-lg hover:scale-105 active:scale-95 transition-all"

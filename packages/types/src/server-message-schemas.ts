@@ -29,6 +29,9 @@ export const ServerMessageSchema = z.discriminatedUnion("type", [
 		type: z.literal("error"),
 		error: z.string()
 	}),
+	z.object({
+		type: z.literal("draw-offer"),
+	}),
 ]);
 
 export type ServerMessage = z.infer<typeof ServerMessageSchema>;

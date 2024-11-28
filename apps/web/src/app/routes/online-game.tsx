@@ -6,6 +6,7 @@ import ResignConfirmationModal from "@/components/resign-confirmation-modal";
 import { useSocket } from "@/hooks/use-socket";
 import { ChatMessage } from "@repo/types/chat-schemas";
 import { useState } from "react";
+import { toast } from "sonner";
 
 function OnlineGame() {
   const [waiting, setWaiting] = useState<boolean | undefined>();
@@ -46,6 +47,11 @@ function OnlineGame() {
     setGameResult(playerMark === "X" ? "O" : "X");
   };
 
+  const handleDrawOffer = () => {
+    socket?.send(JSON.stringify({ type: "draw-offer", action: "offer" }));
+    toast.info("Draw offer sent to opponent");
+  };
+
   const socket = useSocket(
     setWaiting,
     setPlayerMark,
@@ -81,6 +87,7 @@ function OnlineGame() {
         messages={messages}
         setMessages={setMessages}
         socket={socket}
+        onDrawOffer={handleDrawOffer}
       />
       {disconnected && !gameResult && <DisconnectModal />}
       <ResignConfirmationModal

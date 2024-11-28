@@ -2,6 +2,7 @@ import { ChatMessage } from "@repo/types/chat-schemas";
 import { ServerMessageSchema } from "@repo/types/server-message-schemas";
 import { validateMessage } from "@repo/utils/validate-message";
 import React, { useEffect, useRef } from "react";
+import { toast } from "sonner";
 
 export function useSocket(
   setWaiting: React.Dispatch<React.SetStateAction<boolean | undefined>>,
@@ -14,42 +15,55 @@ export function useSocket(
   const socketRef = useRef<WebSocket | null>(null);
 
   const handleMessage = (message: MessageEvent) => {
-      try {
-        const msg = validateMessage(message.data, ServerMessageSchema);
+    try {
+      const msg = validateMessage(message.data, ServerMessageSchema);
 
-        switch (msg.type) {
-          case "waiting":
+      switch (msg.type) {
+        case "waiting":
             setWaiting(msg.waiting);
-            break;
+          break;
 
-          case "mark":
+        case "mark":
             setPlayerMark(msg.mark);
-            break;
+          break;
 
-          case "game": {
-            const { moveHistory, currentMove } = msg.game;
-            const [boardId, cellId] = moveHistory[currentMove];
-            handlePlay(boardId, cellId, false);
-            break;
-          }
-
-          case "result":
-            setGameResult(msg.result);
-            break;
-
-          case "chat":
-            setMessages((prev) => [...prev, ...msg.chat]);
-            break;
-
-          case "error":
-            console.error("Server error:", msg.error);
-            break;
+        case "game": {
+          const { moveHistory, currentMove } = msg.game;
+          const [boardId, cellId] = moveHistory[currentMove];
+          handlePlay(boardId, cellId, false);
+          break;
         }
-      } catch (error) {
-        console.error('Invalid message received:', error);
-        throw error;
+
+        case "result":
+            setGameResult(msg.result);
+          break;
+
+        case "chat":
+            setMessages((prev) => [...prev, ...msg.chat]);
+          break;
+
+        case "error":
+          console.error("Server error:", msg.error);
+          break;
+
+        case "draw-offer":
+          toast("Draw Offer", {
+            description: "Your opponent is offering a draw",
+            action: {
+              label: "Accept",
+              onClick: () => {
+                socketRef.current?.send(JSON.stringify({ type: "draw-offer", action: "accept" }));
+              }
+            },
+            duration: 10000,
+          });
+          break;
       }
-    };
+    } catch (error) {
+        console.error('Invalid message received:', error);
+      throw error;
+    }
+  };
 
   useEffect(() => {
     socketRef.current = new WebSocket(

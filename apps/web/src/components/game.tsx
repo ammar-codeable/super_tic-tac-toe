@@ -17,6 +17,7 @@ function Game({
   gameResult,
   playerMark,
   onResign,
+  onDrawOffer,
   messages,
   setMessages,
   socket,
@@ -29,6 +30,7 @@ function Game({
   gameResult?: string | null;
   playerMark?: string | null;
   onResign?: () => void;
+  onDrawOffer?: () => void;
   messages?: ChatMessage[] | undefined;
   setMessages?: React.Dispatch<React.SetStateAction<ChatMessage[]>> | undefined;
   socket?: WebSocket | null;
@@ -80,6 +82,7 @@ function Game({
           isOnlineGame={isOnlineGame}
           onResign={onResign}
           onRestart={handleRestart}
+          onDrawOffer={onDrawOffer}
         />
       </div>
       {isOnlineGame && messages && setMessages && socket && (
