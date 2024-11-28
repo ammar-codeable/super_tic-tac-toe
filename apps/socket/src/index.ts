@@ -165,6 +165,25 @@ wss.on("connection", (ws) => {
 					JSON.stringify({ type: "chat", chat: [chatMessage] })
 				);
 				break;
+
+			case "draw-offer":
+				switch (message.action) {
+					case "offer":
+						opponent.socket.send(
+							JSON.stringify({ type: "draw-offer" })
+						);
+						break;
+
+					case "accept":
+						const result = "DRAW";
+						currentPlayer.socket.send(
+							JSON.stringify({ type: "result", result })
+						);
+						opponent.socket.send(JSON.stringify({ type: "result", result }));
+						game.result = result;
+						break;
+				}
+				break;
 		}
 	});
 

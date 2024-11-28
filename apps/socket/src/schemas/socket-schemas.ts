@@ -21,4 +21,8 @@ export const ClientMessageSchema = z.discriminatedUnion("type", [
 			text: z.string(),
 		}),
 	}),
+	z.object({
+		type: z.literal("draw-offer"),
+		action: z.enum(["offer", "accept"]),
+	}),
 ]);
