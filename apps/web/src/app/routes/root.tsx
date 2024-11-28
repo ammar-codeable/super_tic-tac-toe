@@ -19,6 +19,7 @@ import { motion } from "framer-motion";
 import { ChevronRight, Github, HelpCircle } from "lucide-react";
 import { useState } from "react";
 import { Link, NavLink, Outlet } from "react-router-dom";
+import { Toaster } from "sonner";
 
 function Header() {
   return (
@@ -162,6 +163,7 @@ function Root() {
           <Footer />
         </div>
       </div>
+      <Toaster />
     </ScrollArea>
   );
 }
