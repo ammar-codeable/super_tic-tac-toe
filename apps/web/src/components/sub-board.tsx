@@ -18,24 +18,23 @@ function SubBoardResult({
 
   return subGameResult === "Tie" ? null : (
     <motion.svg
-      width="140"
-      height="140"
+      className="m-2 size-4/5 stroke-[4px] sm:m-3 md:m-4"
+      viewBox="0 0 100 100"
       initial="initial"
       animate="draw"
       stroke="currentColor"
       onAnimationComplete={() => setIsAnimationComplete(true)}
-      className="m-5 stroke-[5px]"
     >
       {subGameResult === "X" ? (
         <>
-          <motion.line x1="10%" y1="10%" x2="90%" y2="90%" variants={draw} />
-          <motion.line x1="10%" y1="90%" x2="90%" y2="10%" variants={draw} />
+          <motion.line x1="10" y1="10" x2="90" y2="90" variants={draw} />
+          <motion.line x1="10" y1="90" x2="90" y2="10" variants={draw} />
         </>
       ) : (
         <motion.circle
-          cy="50%"
-          cx="50%"
-          r="40%"
+          cy="50"
+          cx="50"
+          r="40"
           variants={draw}
           className="fill-transparent"
         />
