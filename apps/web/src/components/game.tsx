@@ -58,7 +58,7 @@ function Game({
   };
 
   return (
-    <div className="grid h-full w-full lg:grid-cols-6">
+    <div className="grid gap-y-4 w-full lg:grid-cols-6">
       <div className="flex w-full max-w-[100vw] flex-col items-center gap-y-3 md:max-w-[800px] lg:col-span-4 xl:col-span-3">
         <MainBoard
           key={mainBoardKey.current}
