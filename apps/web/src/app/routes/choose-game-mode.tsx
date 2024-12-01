@@ -141,7 +141,7 @@ function ChooseGameMode() {
       className="flex flex-1 flex-col items-center justify-center"
     >
       <motion.h1
-        className="mb-4 text-5xl font-bold"
+        className="my-2 text-5xl font-bold"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -182,7 +182,7 @@ function ChooseGameMode() {
         </div>
       </motion.div>
 
-      <div className="mx-12 grid w-full max-w-4xl gap-4 sm:grid-cols-2">
+      <div className="grid w-full lg:px-0 md:pl-0 px-4 max-w-4xl gap-4 sm:grid-cols-2">
         {(["offline", "online", "classic"] as const).map((mode) => (
           <GameModeCard
             key={mode}
