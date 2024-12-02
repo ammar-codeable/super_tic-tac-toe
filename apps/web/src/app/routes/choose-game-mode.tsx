@@ -138,7 +138,7 @@ function ChooseGameMode() {
           },
         },
       }}
-      className="flex flex-1 flex-col items-center justify-center"
+      className="flex flex-1 flex-col items-center justify-center text-center"
     >
       <motion.h1
         className="my-2 text-5xl font-bold"
