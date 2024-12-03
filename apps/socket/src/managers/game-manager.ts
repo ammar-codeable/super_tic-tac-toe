@@ -1,43 +1,45 @@
 import { ChatMessage } from "@repo/types/chat-schemas";
 import calculateResult from "@repo/utils/calculate-result";
+import { v4 as uuidv4 } from 'uuid';
 import ws from "ws";
 import { Game, GameResult, Player } from "../types/game-types";
 
-const games: Game[] = [];
+const games: Record<string, Game> = {};
 
-function createNewGame(player1Socket: ws, player2Socket: ws): Game {
-	return {
-		gameId: games.length,
-		players: {
-			player1: { mark: undefined, socket: player1Socket },
-			player2: { mark: undefined, socket: player2Socket },
-		},
-		moveHistory: [[-1, -1]],
-		currentMove: 0,
-		mainBoardState: Array(9)
-			.fill(null)
-			.map(() => Array(9).fill(null)),
-		reducedMainBoardState: Array(9).fill(null),
-		result: null,
-		messages: [],
-	};
+function createNewGame(player1Socket: ws, player2Socket: ws): [string, Game] {
+    const gameId = uuidv4();
+    const game: Game = {
+        players: {
+            player1: { mark: undefined, socket: player1Socket },
+            player2: { mark: undefined, socket: player2Socket },
+        },
+        moveHistory: [[-1, -1]],
+        currentMove: 0,
+        mainBoardState: Array(9)
+            .fill(null)
+            .map(() => Array(9).fill(null)),
+        reducedMainBoardState: Array(9).fill(null),
+        result: null,
+        messages: [],
+    };
+    return [gameId, game];
 }
 
-function addGame(game: Game) {
-	games.push(game);
+function addGame(gameId: string, game: Game) {
+    games[gameId] = game;
 }
 
-function removeGame(gameId: number) {
-	const index = games.findIndex((game) => game.gameId === gameId);
-	if (index !== -1) games.splice(index, 1);
+function removeGame(gameId: string) {
+    delete games[gameId];
 }
 
-function findGameByPlayer(player: ws): Game | undefined {
-	return games.find(
-		(game) =>
-			game.players.player1.socket === player ||
-			game.players.player2?.socket === player
-	);
+function findGameByPlayer(player: ws): [string, Game] | undefined {
+    const entry = Object.entries(games).find(
+        ([_, game]) =>
+            game.players.player1.socket === player ||
+            game.players.player2?.socket === player
+    );
+    return entry ? [entry[0], entry[1]] : undefined;
 }
 
 function getPlayersByGame(

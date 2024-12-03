@@ -10,7 +10,6 @@ export type Player = {
 
 export type Game = {
 	players: { player1: Player; player2: Player };
-	gameId: number;
 	moveHistory: number[][];
 	currentMove: number;
 	mainBoardState: (string | null)[][];

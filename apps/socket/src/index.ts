@@ -64,8 +64,8 @@ wss.on("connection", (ws) => {
 		const player1Socket = pendingPlayers.shift()!;
 		const player2Socket = pendingPlayers.shift()!;
 
-		const game = createNewGame(player1Socket, player2Socket);
-		addGame(game);
+		const [gameId, game] = createNewGame(player1Socket, player2Socket);
+		addGame(gameId, game);
 
 		// Notify both players that the game is starting
 		player1Socket.send(JSON.stringify({ type: "waiting", waiting: false }));
@@ -75,8 +75,8 @@ wss.on("connection", (ws) => {
 	ws.on("message", (data) => {
 		const message = validateMessage(data.toString(), ClientMessageSchema);
 
-		const game = findGameByPlayer(ws);
-		if (!game) {
+		const gameInfo = findGameByPlayer(ws);
+		if (!gameInfo) {
 			ws.send(
 				JSON.stringify({
 					type: "error",
@@ -85,6 +85,7 @@ wss.on("connection", (ws) => {
 			);
 			return;
 		}
+		const [gameId, game] = gameInfo;
 
 		const [currentPlayer, opponent] = getPlayersByGame(game, ws);
 		if (!currentPlayer || !opponent) return;
@@ -235,11 +236,12 @@ wss.on("connection", (ws) => {
 			pendingPlayers.splice(index, 1);
 		}
 
-		const game = findGameByPlayer(ws);
-		if (game) {
+		const gameInfo = findGameByPlayer(ws);
+		if (gameInfo) {
+			const [gameId, game] = gameInfo;
 			const [_, opponent] = getPlayersByGame(game, ws);
 
-			removeGame(game.gameId);
+			removeGame(gameId);
 
 			if (opponent) {
 				opponent.socket.close();
