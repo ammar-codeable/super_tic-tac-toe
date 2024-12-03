@@ -21,6 +21,9 @@ function Game({
   messages,
   setMessages,
   socket,
+  onRematch,
+  disconnected,
+  rematchDeclined,
 }: {
   currentMove: number;
   setCurrentMove: (currentMove: number) => void;
@@ -34,6 +37,9 @@ function Game({
   messages?: ChatMessage[] | undefined;
   setMessages?: React.Dispatch<React.SetStateAction<ChatMessage[]>> | undefined;
   socket?: WebSocket | null;
+  onRematch?: () => void;
+  disconnected?: boolean;
+  rematchDeclined?: boolean;
 }) {
   const currentPlayerTurn = currentMove % 2 === 0 ? "X" : "O";
 
@@ -100,6 +106,9 @@ function Game({
           gameResult={gameResult} 
           onRestart={handleRestart} 
           isOnlineGame={isOnlineGame} 
+          onRematch={onRematch}
+          disconnected={disconnected}
+          rematchDeclined={rematchDeclined}
         />
       )}
     </div>

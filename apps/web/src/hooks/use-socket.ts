@@ -11,6 +11,8 @@ export function useSocket(
   setGameResult: React.Dispatch<React.SetStateAction<string | null>>,
   setMessages: React.Dispatch<React.SetStateAction<ChatMessage[]>>,
   handlePlay: (boardId: number, cellId: number, yourMove: boolean) => void,
+  resetGame: () => void,
+  setRematchDeclined: React.Dispatch<React.SetStateAction<boolean>>,
 ) {
   const socketRef = useRef<WebSocket | null>(null);
 
@@ -29,8 +31,13 @@ export function useSocket(
 
         case "game": {
           const { moveHistory, currentMove } = msg.game;
-          const [boardId, cellId] = moveHistory[currentMove];
-          handlePlay(boardId, cellId, false);
+          if (moveHistory.length === 1) {
+            // This is a new game (rematch)
+            resetGame();
+          } else {
+            const [boardId, cellId] = moveHistory[currentMove];
+            handlePlay(boardId, cellId, false);
+          }
           break;
         }
 
@@ -52,11 +59,46 @@ export function useSocket(
             action: {
               label: "Accept",
               onClick: () => {
-                socketRef.current?.send(JSON.stringify({ type: "draw-offer", action: "accept" }));
-              }
+                socketRef.current?.send(
+                  JSON.stringify({ type: "draw-offer", action: "accept" }),
+                );
+              },
             },
             duration: 10000,
           });
+          break;
+
+        case "rematch-request":
+          toast("Rematch Request", {
+            description: "Your opponent wants a rematch",
+            action: {
+              label: "Accept",
+              onClick: () => {
+                socketRef.current?.send(
+                  JSON.stringify({ type: "rematch", action: "accept" }),
+                );
+              },
+            },
+            cancel: {
+              label: "Decline",
+              onClick: () => {
+                socketRef.current?.send(
+                  JSON.stringify({ type: "rematch", action: "decline" }),
+                );
+              },
+            },
+            duration: 10000,
+          });
+          break;
+
+        case "rematch-accepted":
+          resetGame();
+          setPlayerMark(mark => mark === "X" ? "O" : "X");
+          break;
+        
+        case "rematch-declined":
+          toast.error("Rematch request declined");
+          setRematchDeclined(true);
           break;
       }
     } catch (error) {

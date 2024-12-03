@@ -1,5 +1,5 @@
+import { ChatMessageSchema } from "@repo/types/chat-schemas";
 import { z } from "zod";
-import { ChatMessageSchema } from "./chat-schemas";
 
 export const ServerMessageSchema = z.discriminatedUnion("type", [
 	z.object({
@@ -19,7 +19,7 @@ export const ServerMessageSchema = z.discriminatedUnion("type", [
 	}),
 	z.object({
 		type: z.literal("result"),
-		result: z.string().nullable(),
+		result: z.enum(["X", "O", "DRAW", "X_RESIGNED", "O_RESIGNED"]),
 	}),
 	z.object({
 		type: z.literal("chat"),
@@ -27,11 +27,20 @@ export const ServerMessageSchema = z.discriminatedUnion("type", [
 	}),
 	z.object({
 		type: z.literal("error"),
-		error: z.string()
+		error: z.string(),
 	}),
 	z.object({
 		type: z.literal("draw-offer"),
 	}),
+	z.object({
+		type: z.literal("rematch-request"),
+		data: z.object({}).optional(),
+	}),
+	z.object({
+		type: z.literal("rematch-declined"),
+		data: z.object({}).optional(),
+	}),
+	z.object({
+		type: z.literal("rematch-accepted"),
+	}),
 ]);
-
-export type ServerMessage = z.infer<typeof ServerMessageSchema>;

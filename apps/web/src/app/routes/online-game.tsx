@@ -23,6 +23,8 @@ function OnlineGame() {
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
 
+  const [rematchDeclined, setRematchDeclined] = useState(false);
+
   function handleOnlinePlay(
     boardId: number,
     cellId: number,
@@ -52,6 +54,18 @@ function OnlineGame() {
     toast.info("Draw offer sent to opponent");
   };
 
+  const handleRematch = () => {
+    socket?.send(JSON.stringify({ type: "rematch", action: "request" }));
+    toast.info("Rematch request sent to opponent");
+  };
+
+  const resetGame = () => {
+    setCurrentMove(0);
+    setMoveHistory([[-1, -1]]);
+    setGameResult(null);
+    setMessages([]);
+  };
+
   const socket = useSocket(
     setWaiting,
     setPlayerMark,
@@ -59,6 +73,8 @@ function OnlineGame() {
     setGameResult,
     setMessages,
     handleOnlinePlay,
+    resetGame,
+    setRematchDeclined
   );
 
   if (waiting === undefined) {
@@ -88,6 +104,9 @@ function OnlineGame() {
         setMessages={setMessages}
         socket={socket}
         onDrawOffer={handleDrawOffer}
+        onRematch={handleRematch}
+        disconnected={disconnected}
+        rematchDeclined={rematchDeclined}
       />
       {disconnected && !gameResult && <DisconnectModal />}
       <ResignConfirmationModal
