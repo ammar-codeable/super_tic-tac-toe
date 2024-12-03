@@ -25,4 +25,8 @@ export const ClientMessageSchema = z.discriminatedUnion("type", [
 		type: z.literal("draw-offer"),
 		action: z.enum(["offer", "accept"]),
 	}),
+	z.object({
+		type: z.literal("rematch"),
+		action: z.enum(["request", "accept", "decline"]),
+	}),
 ]);

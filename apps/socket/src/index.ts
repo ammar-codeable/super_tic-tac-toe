@@ -184,6 +184,48 @@ wss.on("connection", (ws) => {
 						break;
 				}
 				break;
+
+			case "rematch":
+				if (opponent.socket.readyState !== ws.OPEN) {
+					currentPlayer.socket.send(
+						JSON.stringify({ 
+							type: "error", 
+							error: "Opponent has disconnected" 
+						})
+					);
+					break;
+				}
+
+				switch (message.action) {
+					case "request":
+						opponent.socket.send(
+							JSON.stringify({ type: "rematch-request" })
+						);
+						break;
+
+					case "accept": {
+						game.moveHistory = [[-1, -1]];
+						game.currentMove = 0;
+						game.mainBoardState = Array(9).fill(Array(9).fill(null));
+						game.reducedMainBoardState = Array(9).fill(null);
+						game.result = null;
+						game.messages = [];
+
+						[currentPlayer.mark, opponent.mark] = [opponent.mark, currentPlayer.mark];
+
+						[currentPlayer, opponent].forEach(player => {
+							player.socket.send(JSON.stringify({ type: "rematch-accepted" }));
+						});
+						break;
+					}
+
+					case "decline":
+						opponent.socket.send(
+							JSON.stringify({ type: "rematch-declined" })
+						);
+						break;
+				}
+				break;
 		}
 	});
 
