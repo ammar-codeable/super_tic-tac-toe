@@ -15,12 +15,17 @@ export function useSocket(
   setRematchDeclined: React.Dispatch<React.SetStateAction<boolean>>,
 ) {
   const socketRef = useRef<WebSocket | null>(null);
+  const gameIdRef = useRef<string>("");
 
   const handleMessage = (message: MessageEvent) => {
     try {
       const msg = validateMessage(message.data, ServerMessageSchema);
 
       switch (msg.type) {
+        case "init":
+          gameIdRef.current = msg.gameId;
+          break;
+
         case "waiting":
             setWaiting(msg.waiting);
           break;
@@ -60,7 +65,11 @@ export function useSocket(
               label: "Accept",
               onClick: () => {
                 socketRef.current?.send(
-                  JSON.stringify({ type: "draw-offer", action: "accept" }),
+                  JSON.stringify({
+                    type: "draw-offer",
+                    action: "accept",
+                    gameId: gameIdRef.current,
+                  }),
                 );
               },
             },
@@ -75,7 +84,11 @@ export function useSocket(
               label: "Accept",
               onClick: () => {
                 socketRef.current?.send(
-                  JSON.stringify({ type: "rematch", action: "accept" }),
+                  JSON.stringify({
+                    type: "rematch",
+                    action: "accept",
+                    gameId: gameIdRef.current,
+                  }),
                 );
               },
             },
@@ -83,7 +96,11 @@ export function useSocket(
               label: "Decline",
               onClick: () => {
                 socketRef.current?.send(
-                  JSON.stringify({ type: "rematch", action: "decline" }),
+                  JSON.stringify({
+                    type: "rematch",
+                    action: "decline",
+                    gameId: gameIdRef.current,
+                  }),
                 );
               },
             },
@@ -107,6 +124,13 @@ export function useSocket(
     }
   };
 
+  const sendMessage = (message: any) => {
+    if (gameIdRef.current) {
+      message.gameId = gameIdRef.current;
+    }
+    socketRef.current?.send(JSON.stringify(message));
+  };
+
   useEffect(() => {
     socketRef.current = new WebSocket(
       import.meta.env.VITE_WEBSOCKET_SERVER_URL,
@@ -124,5 +148,9 @@ export function useSocket(
     };
   }, []);
 
-  return socketRef.current;
+  return { 
+    socket: socketRef.current, 
+    sendMessage,
+    gameId: gameIdRef.current 
+  };
 }

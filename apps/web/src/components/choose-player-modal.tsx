@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import { useState } from "react";
 
-function ChoosePlayerModal({ socket }: { socket: WebSocket | null }) {
+function ChoosePlayerModal({ socket, gameId }: { socket: (message: any) => void, gameId: string }) {
   const [chosenMark, setChosenMark] = useState("");
 
   return (
@@ -31,7 +31,7 @@ function ChoosePlayerModal({ socket }: { socket: WebSocket | null }) {
               variant={chosenMark === "X" ? "secondary" : "default"}
               onClick={() => {
                 setChosenMark("X");
-                socket!.send(JSON.stringify({ type: "player", player: "X" }));
+                socket({ type: "player", player: "X" });
               }}
             >
               Player X
@@ -42,7 +42,7 @@ function ChoosePlayerModal({ socket }: { socket: WebSocket | null }) {
               variant={chosenMark === "O" ? "secondary" : "default"}
               onClick={() => {
                 setChosenMark("O");
-                socket!.send(JSON.stringify({ type: "player", player: "O" }));
+                socket({ type: "player", player: "O" });
               }}
             >
               Player O

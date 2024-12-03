@@ -3,6 +3,10 @@ import { z } from "zod";
 
 export const ServerMessageSchema = z.discriminatedUnion("type", [
 	z.object({
+		type: z.literal("init"),
+		gameId: z.string(),
+	}),
+	z.object({
 		type: z.literal("waiting"),
 		waiting: z.boolean(),
 	}),

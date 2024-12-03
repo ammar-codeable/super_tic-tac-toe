@@ -37,25 +37,31 @@ function OnlineGame() {
     ]);
 
     if (yourMove) {
-      socket?.send(JSON.stringify({
+      sendMessage({
         type: "move",
         move: [boardId, cellId]
-      }));
+      });
     }
   }
 
   const handleResign = () => {
-    socket?.send(JSON.stringify({ type: "resign" }));
+    sendMessage({ type: "resign" });
     setGameResult(playerMark === "X" ? "O" : "X");
   };
 
   const handleDrawOffer = () => {
-    socket?.send(JSON.stringify({ type: "draw-offer", action: "offer" }));
+    sendMessage({ 
+      type: "draw-offer", 
+      action: "offer"
+    });
     toast.info("Draw offer sent to opponent");
   };
 
   const handleRematch = () => {
-    socket?.send(JSON.stringify({ type: "rematch", action: "request" }));
+    sendMessage({ 
+      type: "rematch", 
+      action: "request"
+    });
     toast.info("Rematch request sent to opponent");
   };
 
@@ -66,7 +72,7 @@ function OnlineGame() {
     setMessages([]);
   };
 
-  const socket = useSocket(
+  const { socket, sendMessage, gameId } = useSocket(
     setWaiting,
     setPlayerMark,
     setDisconnected,
@@ -86,7 +92,7 @@ function OnlineGame() {
   }
 
   if (!disconnected && !playerMark) {
-    return <ChoosePlayerModal socket={socket} />;
+    return <ChoosePlayerModal socket={sendMessage} gameId={gameId} />;
   }
 
   return (
@@ -107,6 +113,7 @@ function OnlineGame() {
         onRematch={handleRematch}
         disconnected={disconnected}
         rematchDeclined={rematchDeclined}
+        sendMessage={sendMessage}
       />
       {disconnected && !gameResult && <DisconnectModal />}
       <ResignConfirmationModal

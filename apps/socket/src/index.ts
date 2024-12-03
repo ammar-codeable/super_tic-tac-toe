@@ -10,11 +10,15 @@ import {
 	addGame,
 	addMessage,
 	createNewGame,
-	findGameByPlayer,
-	getPlayersByGame,
+	getGame,
+	getOpponent,
+	getPlayerInGame,
 	handleResign,
 	removeGame,
+	resetGame,
+	swapPlayerMarks,
 	updateGameState,
+	handleDisconnect,
 } from "./managers/game-manager";
 import { ClientMessageSchema } from "./schemas/socket-schemas";
 import { assignMark } from "./utils/assign-mark";
@@ -67,35 +71,34 @@ wss.on("connection", (ws) => {
 		const [gameId, game] = createNewGame(player1Socket, player2Socket);
 		addGame(gameId, game);
 
-		// Notify both players that the game is starting
+		player1Socket.send(JSON.stringify({ type: "init", gameId }));
+		player2Socket.send(JSON.stringify({ type: "init", gameId }));
 		player1Socket.send(JSON.stringify({ type: "waiting", waiting: false }));
 		player2Socket.send(JSON.stringify({ type: "waiting", waiting: false }));
 	}
 
 	ws.on("message", (data) => {
 		const message = validateMessage(data.toString(), ClientMessageSchema);
-
-		const gameInfo = findGameByPlayer(ws);
-		if (!gameInfo) {
+		const game = getGame(message.gameId);
+		if (!game) {
 			ws.send(
 				JSON.stringify({
 					type: "error",
-					error: "Waiting for an opponent to connect.",
+					error: "Game not found",
 				})
 			);
 			return;
 		}
-		const [gameId, game] = gameInfo;
 
-		const [currentPlayer, opponent] = getPlayersByGame(game, ws);
-		if (!currentPlayer || !opponent) return;
+		const currentPlayer = getPlayerInGame(message.gameId, ws);
+		const opponent = getOpponent(message.gameId, ws);
 
-		if (
-			["move", "resign", "chat"].includes(message.type) &&
-			!currentPlayer.mark
-		) {
-			currentPlayer.socket.send(
-				JSON.stringify({ type: "error", error: "Player not initialized." })
+		if (!currentPlayer || !opponent) {
+			ws.send(
+				JSON.stringify({
+					type: "error",
+					error: "Player not found in game",
+				})
 			);
 			return;
 		}
@@ -125,8 +128,7 @@ wss.on("connection", (ws) => {
 				break;
 
 			case "move":
-				const [boardId, cellId] = message.move;
-				const result = updateGameState(game, boardId, cellId);
+				const result = updateGameState(message.gameId, ...message.move);
 
 				opponent.socket!.send(
 					JSON.stringify({
@@ -144,7 +146,7 @@ wss.on("connection", (ws) => {
 				break;
 
 			case "resign":
-				const resignResult = handleResign(game, ws);
+				const resignResult = handleResign(message.gameId, ws);
 
 				currentPlayer.socket!.send(
 					JSON.stringify({ type: "result", result: resignResult })
@@ -161,7 +163,7 @@ wss.on("connection", (ws) => {
 					text: message.chat.text,
 					sender: senderRole,
 				};
-				addMessage(game, chatMessage);
+				addMessage(message.gameId, chatMessage);
 				opponent.socket.send(
 					JSON.stringify({ type: "chat", chat: [chatMessage] })
 				);
@@ -170,9 +172,7 @@ wss.on("connection", (ws) => {
 			case "draw-offer":
 				switch (message.action) {
 					case "offer":
-						opponent.socket.send(
-							JSON.stringify({ type: "draw-offer" })
-						);
+						opponent.socket.send(JSON.stringify({ type: "draw-offer" }));
 						break;
 
 					case "accept":
@@ -189,9 +189,9 @@ wss.on("connection", (ws) => {
 			case "rematch":
 				if (opponent.socket.readyState !== ws.OPEN) {
 					currentPlayer.socket.send(
-						JSON.stringify({ 
-							type: "error", 
-							error: "Opponent has disconnected" 
+						JSON.stringify({
+							type: "error",
+							error: "Opponent has disconnected",
 						})
 					);
 					break;
@@ -199,31 +199,21 @@ wss.on("connection", (ws) => {
 
 				switch (message.action) {
 					case "request":
-						opponent.socket.send(
-							JSON.stringify({ type: "rematch-request" })
-						);
+						opponent.socket.send(JSON.stringify({ type: "rematch-request" }));
 						break;
 
 					case "accept": {
-						game.moveHistory = [[-1, -1]];
-						game.currentMove = 0;
-						game.mainBoardState = Array(9).fill(Array(9).fill(null));
-						game.reducedMainBoardState = Array(9).fill(null);
-						game.result = null;
-						game.messages = [];
+						resetGame(message.gameId);
+						swapPlayerMarks(message.gameId);
 
-						[currentPlayer.mark, opponent.mark] = [opponent.mark, currentPlayer.mark];
-
-						[currentPlayer, opponent].forEach(player => {
+						[currentPlayer, opponent].forEach((player) => {
 							player.socket.send(JSON.stringify({ type: "rematch-accepted" }));
 						});
 						break;
 					}
 
 					case "decline":
-						opponent.socket.send(
-							JSON.stringify({ type: "rematch-declined" })
-						);
+						opponent.socket.send(JSON.stringify({ type: "rematch-declined" }));
 						break;
 				}
 				break;
@@ -236,16 +226,9 @@ wss.on("connection", (ws) => {
 			pendingPlayers.splice(index, 1);
 		}
 
-		const gameInfo = findGameByPlayer(ws);
-		if (gameInfo) {
-			const [gameId, game] = gameInfo;
-			const [_, opponent] = getPlayersByGame(game, ws);
-
-			removeGame(gameId);
-
-			if (opponent) {
-				opponent.socket.close();
-			}
+		const opponentSocket = handleDisconnect(ws);
+		if (opponentSocket) {
+			opponentSocket.close();
 		}
 	});
 });

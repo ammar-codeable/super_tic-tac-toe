@@ -24,6 +24,7 @@ function Game({
   onRematch,
   disconnected,
   rematchDeclined,
+  sendMessage,
 }: {
   currentMove: number;
   setCurrentMove: (currentMove: number) => void;
@@ -40,6 +41,7 @@ function Game({
   onRematch?: () => void;
   disconnected?: boolean;
   rematchDeclined?: boolean;
+  sendMessage?: (message: any) => void;
 }) {
   const currentPlayerTurn = currentMove % 2 === 0 ? "X" : "O";
 
@@ -96,7 +98,7 @@ function Game({
           <Chat
             messages={messages}
             setMessages={setMessages}
-            socket={socket}
+            socket={sendMessage}
             playerMark={playerMark!}
           />
         </div>

@@ -11,7 +11,7 @@ function Chat({
 }: {
   messages: ChatMessage[];
   setMessages: React.Dispatch<React.SetStateAction<ChatMessage[]>>;
-  socket: WebSocket | null;
+  socket: (message: any) => void;
   playerMark: string | null;
 }) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -27,7 +27,7 @@ function Chat({
           playerMark === "X" ? "player1" : ("player2" as "player1" | "player2"),
       };
       setMessages((prev) => [...prev, newMessage]);
-      socket.send(JSON.stringify({ type: "chat", chat: { text } }));
+      socket({ type: "chat", chat: { text } });
     }
   };
 
