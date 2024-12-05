@@ -60,7 +60,7 @@ function updateGameState(gameId: string, boardId: number, cellId: number): GameR
 
     game.currentMove++;
 
-    game.mainBoardState[boardId][cellId] = game.currentMove % 2 === 0 ? "X" : "O";
+    game.mainBoardState[boardId][cellId] = game.currentMove % 2 === 0 ? "O" : "X";
 
     game.reducedMainBoardState = game.mainBoardState.map(calculateResult);
     game.result = calculateResult(game.reducedMainBoardState);
