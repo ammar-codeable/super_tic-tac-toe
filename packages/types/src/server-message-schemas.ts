@@ -48,3 +48,5 @@ export const ServerMessageSchema = z.discriminatedUnion("type", [
 		type: z.literal("rematch-accepted"),
 	}),
 ]);
+
+export type ServerMessage = z.infer<typeof ServerMessageSchema>;
