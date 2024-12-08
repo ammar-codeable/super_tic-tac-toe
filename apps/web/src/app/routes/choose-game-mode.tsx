@@ -7,7 +7,7 @@ import {
   BrainCircuit,
   Globe,
   Grid,
-  History,
+  HandshakeIcon,
   MessageSquare,
   Timer,
   Users,
@@ -77,8 +77,8 @@ function ChooseGameMode() {
 
   const gameModes = {
     offline: {
-      icon: <Users />,
-      title: "Offline Mode",
+      icon: <HandshakeIcon className="scale-[1.2]" />,
+      title: "Local Play",
       badge: {
         icon: <WifiOff className="mr-1 h-3 w-3" />,
         text: "No Internet Required",
@@ -89,32 +89,32 @@ function ChooseGameMode() {
         { icon: <Timer className="h-4 w-4" />, text: "No Time Limit" },
         { icon: <Zap className="h-4 w-4" />, text: "Instant Start" },
       ],
+      extraBadge: <Badge variant="secondary">Offline</Badge>,
     },
     online: {
       icon: <Globe />,
-      title: "Online Mode",
+      title: "Quick Match",
       badge: {
         icon: <Wifi className="mr-1 h-3 w-3" />,
-        text: "Real-time Multiplayer",
+        text: "Quick Play",
       },
-      description:
-        "Connect with players worldwide and compete in real-time matches",
+      description: "Jump into fast-paced online matches with players worldwide",
       features: [
-        { icon: <Users className="h-4 w-4" />, text: "Match Making" },
+        { icon: <Users className="h-4 w-4" />, text: "Auto Match" },
         { icon: <MessageSquare className="h-4 w-4" />, text: "Live Chat" },
       ],
       extraBadge: (
-        <Badge variant="destructive" className="animate-pulse">
-          LIVE
-        </Badge>
+        <div className="flex gap-1">
+          <Badge variant="secondary">Online</Badge>
+        </div>
       ),
     },
     classic: {
       icon: <Grid className="rotate-45" />,
       title: "Classic Mode",
       badge: {
-        icon: <History className="mr-1 h-3 w-3" />,
-        text: "Original Game",
+        icon: <Grid className="mr-1 h-3 w-3" />,
+        text: "Traditional",
       },
       description:
         "Play the traditional 3x3 Tic-tac-toe game you know and love",
@@ -122,6 +122,7 @@ function ChooseGameMode() {
         { icon: <Timer className="h-4 w-4" />, text: "Quick Games" },
         { icon: <BrainCircuit className="h-4 w-4" />, text: "Simple Rules" },
       ],
+      extraBadge: <Badge variant="secondary">Offline</Badge>,
     },
   };
 
