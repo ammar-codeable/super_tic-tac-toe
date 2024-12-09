@@ -13,16 +13,16 @@ import {
 	getGame,
 	getOpponent,
 	getPlayerInGame,
-	handleResign,
-	removeGame,
-	resetGame,
+handleDisconnect,
+handleResign,
+		resetGame,
 	swapPlayerMarks,
 	updateGameState,
-	handleDisconnect,
-} from "./managers/game-manager";
+	} from "./managers/game-manager";
 import { ClientMessageSchema } from "./schemas/socket-schemas";
 import { assignMark } from "./utils/assign-mark";
 import { sendSocketMessage } from "./utils/socket-utils";
+import { addPendingPlayer, getPendingPlayers, removePendingPlayer } from "./managers/pending-players-manager";
 
 config();
 
@@ -59,16 +59,12 @@ app.get("/player-count", (_, res) => {
 	res.json({ count: wss.clients.size });
 });
 
-const pendingPlayers: ws[] = [];
-
 wss.on("connection", (ws) => {
-	pendingPlayers.push(ws);
-	sendSocketMessage([ws], { type: "waiting", waiting: true });
+	addPendingPlayer(ws);
 
-	if (pendingPlayers.length >= 2) {
-		const player1Socket = pendingPlayers.shift()!;
-		const player2Socket = pendingPlayers.shift()!;
-
+	const players = getPendingPlayers();
+	if (players) {
+		const [player1Socket, player2Socket] = players;
 		const [gameId, game] = createNewGame(player1Socket, player2Socket);
 		addGame(gameId, game);
 
@@ -188,11 +184,8 @@ wss.on("connection", (ws) => {
 	});
 
 	ws.on("close", () => {
-		const index = pendingPlayers.indexOf(ws);
-		if (index !== -1) {
-			pendingPlayers.splice(index, 1);
-		}
-
+		removePendingPlayer(ws);
+		
 		const opponentSocket = handleDisconnect(ws);
 		if (opponentSocket) {
 			opponentSocket.close();
