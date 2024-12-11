@@ -1,10 +1,10 @@
 import { ChatMessage } from "@repo/types/chat-schemas";
-import ws from "ws";
+import { WebSocket } from "ws";
 import { Mark } from "../schemas/socket-schemas";
 
 export type Player = {
 	mark?: Mark;
-	socket: ws;
+	socket: WebSocket;
 };
 
 export type Game = {

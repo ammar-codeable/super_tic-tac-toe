@@ -1,9 +1,12 @@
 import { ServerMessage } from "@repo/types/server-message-schemas";
-import ws from "ws";
+import { WebSocket } from "ws";
 
-export function sendSocketMessage(sockets: ws[], message: ServerMessage) {
+export function sendSocketMessage(
+	sockets: WebSocket[],
+	message: ServerMessage
+) {
 	sockets.forEach((socket) => {
-		if (socket.readyState === ws.OPEN) {
+		if (socket.readyState === WebSocket.OPEN) {
 			socket.send(JSON.stringify(message));
 		}
 	});

@@ -1,12 +1,15 @@
 import { ChatMessage } from "@repo/types/chat-schemas";
 import calculateResult from "@repo/utils/calculate-result";
 import { v4 as uuidv4 } from "uuid";
-import ws from "ws";
+import { WebSocket } from "ws";
 import { Game, GameResult, Player } from "../types/game-types";
 
 const games: Record<string, Game> = {};
 
-function createNewGame(player1Socket: ws, player2Socket: ws): [string, Game] {
+function createNewGame(
+	player1Socket: WebSocket,
+	player2Socket: WebSocket
+): [string, Game] {
 	const gameId = uuidv4();
 	const game: Game = {
 		players: {
@@ -37,16 +40,19 @@ function getGame(gameId: string): Game | undefined {
 	return games[gameId];
 }
 
-function getPlayerInGame(gameId: string, ws: ws): Player | undefined {
+function getPlayerInGame(
+	gameId: string,
+	socket: WebSocket
+): Player | undefined {
 	const game = getGame(gameId);
 	if (!game) return undefined;
-	return Object.values(game.players).find((player) => player.socket === ws);
+	return Object.values(game.players).find((player) => player.socket === socket);
 }
 
-function getOpponent(gameId: string, ws: ws): Player | undefined {
+function getOpponent(gameId: string, socket: WebSocket): Player | undefined {
 	const game = getGame(gameId);
 	if (!game) return undefined;
-	return Object.values(game.players).find((player) => player.socket !== ws);
+	return Object.values(game.players).find((player) => player.socket !== socket);
 }
 
 function updateGameState(
@@ -72,7 +78,10 @@ function updateGameState(
 	return game.result;
 }
 
-function handleResign(gameId: string, resigningSocket: ws): GameResult | null {
+function handleResign(
+	gameId: string,
+	resigningSocket: WebSocket
+): GameResult | null {
 	const game = getGame(gameId);
 	const player = getPlayerInGame(gameId, resigningSocket);
 	if (!game || !player) return null;
@@ -110,7 +119,7 @@ function swapPlayerMarks(gameId: string) {
 	[player1.mark, player2.mark] = [player2.mark, player1.mark];
 }
 
-function findPlayerGame(socket: ws): [string, Game] | undefined {
+function findPlayerGame(socket: WebSocket): [string, Game] | undefined {
 	for (const [gameId, game] of Object.entries(games)) {
 		if (Object.values(game.players).some((p) => p.socket === socket)) {
 			return [gameId, game];
