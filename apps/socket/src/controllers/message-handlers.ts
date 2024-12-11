@@ -1,4 +1,3 @@
-import { ChatMessage } from "@repo/types/chat-schemas";
 import ws from "ws";
 import {
 	addMessage,
@@ -8,7 +7,13 @@ import {
 	swapPlayerMarks,
 	updateGameState,
 } from "../managers/game-manager";
-import { ClientMessage, Mark } from "../schemas/socket-schemas";
+import {
+	ChatMessage,
+	DrawOfferMessage,
+	Mark,
+	MoveMessage,
+	RematchMessage,
+} from "../schemas/socket-schemas";
 import { Game, Player } from "../types/game-types";
 import { assignMark } from "../utils/assign-mark";
 import { sendSocketMessage } from "../utils/socket-utils";
@@ -30,7 +35,7 @@ export function handlePlayerMarkSelection(
 }
 
 export function handleMove(
-	message: ClientMessage,
+	message: MoveMessage,
 	game: Game,
 	currentPlayer: Player,
 	opponent: Player
@@ -59,7 +64,7 @@ export function handleResignGame(
 }
 
 export function handleChatMessage(
-	message: ClientMessage,
+	message: ChatMessage,
 	game: Game,
 	currentPlayer: Player,
 	opponent: Player
@@ -75,7 +80,7 @@ export function handleChatMessage(
 }
 
 export function handleDrawOffer(
-	message: ClientMessage,
+	message: DrawOfferMessage,
 	currentPlayer: Player,
 	opponent: Player
 ) {
@@ -95,7 +100,7 @@ export function handleDrawOffer(
 }
 
 export function handleRematch(
-	message: ClientMessage,
+	message: RematchMessage,
 	currentPlayer: Player,
 	opponent: Player
 ) {
