@@ -12,7 +12,7 @@ export type Game = {
 	moveHistory: number[][];
 	currentMove: number;
 	mainBoardState: (Mark | null)[][];
-	reducedMainBoardState: (Mark | null)[];
+	reducedMainBoardState: (Mark | "DRAW" | null)[];
 	result: GameResult;
 	messages: ChatMessage[];
 };
