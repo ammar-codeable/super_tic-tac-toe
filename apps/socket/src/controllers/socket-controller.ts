@@ -93,7 +93,7 @@ export function handleDisconnect(ws: WebSocket) {
 	const opponent = getOpponent(gameId, ws);
 
 	removeGame(gameId);
-	
+
 	if (opponent) {
 		opponent.socket.close();
 	}
