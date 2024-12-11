@@ -8,11 +8,11 @@ export type Player = {
 };
 
 export type Game = {
-	players: { player1: Player; player2: Player };
-	moveHistory: number[][];
-	currentMove: number;
-	mainBoardState: (string | null)[][];
-	reducedMainBoardState: (string | null)[];
+    players: { player1: Player; player2: Player };
+    moveHistory: number[][];
+    currentMove: number;
+    mainBoardState: (Mark | null)[][];
+    reducedMainBoardState: (Mark | null)[];
     result: GameResult;
     messages: ChatMessage[];
 };
