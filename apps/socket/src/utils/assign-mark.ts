@@ -1,4 +1,5 @@
-import { Mark, Player } from "../types/game-types";
+import { Mark } from "../schemas/socket-schemas";
+import { Player } from "../types/game-types";
 
 export function assignMark(
 	currentPlayer: Player,

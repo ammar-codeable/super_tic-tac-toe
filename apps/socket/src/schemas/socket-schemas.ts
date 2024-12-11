@@ -39,3 +39,6 @@ export const ClientMessageSchema = z.discriminatedUnion("type", [
 		action: z.enum(["request", "accept", "decline"]),
 	}),
 ]);
+
+export type Mark = z.infer<typeof MarkSchema>;
+export type ClientMessage = z.infer<typeof ClientMessageSchema>;
