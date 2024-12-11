@@ -9,7 +9,7 @@ export type Player = {
 
 export type Game = {
 	players: { player1: Player; player2: Player };
-	moveHistory: number[][];
+	moveHistory: [number, number][];
 	currentMove: number;
 	mainBoardState: (Mark | null)[][];
 	reducedMainBoardState: (Mark | "DRAW" | null)[];

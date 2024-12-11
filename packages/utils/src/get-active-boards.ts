@@ -1,7 +1,7 @@
 function getActiveBoards(
   isGameInactive: boolean,
   reducedMainBoardState: (string | null)[],
-  moveHistory: number[][],
+  moveHistory: [number, number][],
   currentMove: number,
 	isCurrentPlayerTurn?: boolean
 ) {

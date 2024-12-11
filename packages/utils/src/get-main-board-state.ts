@@ -2,7 +2,7 @@ import { useRef } from "react";
 
 function getMainBoardState(
 	currentMove: number,
-	moveHistory: number[][],
+	moveHistory: [number, number][],
 ) {
 	const mainBoardState = useRef<(string | null)[][]>(
 		Array(9).fill(Array(9).fill(null))

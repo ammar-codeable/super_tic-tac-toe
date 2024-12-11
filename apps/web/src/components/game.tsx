@@ -28,8 +28,8 @@ function Game({
 }: {
   currentMove: number;
   setCurrentMove: (currentMove: number) => void;
-  moveHistory: number[][];
-  setMoveHistory: (moveHistory: number[][]) => void;
+  moveHistory: [number, number][];
+  setMoveHistory: (moveHistory: [number, number][]) => void;
   handlePlay: (boardId: number, cellId: number, yourMove: boolean) => void;
   gameResult?: string | null;
   playerMark?: string | null;

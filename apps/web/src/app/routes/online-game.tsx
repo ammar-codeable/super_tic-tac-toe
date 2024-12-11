@@ -17,7 +17,7 @@ function OnlineGame() {
 
   const [currentMove, setCurrentMove] = useState(0);
 
-  const [moveHistory, setMoveHistory] = useState<number[][]>([[-1, -1]]);
+  const [moveHistory, setMoveHistory] = useState<[number, number][]>([[-1, -1]]);
 
   const [gameResult, setGameResult] = useState<string | null>(null);
 
@@ -31,7 +31,7 @@ function OnlineGame() {
     yourMove: boolean = true,
   ) {
     setCurrentMove((currentMove) => currentMove + 1);
-    setMoveHistory((moveHistory: number[][]) => [
+    setMoveHistory((moveHistory: [number, number][]) => [
       ...moveHistory,
       [boardId, cellId],
     ]);

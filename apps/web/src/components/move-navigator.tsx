@@ -19,7 +19,7 @@ function MoveNavigator({
   onRestart,
   onDrawOffer,
 }: {
-  moveHistory: number[][];
+  moveHistory: [number, number][];
   currentMove: number;
   setCurrentMove: (currentMove: number) => void;
   isOnlineGame?: boolean;
