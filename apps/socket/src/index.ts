@@ -1,32 +1,19 @@
-import { ChatMessage } from "@repo/types/chat-schemas";
-import { validateMessage } from "@repo/utils/validate-message";
 import cors from "cors";
 import { config } from "dotenv";
 import express from "express";
 import { readFileSync } from "fs";
 import https from "https";
-import ws, { WebSocketServer } from "ws";
+import { WebSocketServer } from "ws";
 import {
-	addGame,
-	addMessage,
-	createNewGame,
-	getGame,
-	getOpponent,
-	getPlayerInGame,
-handleDisconnect,
-handleResign,
-		resetGame,
-	swapPlayerMarks,
-	updateGameState,
-	} from "./managers/game-manager";
-import { ClientMessageSchema } from "./schemas/socket-schemas";
-import { assignMark } from "./utils/assign-mark";
-import { sendSocketMessage } from "./utils/socket-utils";
-import { addPendingPlayer, getPendingPlayers, removePendingPlayer } from "./managers/pending-players-manager";
+	handleDisconnect,
+	handleMessage,
+	handlePlayerConnection,
+} from "./controllers/socket-controller";
 
 config();
 
 const app = express();
+
 app.use(cors());
 app.use(express.json());
 
@@ -60,135 +47,8 @@ app.get("/player-count", (_, res) => {
 });
 
 wss.on("connection", (ws) => {
-	addPendingPlayer(ws);
+	handlePlayerConnection(ws);
 
-	const players = getPendingPlayers();
-	if (players) {
-		const [player1Socket, player2Socket] = players;
-		const [gameId, game] = createNewGame(player1Socket, player2Socket);
-		addGame(gameId, game);
-
-		sendSocketMessage([player1Socket, player2Socket], { type: "init", gameId });
-		sendSocketMessage([player1Socket, player2Socket], { type: "waiting", waiting: false });
-	}
-
-	ws.on("message", (data) => {
-		const message = validateMessage(data.toString(), ClientMessageSchema);
-		const game = getGame(message.gameId);
-		if (!game) {
-			sendSocketMessage([ws], {
-				type: "error",
-				error: "Game not found",
-			});
-			return;
-		}
-
-		const currentPlayer = getPlayerInGame(message.gameId, ws);
-		const opponent = getOpponent(message.gameId, ws);
-
-		if (!currentPlayer || !opponent) {
-			sendSocketMessage([ws], {
-				type: "error",
-				error: "Player not found in game",
-			});
-			return;
-		}
-
-		switch (message.type) {
-			case "player":
-				if (!game.players.player1 || !game.players.player2) {
-					sendSocketMessage([currentPlayer.socket], {
-						type: "error",
-						error: "Both players must be connected before selecting a mark.",
-					});
-					return;
-				}
-
-				assignMark(currentPlayer, opponent, message.player);
-
-				if (currentPlayer.mark && opponent.mark) {
-					sendSocketMessage([currentPlayer.socket], { type: "mark", mark: currentPlayer.mark });
-					sendSocketMessage([opponent.socket], { type: "mark", mark: opponent.mark });
-				}
-				break;
-
-			case "move":
-				const result = updateGameState(message.gameId, ...message.move);
-
-				sendSocketMessage([opponent.socket], {
-					type: "game",
-					game,
-				});
-
-				if (result) {
-					sendSocketMessage([currentPlayer.socket, opponent.socket], { type: "result", result });
-				}
-				break;
-
-			case "resign":
-				const resignResult = handleResign(message.gameId, ws);
-				sendSocketMessage([currentPlayer.socket, opponent.socket], { type: "result", result: resignResult });
-				break;
-
-			case "chat":
-				const senderRole = currentPlayer === game.players.player1 ? "player1" : "player2";
-				const chatMessage: ChatMessage = {
-					text: message.chat.text,
-					sender: senderRole,
-				};
-				addMessage(message.gameId, chatMessage);
-				sendSocketMessage([opponent.socket], { type: "chat", chat: [chatMessage] });
-				break;
-
-			case "draw-offer":
-				switch (message.action) {
-					case "offer":
-						sendSocketMessage([opponent.socket], { type: "draw-offer" });
-						break;
-
-					case "accept":
-						const result = "DRAW";
-						sendSocketMessage([currentPlayer.socket, opponent.socket], { type: "result", result });
-						game.result = result;
-						break;
-				}
-				break;
-
-			case "rematch":
-				if (opponent.socket.readyState !== ws.OPEN) {
-					sendSocketMessage([currentPlayer.socket], {
-						type: "error",
-						error: "Opponent has disconnected",
-					});
-					break;
-				}
-
-				switch (message.action) {
-					case "request":
-						sendSocketMessage([opponent.socket], { type: "rematch-request" });
-						break;
-
-					case "accept": {
-						resetGame(message.gameId);
-						swapPlayerMarks(message.gameId);
-						sendSocketMessage([currentPlayer.socket, opponent.socket], { type: "rematch-accepted" });
-						break;
-					}
-
-					case "decline":
-						sendSocketMessage([opponent.socket], { type: "rematch-declined" });
-						break;
-				}
-				break;
-		}
-	});
-
-	ws.on("close", () => {
-		removePendingPlayer(ws);
-		
-		const opponentSocket = handleDisconnect(ws);
-		if (opponentSocket) {
-			opponentSocket.close();
-		}
-	});
+	ws.on("message", (data) => handleMessage(ws, data));
+	ws.on("close", () => handleDisconnect(ws));
 });

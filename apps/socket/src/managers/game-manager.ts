@@ -113,17 +113,6 @@ function findPlayerGame(socket: ws): [string, Game] | undefined {
     return undefined;
 }
 
-function handleDisconnect(socket: ws): ws | undefined {
-    const gameInfo = findPlayerGame(socket);
-    if (!gameInfo) return undefined;
-
-    const [gameId, _] = gameInfo;
-    const opponent = getOpponent(gameId, socket);
-    removeGame(gameId);
-    
-    return opponent?.socket;
-}
-
 export {
     addGame,
     addMessage,
@@ -136,5 +125,5 @@ export {
     resetGame,
     swapPlayerMarks,
     updateGameState,
-    handleDisconnect,
+    findPlayerGame
 };
