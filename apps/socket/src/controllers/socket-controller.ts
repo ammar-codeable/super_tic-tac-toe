@@ -12,6 +12,7 @@ import {
 import {
 	addPendingPlayer,
 	getPendingPlayers,
+	removePendingPlayer,
 } from "../managers/pending-players-manager";
 import { ClientMessage, ClientMessageSchema } from "../schemas/socket-schemas";
 import { sendSocketMessage } from "../utils/socket-utils";
@@ -86,15 +87,17 @@ export function handleMessage(ws: WebSocket, data: any) {
 }
 
 export function handleDisconnect(ws: WebSocket) {
-	const gameInfo = findPlayerGame(ws);
-	if (!gameInfo) return;
+    removePendingPlayer(ws);
 
-	const [gameId, _] = gameInfo;
-	const opponent = getOpponent(gameId, ws);
+    const gameInfo = findPlayerGame(ws);
+    if (!gameInfo) return;
 
-	removeGame(gameId);
+    const [gameId, _] = gameInfo;
+    const opponent = getOpponent(gameId, ws);
 
-	if (opponent) {
-		opponent.socket.close();
-	}
+    removeGame(gameId);
+
+    if (opponent) {
+        opponent.socket.close();
+    }
 }
