@@ -1,3 +1,10 @@
+import {
+	ChatMessage,
+	DrawOfferMessage,
+	Mark,
+	MoveMessage,
+	RematchMessage,
+} from "@repo/types/client-message-schemas";
 import ws from "ws";
 import {
 	addMessage,
@@ -7,13 +14,6 @@ import {
 	swapPlayerMarks,
 	updateGameState,
 } from "../managers/game-manager";
-import {
-	ChatMessage,
-	DrawOfferMessage,
-	Mark,
-	MoveMessage,
-	RematchMessage,
-} from "../schemas/socket-schemas";
 import { Game, Player } from "../types/game-types";
 import { assignMark } from "../utils/assign-mark";
 import { sendSocketMessage } from "../utils/socket-utils";

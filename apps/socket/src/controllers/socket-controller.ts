@@ -1,3 +1,7 @@
+import {
+	ClientMessage,
+	ClientMessageSchema,
+} from "@repo/types/client-message-schemas";
 import { validateMessage } from "@repo/utils/validate-message";
 import { WebSocket } from "ws";
 import {
@@ -14,7 +18,6 @@ import {
 	getPendingPlayers,
 	removePendingPlayer,
 } from "../managers/pending-players-manager";
-import { ClientMessage, ClientMessageSchema } from "../schemas/socket-schemas";
 import { sendSocketMessage } from "../utils/socket-utils";
 import {
 	handleChatMessage,
@@ -87,17 +90,17 @@ export function handleMessage(ws: WebSocket, data: any) {
 }
 
 export function handleDisconnect(ws: WebSocket) {
-    removePendingPlayer(ws);
+	removePendingPlayer(ws);
 
-    const gameInfo = findPlayerGame(ws);
-    if (!gameInfo) return;
+	const gameInfo = findPlayerGame(ws);
+	if (!gameInfo) return;
 
-    const [gameId, _] = gameInfo;
-    const opponent = getOpponent(gameId, ws);
+	const [gameId, _] = gameInfo;
+	const opponent = getOpponent(gameId, ws);
 
-    removeGame(gameId);
+	removeGame(gameId);
 
-    if (opponent) {
-        opponent.socket.close();
-    }
+	if (opponent) {
+		opponent.socket.close();
+	}
 }

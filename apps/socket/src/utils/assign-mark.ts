@@ -1,4 +1,4 @@
-import { Mark } from "../schemas/socket-schemas";
+import { Mark } from "@repo/types/client-message-schemas";
 import { Player } from "../types/game-types";
 
 export function assignMark(
