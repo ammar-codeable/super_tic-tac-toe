@@ -1,7 +1,7 @@
 import { GameModeCard } from "@/components/game-mode-card";
 import { Badge } from "@/components/ui/badge";
 import { usePlayerCount } from "@/hooks/use-player-count";
-import { GAME_TIPS, getRandomTip } from "@repo/constants/game-tips";
+import { GAME_TIPS, getRandomTip } from "@super-tic-tac-toe/constants/game-tips";
 import { motion } from "framer-motion";
 import {
   BrainCircuit,

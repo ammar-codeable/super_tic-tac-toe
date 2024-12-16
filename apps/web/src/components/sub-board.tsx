@@ -1,6 +1,6 @@
 import Square from "@/components/square";
 import { cn } from "@/lib/utils";
-import calculateResult from "@repo/utils/calculate-result";
+import calculateResult from "@super-tic-tac-toe/utils/calculate-result";
 import { motion } from "framer-motion";
 import { useState } from "react";
 

@@ -1,8 +1,8 @@
 import {
 	ClientMessage,
 	ClientMessageSchema,
-} from "@repo/types/client-message-schemas";
-import { validateMessage } from "@repo/utils/validate-message";
+} from "@super-tic-tac-toe/types/client-message-schemas";
+import { validateMessage } from "@super-tic-tac-toe/utils/validate-message";
 import { WebSocket } from "ws";
 import {
 	addGame,

@@ -4,7 +4,7 @@ import {
 	Mark,
 	MoveMessage,
 	RematchMessage,
-} from "@repo/types/client-message-schemas";
+} from "@super-tic-tac-toe/types/client-message-schemas";
 import ws from "ws";
 import {
 	addMessage,

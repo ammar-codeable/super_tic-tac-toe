@@ -1,4 +1,4 @@
-import { ChatMessageSchema } from "@repo/types/chat-schemas";
+import { ChatMessageSchema } from "@super-tic-tac-toe/types/chat-schemas";
 import { z } from "zod";
 
 export const ServerInitMessageSchema = z.object({

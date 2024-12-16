@@ -1,6 +1,6 @@
-import { ChatMessage } from "@repo/types/chat-schemas";
+import { ChatMessage } from "@super-tic-tac-toe/types/chat-schemas";
 import { WebSocket } from "ws";
-import { Mark } from "@repo/types/client-message-schemas";
+import { Mark } from "@super-tic-tac-toe/types/client-message-schemas";
 
 export type Player = {
 	mark?: Mark;

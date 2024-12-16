@@ -1,5 +1,5 @@
 {
-	"name": "@repo/constants",
+	"name": "@super-tic-tac-toe/constants",
 	"version": "1.0.0",
 	"exports": {
 		"./game-tips": "./src/game-tips.ts"

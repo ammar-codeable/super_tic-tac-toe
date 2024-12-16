@@ -10,10 +10,10 @@ importers:
 
   apps/socket:
     dependencies:
-      '@repo/types':
+      '@super-tic-tac-toe/types':
         specifier: workspace:*
         version: link:../../packages/types
-      '@repo/utils':
+      '@super-tic-tac-toe/utils':
         specifier: workspace:*
         version: link:../../packages/utils
       cors:
@@ -86,13 +86,13 @@ importers:
       '@radix-ui/react-tooltip':
         specifier: ^1.1.3
         version: 1.1.3(@types/react-dom@18.3.0)(@types/react@18.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@repo/constants':
+      '@super-tic-tac-toe/constants':
         specifier: workspace:*
         version: link:../../packages/constants
-      '@repo/types':
+      '@super-tic-tac-toe/types':
         specifier: workspace:*
         version: link:../../packages/types
-      '@repo/utils':
+      '@super-tic-tac-toe/utils':
         specifier: workspace:*
         version: link:../../packages/utils
       class-variance-authority:

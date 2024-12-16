@@ -1,7 +1,7 @@
 import GameOverModal from "@/components/game-over-modal";
 import GridLines from "@/components/grid-lines";
 import SubBoard from "@/components/sub-board";
-import calculateResult from "@repo/utils/calculate-result";
+import calculateResult from "@super-tic-tac-toe/utils/calculate-result";
 import { useState } from "react";
 
 function ClassicGame() {

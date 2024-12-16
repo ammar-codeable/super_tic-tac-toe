@@ -1,7 +1,7 @@
-import { ChatMessage } from "@repo/types/chat-schemas";
-import calculateResult from "@repo/utils/calculate-result";
-import getActiveBoards from "@repo/utils/get-active-boards";
-import getMainBoardState from "@repo/utils/get-main-board-state";
+import { ChatMessage } from "@super-tic-tac-toe/types/chat-schemas";
+import calculateResult from "@super-tic-tac-toe/utils/calculate-result";
+import getActiveBoards from "@super-tic-tac-toe/utils/get-active-boards";
+import getMainBoardState from "@super-tic-tac-toe/utils/get-main-board-state";
 import { useRef } from "react";
 import Chat from "./chat";
 import GameOverModal from "./game-over-modal";

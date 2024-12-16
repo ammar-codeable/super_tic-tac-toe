@@ -1,4 +1,4 @@
-import { ChatMessage } from "@repo/types/chat-schemas";
+import { ChatMessage } from "@super-tic-tac-toe/types/chat-schemas";
 import { useRef } from "react";
 import { ScrollArea } from "./ui/scroll-area";
 import { Textarea } from "./ui/textarea";

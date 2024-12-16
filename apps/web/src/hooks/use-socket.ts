@@ -1,6 +1,6 @@
-import { ChatMessage } from "@repo/types/chat-schemas";
-import { ServerMessageSchema } from "@repo/types/server-message-schemas";
-import { validateMessage } from "@repo/utils/validate-message";
+import { ChatMessage } from "@super-tic-tac-toe/types/chat-schemas";
+import { ServerMessageSchema } from "@super-tic-tac-toe/types/server-message-schemas";
+import { validateMessage } from "@super-tic-tac-toe/utils/validate-message";
 import React, { useEffect, useRef } from "react";
 import { toast } from "sonner";
 

@@ -1,5 +1,5 @@
-import { ChatMessage } from "@repo/types/chat-schemas";
-import calculateResult from "@repo/utils/calculate-result";
+import { ChatMessage } from "@super-tic-tac-toe/types/chat-schemas";
+import calculateResult from "@super-tic-tac-toe/utils/calculate-result";
 import { v4 as uuidv4 } from "uuid";
 import { WebSocket } from "ws";
 import { Game, GameResult, Player } from "../types/game-types";

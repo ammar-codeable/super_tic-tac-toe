@@ -4,7 +4,7 @@ import Game from "@/components/game";
 import Loader from "@/components/loader";
 import ResignConfirmationModal from "@/components/resign-confirmation-modal";
 import { useSocket } from "@/hooks/use-socket";
-import { ChatMessage } from "@repo/types/chat-schemas";
+import { ChatMessage } from "@super-tic-tac-toe/types/chat-schemas";
 import { useState } from "react";
 import { toast } from "sonner";
 

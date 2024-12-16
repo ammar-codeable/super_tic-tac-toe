@@ -1,4 +1,4 @@
-import { Mark } from "@repo/types/client-message-schemas";
+import { Mark } from "@super-tic-tac-toe/types/client-message-schemas";
 import { Player } from "../types/game-types";
 
 export function assignMark(

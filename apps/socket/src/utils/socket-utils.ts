@@ -1,4 +1,4 @@
-import { ServerMessage } from "@repo/types/server-message-schemas";
+import { ServerMessage } from "@super-tic-tac-toe/types/server-message-schemas";
 import { WebSocket } from "ws";
 
 export function sendSocketMessage(
