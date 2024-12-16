@@ -59,7 +59,7 @@ export function handleResignGame(
 	const resignResult = handleResign(gameId, currentPlayer.socket);
 	sendSocketMessage([currentPlayer.socket, opponent.socket], {
 		type: "result",
-		result: resignResult,
+		result: resignResult!,
 	});
 }
 
@@ -94,7 +94,7 @@ export function handleDrawOffer(
 				type: "result",
 				result,
 			});
-			getGame(message.gameId).result = result;
+			getGame(message.gameId)!.result = result;
 			break;
 	}
 }
