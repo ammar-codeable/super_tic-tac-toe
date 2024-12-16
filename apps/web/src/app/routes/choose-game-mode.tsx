@@ -1,7 +1,10 @@
 import { GameModeCard } from "@/components/game-mode-card";
 import { Badge } from "@/components/ui/badge";
 import { usePlayerCount } from "@/hooks/use-player-count";
-import { GAME_TIPS, getRandomTip } from "@super-tic-tac-toe/constants/game-tips";
+import {
+  GAME_TIPS,
+  getRandomTip,
+} from "@super-tic-tac-toe/constants/game-tips";
 import { motion } from "framer-motion";
 import {
   BrainCircuit,
@@ -183,7 +186,7 @@ function ChooseGameMode() {
         </div>
       </motion.div>
 
-      <div className="grid w-full lg:px-0 md:pl-0 px-4 max-w-4xl gap-4 sm:grid-cols-2">
+      <div className="grid w-full max-w-4xl gap-4 px-4 sm:grid-cols-2 md:pl-0 lg:px-0">
         {(["offline", "online", "classic"] as const).map((mode) => (
           <GameModeCard
             key={mode}

@@ -27,11 +27,11 @@ export function useSocket(
           break;
 
         case "waiting":
-            setWaiting(msg.waiting);
+          setWaiting(msg.waiting);
           break;
 
         case "mark":
-            setPlayerMark(msg.mark);
+          setPlayerMark(msg.mark);
           break;
 
         case "game": {
@@ -47,11 +47,11 @@ export function useSocket(
         }
 
         case "result":
-            setGameResult(msg.result);
+          setGameResult(msg.result);
           break;
 
         case "chat":
-            setMessages((prev) => [...prev, ...msg.chat]);
+          setMessages((prev) => [...prev, ...msg.chat]);
           break;
 
         case "error":
@@ -110,16 +110,16 @@ export function useSocket(
 
         case "rematch-accepted":
           resetGame();
-          setPlayerMark(mark => mark === "X" ? "O" : "X");
+          setPlayerMark((mark) => (mark === "X" ? "O" : "X"));
           break;
-        
+
         case "rematch-declined":
           toast.error("Rematch request declined");
           setRematchDeclined(true);
           break;
       }
     } catch (error) {
-        console.error('Invalid message received:', error);
+      console.error("Invalid message received:", error);
       throw error;
     }
   };
@@ -148,9 +148,9 @@ export function useSocket(
     };
   }, []);
 
-  return { 
-    socket: socketRef.current, 
+  return {
+    socket: socketRef.current,
     sendMessage,
-    gameId: gameIdRef.current 
+    gameId: gameIdRef.current,
   };
 }

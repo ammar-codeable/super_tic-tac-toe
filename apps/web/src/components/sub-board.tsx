@@ -69,10 +69,15 @@ function SubBoard({
   return (
     <div className="group relative flex items-center justify-center">
       <div
-        className={cn("grid size-full grid-cols-3 md:gap-1 md:p-2 p-1 2xl:gap-2", {
-          hidden: showWinAnimation && subGameResult && subGameResult !== "DRAW",
-          "group-hover:grid": showWinAnimation && subGameResult && isAnimationComplete,
-        })}
+        className={cn(
+          "grid size-full grid-cols-3 p-1 md:gap-1 md:p-2 2xl:gap-2",
+          {
+            hidden:
+              showWinAnimation && subGameResult && subGameResult !== "DRAW",
+            "group-hover:grid":
+              showWinAnimation && subGameResult && isAnimationComplete,
+          },
+        )}
       >
         {Array(9)
           .fill(null)

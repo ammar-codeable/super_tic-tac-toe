@@ -1,12 +1,12 @@
 {
-	"name": "super-tic-tac-toe",
-	"version": "1.0.0",
-	"description": "",
-	"packageManager": "pnpm@9.4.0",
-	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
-	},
-	"keywords": [],
-	"author": "",
-	"license": "ISC"
+  "name": "super-tic-tac-toe",
+  "version": "1.0.0",
+  "description": "",
+  "packageManager": "pnpm@9.4.0",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }

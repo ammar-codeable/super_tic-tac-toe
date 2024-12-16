@@ -1,5 +1,11 @@
 import { Badge } from "@/components/ui/badge";
-import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { cloneElement, useEffect, useState } from "react";
@@ -10,8 +16,20 @@ const item = {
   show: { opacity: 1, y: 0 },
 };
 
-function checkWinner(squares: string[]): { winner: string | null; line: number[] | null; } {
-  const lines = [[0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [2,4,6]];
+function checkWinner(squares: string[]): {
+  winner: string | null;
+  line: number[] | null;
+} {
+  const lines = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
   for (const line of lines) {
     const [a, b, c] = line;
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
@@ -34,7 +52,9 @@ function GameModePreview() {
     };
 
     const makeMove = () => {
-      const available = board.map((v, i) => v ? -1 : i).filter(i => i !== -1);
+      const available = board
+        .map((v, i) => (v ? -1 : i))
+        .filter((i) => i !== -1);
       if (!available.length) {
         setTimeout(resetGame, 1000);
         return;
@@ -53,7 +73,7 @@ function GameModePreview() {
       }
 
       setBoard(newBoard);
-      setMoves(prev => [...prev, 1]);
+      setMoves((prev) => [...prev, 1]);
     };
 
     const timeoutId = setTimeout(makeMove, 800);
@@ -68,7 +88,7 @@ function GameModePreview() {
           className={cn(
             "flex aspect-square items-center justify-center rounded-sm text-xs",
             value && "bg-primary/5",
-            winningLine?.includes(i) && "animate-pulse bg-primary/20"
+            winningLine?.includes(i) && "animate-pulse bg-primary/20",
           )}
         >
           {value && (
@@ -87,33 +107,44 @@ function GameModePreview() {
   );
 }
 
-export function GameModeCard({ mode, isSelected, icon, title, badge, description, features, extraBadge }: {
-	mode: "online" | "offline" | "classic";
-	isSelected: boolean;
-	icon: React.ReactNode;
-	title: string;
-	badge: {
-	  icon: React.ReactNode;
-	  text: string;
-	};
-	description: string;
-	features: Array<{
-	  icon: React.ReactNode;
-	  text: string;
-	}>;
-	extraBadge?: React.ReactNode;
-  }) {
+export function GameModeCard({
+  mode,
+  isSelected,
+  icon,
+  title,
+  badge,
+  description,
+  features,
+  extraBadge,
+}: {
+  mode: "online" | "offline" | "classic";
+  isSelected: boolean;
+  icon: React.ReactNode;
+  title: string;
+  badge: {
+    icon: React.ReactNode;
+    text: string;
+  };
+  description: string;
+  features: Array<{
+    icon: React.ReactNode;
+    text: string;
+  }>;
+  extraBadge?: React.ReactNode;
+}) {
   return (
     <motion.div variants={item} whileTap={{ scale: 0.98 }} className="h-full">
       <Link to={`/play/${mode}`} className="group block h-full">
-        <Card className={cn(
-          "relative h-full cursor-pointer border-2 p-2 transition-all hover:scale-105 hover:border-primary hover:shadow-lg",
-          isSelected ? "scale-105 border-primary shadow-lg" : "border-transparent"
-        )}>
+        <Card
+          className={cn(
+            "relative h-full cursor-pointer border-2 p-2 transition-all hover:scale-105 hover:border-primary hover:shadow-lg",
+            isSelected
+              ? "scale-105 border-primary shadow-lg"
+              : "border-transparent",
+          )}
+        >
           {extraBadge && (
-            <div className="absolute right-3 top-3 z-10">
-              {extraBadge}
-            </div>
+            <div className="absolute right-3 top-3 z-10">{extraBadge}</div>
           )}
           <div className="relative">
             <div>
@@ -122,7 +153,8 @@ export function GameModeCard({ mode, isSelected, icon, title, badge, description
           </div>
           <CardHeader className="items-center gap-2 p-3 text-center">
             {cloneElement(icon as React.ReactElement, {
-              className: "h-8 w-8 text-primary transition-transform group-hover:scale-110"
+              className:
+                "h-8 w-8 text-primary transition-transform group-hover:scale-110",
             })}
             <div className="space-y-1">
               <CardTitle>{title}</CardTitle>

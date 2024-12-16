@@ -8,7 +8,7 @@ function Loader({ message }: { message?: string }) {
   };
 
   return (
-    <div className="flex flex-1 h-full flex-col items-center justify-center">
+    <div className="flex h-full flex-1 flex-col items-center justify-center">
       <svg
         className="mx-auto h-auto w-full max-w-[600px] md:w-[800px]"
         viewBox="0 0 800 600"

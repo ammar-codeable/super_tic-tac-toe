@@ -13,11 +13,13 @@ function OnlineGame() {
   const [disconnected, setDisconnected] = useState(false);
   const [showResignModal, setShowResignModal] = useState(false);
 
-  const [playerMark, setPlayerMark] = useState<"X" | "O" |null>(null);
+  const [playerMark, setPlayerMark] = useState<"X" | "O" | null>(null);
 
   const [currentMove, setCurrentMove] = useState(0);
 
-  const [moveHistory, setMoveHistory] = useState<[number, number][]>([[-1, -1]]);
+  const [moveHistory, setMoveHistory] = useState<[number, number][]>([
+    [-1, -1],
+  ]);
 
   const [gameResult, setGameResult] = useState<string | null>(null);
 
@@ -39,7 +41,7 @@ function OnlineGame() {
     if (yourMove) {
       sendMessage({
         type: "move",
-        move: [boardId, cellId]
+        move: [boardId, cellId],
       });
     }
   }
@@ -50,17 +52,17 @@ function OnlineGame() {
   };
 
   const handleDrawOffer = () => {
-    sendMessage({ 
-      type: "draw-offer", 
-      action: "offer"
+    sendMessage({
+      type: "draw-offer",
+      action: "offer",
     });
     toast.info("Draw offer sent to opponent");
   };
 
   const handleRematch = () => {
-    sendMessage({ 
-      type: "rematch", 
-      action: "request"
+    sendMessage({
+      type: "rematch",
+      action: "request",
     });
     toast.info("Rematch request sent to opponent");
   };
@@ -80,7 +82,7 @@ function OnlineGame() {
     setMessages,
     handleOnlinePlay,
     resetGame,
-    setRematchDeclined
+    setRematchDeclined,
   );
 
   if (waiting === undefined) {

@@ -1,5 +1,10 @@
 import { Button } from "@/components/ui/button";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import {
   Dialog,
   DialogContent,
@@ -43,7 +48,7 @@ function GameOverModal({
   const [open, setOpen] = useState(!!gameResult);
 
   return (
-    <Dialog open={open} onOpenChange={setOpen} >
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="flex h-fit flex-col items-center justify-around gap-6">
         <DialogHeader className="flex items-center">
           <DialogTitle className="text-3xl">{gameStatus}</DialogTitle>
@@ -62,11 +67,15 @@ function GameOverModal({
               <Tooltip>
                 <TooltipTrigger asChild>
                   <span>
-                    <Button 
-                      type="button" 
+                    <Button
+                      type="button"
                       onClick={onRematch}
                       disabled={disconnected || rematchDeclined}
-                      className={disconnected || rematchDeclined ? "opacity-50 cursor-not-allowed" : ""}
+                      className={
+                        disconnected || rematchDeclined
+                          ? "cursor-not-allowed opacity-50"
+                          : ""
+                      }
                     >
                       Request Rematch
                     </Button>
@@ -74,7 +83,11 @@ function GameOverModal({
                 </TooltipTrigger>
                 {(disconnected || rematchDeclined) && (
                   <TooltipContent side="top">
-                    <p>{disconnected ? "Opponent has disconnected" : "Opponent declined rematch"}</p>
+                    <p>
+                      {disconnected
+                        ? "Opponent has disconnected"
+                        : "Opponent declined rematch"}
+                    </p>
                   </TooltipContent>
                 )}
               </Tooltip>

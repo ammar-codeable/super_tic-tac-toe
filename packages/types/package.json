@@ -1,15 +1,15 @@
 {
-	"name": "@super-tic-tac-toe/types",
-	"version": "1.0.0",
-	"exports": {
-		"./chat-schemas": "./src/chat-schemas.ts",
-		"./server-message-schemas": "./src/server-message-schemas.ts",
-		"./client-message-schemas": "./src/client-message-schemas.ts"
-	},
-	"keywords": [],
-	"author": "",
-	"license": "ISC",
-	"dependencies": {
-		"zod": "^3.23.8"
-	}
+  "name": "@super-tic-tac-toe/types",
+  "version": "1.0.0",
+  "exports": {
+    "./chat-schemas": "./src/chat-schemas.ts",
+    "./server-message-schemas": "./src/server-message-schemas.ts",
+    "./client-message-schemas": "./src/client-message-schemas.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "zod": "^3.23.8"
+  }
 }

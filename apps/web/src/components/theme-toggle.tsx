@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 import { useTheme } from "@/providers/theme-provider";
 import { Moon, Sun } from "lucide-react";
 
-function ThemeToggle({ className } : { className?: string }) {
+function ThemeToggle({ className }: { className?: string }) {
   const { setTheme } = useTheme();
 
   return (
