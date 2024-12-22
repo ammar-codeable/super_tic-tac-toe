@@ -6,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/cn";
 import { motion } from "framer-motion";
 import { cloneElement, useEffect, useState } from "react";
 import { Link } from "react-router-dom";

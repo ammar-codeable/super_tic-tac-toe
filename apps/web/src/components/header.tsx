@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/cn";
 import { motion } from "framer-motion";
 import { Gamepad2, Home, User, Users } from "lucide-react";
 import { Fragment } from "react";
