@@ -15,9 +15,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import {
+  GAME_MODES,
+  GAME_MODE_LIST,
+  type GameMode,
+} from "@/constants/game-modes";
 import { cn } from "@/lib/cn";
 import { motion } from "framer-motion";
-import { Gamepad2, Home, User, Users } from "lucide-react";
+import { Gamepad2, Home } from "lucide-react";
 import { Fragment } from "react";
 import { Link, useLocation } from "react-router-dom";
 import ThemeToggle from "./theme-toggle";
@@ -26,15 +31,22 @@ function BreadcrumbNav() {
   const location = useLocation();
   const paths = location.pathname.split("/").filter(Boolean);
 
-  const routeMetadata = {
+  type RouteMetadata = {
+    "": { label: string; icon: React.ReactNode };
+    play: { label: string; icon: React.ReactNode };
+    
+  } | Record<GameMode, { label: string; icon: React.ReactNode }>;
+
+  const routeMetadata: RouteMetadata = {
     "": { label: "Home", icon: <Home className="size-4" /> },
     play: { label: "Play", icon: <Gamepad2 className="size-4" /> },
-    classic: { label: "Classic Mode", icon: <Gamepad2 className="size-4" /> },
-    offline: { label: "Offline Mode", icon: <User className="size-4" /> },
-    online: { label: "Online Mode", icon: <Users className="size-4" /> },
+    ...Object.fromEntries(
+      GAME_MODE_LIST.map((mode) => [
+        mode,
+        { label: GAME_MODES[mode].label, icon: GAME_MODES[mode].navIcon },
+      ]),
+    ),
   } as const;
-
-  const gameModePaths = ["classic", "offline", "online"] as const;
 
   const renderBreadcrumbContent = (
     path: string,
@@ -42,7 +54,7 @@ function BreadcrumbNav() {
     isLast: boolean,
   ) => {
     const metadata = routeMetadata[path as keyof typeof routeMetadata];
-    const isGameMode = gameModePaths.includes(path as any);
+    const isGameMode = GAME_MODE_LIST.includes(path as GameMode);
 
     if (isGameMode) {
       return (
@@ -55,7 +67,7 @@ function BreadcrumbNav() {
             </DropdownMenuTrigger>
 
             <DropdownMenuContent align="start">
-              {gameModePaths.map((mode) => (
+              {GAME_MODE_LIST.map((mode) => (
                 <DropdownMenuItem key={mode}>
                   <BreadcrumbLink
                     to={`/play/${mode}`}

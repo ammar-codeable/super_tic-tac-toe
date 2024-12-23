@@ -6,6 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { GameMode, GameModeConfig } from "@/constants/game-modes";
 import { cn } from "@/lib/cn";
 import { motion } from "framer-motion";
 import { cloneElement, useEffect, useState } from "react";
@@ -109,29 +110,32 @@ function GameModePreview() {
 
 export function GameModeCard({
   mode,
-  isSelected,
   icon,
   title,
   badge,
   description,
   features,
+  isSelected,
   extraBadge,
-}: {
-  mode: "online" | "offline" | "classic";
-  isSelected: boolean;
-  icon: React.ReactNode;
-  title: string;
-  badge: {
-    icon: React.ReactNode;
-    text: string;
-  };
-  description: string;
-  features: Array<{
-    icon: React.ReactNode;
-    text: string;
-  }>;
+}: GameModeConfig & {
+  mode: GameMode | null;
+  isSelected?: boolean;
   extraBadge?: React.ReactNode;
 }) {
+  if (mode === null) {
+    return (
+      <motion.div variants={item} className="h-full">
+        <Card className="relative h-full border-2 border-dashed border-muted-foreground/20 bg-transparent">
+          <div className="absolute inset-0 flex items-center justify-center">
+            <p className="text-sm text-muted-foreground">
+              More modes coming soon...
+            </p>
+          </div>
+        </Card>
+      </motion.div>
+    );
+  }
+
   return (
     <motion.div variants={item} whileTap={{ scale: 0.98 }} className="h-full">
       <Link to={`/play/${mode}`} className="group block h-full">

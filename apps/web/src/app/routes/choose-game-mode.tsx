@@ -1,23 +1,13 @@
 import { GameModeCard } from "@/components/game-mode-card";
 import { Badge } from "@/components/ui/badge";
+import { GAME_MODES, GAME_MODE_LIST, type GameMode } from "@/constants/game-modes";
 import { usePlayerCount } from "@/hooks/use-player-count";
 import {
   GAME_TIPS,
   getRandomTip,
 } from "@super-tic-tac-toe/constants/game-tips";
 import { motion } from "framer-motion";
-import {
-  BrainCircuit,
-  Globe,
-  Grid,
-  HandshakeIcon,
-  MessageSquare,
-  Timer,
-  Users,
-  Wifi,
-  WifiOff,
-  Zap,
-} from "lucide-react";
+import { Wifi } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -28,16 +18,14 @@ const item = {
 
 function ChooseGameMode() {
   const navigate = useNavigate();
-  const [selectedMode, setSelectedMode] = useState<
-    "online" | "offline" | "classic" | null
-  >(null);
+  const [selectedMode, setSelectedMode] = useState<GameMode | null>(null);
   const [currentTip, setCurrentTip] = useState(GAME_TIPS[0]);
   const playerCount = usePlayerCount();
 
   useEffect(() => {
-    const modes = ["offline", "online", "classic", null] as const; // null represents the "coming soon" card
+    const modes = [...GAME_MODE_LIST, null] as const;
     const handleKeyboard = (e: KeyboardEvent) => {
-      const currentIndex = modes.indexOf(selectedMode as any);
+      const currentIndex = GAME_MODE_LIST.indexOf(selectedMode as GameMode);
       let newIndex = currentIndex;
 
       switch (e.key) {
@@ -77,57 +65,6 @@ function ChooseGameMode() {
     }, 5000);
     return () => clearInterval(interval);
   }, []);
-
-  const gameModes = {
-    offline: {
-      icon: <HandshakeIcon className="scale-[1.2]" />,
-      title: "Local Play",
-      badge: {
-        icon: <WifiOff className="mr-1 h-3 w-3" />,
-        text: "No Internet Required",
-      },
-      description:
-        "Challenge a friend sitting next to you in a local multiplayer game",
-      features: [
-        { icon: <Timer className="h-4 w-4" />, text: "No Time Limit" },
-        { icon: <Zap className="h-4 w-4" />, text: "Instant Start" },
-      ],
-      extraBadge: <Badge variant="secondary">Offline</Badge>,
-    },
-    online: {
-      icon: <Globe />,
-      title: "Quick Match",
-      badge: {
-        icon: <Wifi className="mr-1 h-3 w-3" />,
-        text: "Quick Play",
-      },
-      description: "Jump into fast-paced online matches with players worldwide",
-      features: [
-        { icon: <Users className="h-4 w-4" />, text: "Auto Match" },
-        { icon: <MessageSquare className="h-4 w-4" />, text: "Live Chat" },
-      ],
-      extraBadge: (
-        <div className="flex gap-1">
-          <Badge variant="secondary">Online</Badge>
-        </div>
-      ),
-    },
-    classic: {
-      icon: <Grid className="rotate-45" />,
-      title: "Classic Mode",
-      badge: {
-        icon: <Grid className="mr-1 h-3 w-3" />,
-        text: "Traditional",
-      },
-      description:
-        "Play the traditional 3x3 Tic-tac-toe game you know and love",
-      features: [
-        { icon: <Timer className="h-4 w-4" />, text: "Quick Games" },
-        { icon: <BrainCircuit className="h-4 w-4" />, text: "Simple Rules" },
-      ],
-      extraBadge: <Badge variant="secondary">Offline</Badge>,
-    },
-  };
 
   return (
     <motion.div
@@ -187,21 +124,20 @@ function ChooseGameMode() {
       </motion.div>
 
       <div className="grid w-full max-w-4xl gap-4 px-4 sm:grid-cols-2 md:pl-0 lg:px-0">
-        {(["offline", "online", "classic"] as const).map((mode) => (
+        {GAME_MODE_LIST.map((mode) => (
           <GameModeCard
             key={mode}
             mode={mode}
             isSelected={selectedMode === mode}
-            {...gameModes[mode]}
+            {...GAME_MODES[mode]}
+            extraBadge={
+              <Badge variant="secondary">
+                {GAME_MODES[mode].isOnline ? "Online" : "Offline"}
+              </Badge>
+            }
           />
         ))}
-        <div className="relative h-full">
-          <div className="absolute inset-0 flex items-center justify-center rounded-lg border-2 border-dashed border-muted-foreground/20">
-            <p className="text-sm text-muted-foreground">
-              More modes coming soon...
-            </p>
-          </div>
-        </div>
+        <GameModeCard mode={null} isSelected={false} />
       </div>
 
       <motion.div
