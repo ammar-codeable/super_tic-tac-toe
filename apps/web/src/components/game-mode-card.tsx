@@ -6,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { GameMode, GameModeConfig } from "@/constants/game-modes";
+import { GAME_MODES, GameMode } from "@/constants/game-modes";
 import { cn } from "@/lib/cn";
 import { motion } from "framer-motion";
 import { cloneElement, useEffect, useState } from "react";
@@ -110,31 +110,13 @@ function GameModePreview() {
 
 export function GameModeCard({
   mode,
-  icon,
-  title,
-  badge,
-  description,
-  features,
   isSelected,
-  extraBadge,
-}: GameModeConfig & {
+}: {
   mode: GameMode;
-  isSelected?: boolean;
-  extraBadge?: React.ReactNode;
+  isSelected: boolean;
 }) {
-  if (mode === null) {
-    return (
-      <motion.div variants={item} className="h-full">
-        <Card className="relative h-full border-2 border-dashed border-muted-foreground/20 bg-transparent">
-          <div className="absolute inset-0 flex items-center justify-center">
-            <p className="text-sm text-muted-foreground">
-              More modes coming soon...
-            </p>
-          </div>
-        </Card>
-      </motion.div>
-    );
-  }
+  const { icon, title, badge, description, features, isOnline } =
+    GAME_MODES[mode];
 
   return (
     <motion.div variants={item} whileTap={{ scale: 0.98 }} className="h-full">
@@ -147,14 +129,13 @@ export function GameModeCard({
               : "border-transparent",
           )}
         >
-          {extraBadge && (
-            <div className="absolute right-3 top-3 z-10">{extraBadge}</div>
-          )}
-          <div className="relative">
-            <div>
-              <GameModePreview />
-            </div>
-          </div>
+          <Badge
+            className="absolute right-3 top-3 z-10"
+            variant={isOnline ? "default" : "secondary"}
+          >
+            {isOnline ? "Online" : "Offline"}
+          </Badge>
+          <GameModePreview />
           <CardHeader className="items-center gap-2 p-3 text-center">
             {cloneElement(icon as React.ReactElement, {
               className:

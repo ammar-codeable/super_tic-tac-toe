@@ -1,11 +1,6 @@
 import { GameModeCard } from "@/components/game-mode-card";
-import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import {
-  GAME_MODES,
-  GAME_MODE_LIST,
-  type GameMode,
-} from "@/constants/game-modes";
+import { GAME_MODE_LIST, type GameMode } from "@/constants/game-modes";
 import { usePlayerCount } from "@/hooks/use-player-count";
 import { getRandomTip } from "@super-tic-tac-toe/constants/game-tips";
 import { motion } from "framer-motion";
@@ -135,12 +130,6 @@ function ChooseGameMode() {
             key={mode}
             mode={mode}
             isSelected={selectedMode === mode}
-            {...GAME_MODES[mode]}
-            extraBadge={
-              <Badge variant="secondary">
-                {GAME_MODES[mode].isOnline ? "Online" : "Offline"}
-              </Badge>
-            }
           />
         ))}
         <EmptyGameModeCard />
