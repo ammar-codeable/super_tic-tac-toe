@@ -19,7 +19,8 @@ const item = {
 function ChooseGameMode() {
   const navigate = useNavigate();
   const [selectedMode, setSelectedMode] = useState<GameMode | null>(null);
-  const [currentTip, setCurrentTip] = useState(GAME_TIPS[0]);
+
+  const [currentTip, setCurrentTip] = useState(getRandomTip());
   const playerCount = usePlayerCount();
 
   useEffect(() => {
