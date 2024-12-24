@@ -1,11 +1,12 @@
 import { GameModeCard } from "@/components/game-mode-card";
 import { Badge } from "@/components/ui/badge";
-import { GAME_MODES, GAME_MODE_LIST, type GameMode } from "@/constants/game-modes";
-import { usePlayerCount } from "@/hooks/use-player-count";
 import {
-  GAME_TIPS,
-  getRandomTip,
-} from "@super-tic-tac-toe/constants/game-tips";
+  GAME_MODES,
+  GAME_MODE_LIST,
+  type GameMode,
+} from "@/constants/game-modes";
+import { usePlayerCount } from "@/hooks/use-player-count";
+import { getRandomTip } from "@super-tic-tac-toe/constants/game-tips";
 import { motion } from "framer-motion";
 import { Wifi } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -80,10 +81,10 @@ function ChooseGameMode() {
           },
         },
       }}
-      className="flex flex-1 flex-col items-center justify-center text-center"
+      className="flex flex-col items-center"
     >
       <motion.h1
-        className="my-2 text-5xl font-bold"
+        className="mb-2 text-5xl font-bold"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -91,37 +92,28 @@ function ChooseGameMode() {
         Choose Game Mode
       </motion.h1>
 
-      <motion.div
-        className="mb-2 max-w-md text-center text-sm text-muted-foreground"
-        variants={item}
+      <motion.p
+        key={currentTip}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -20 }}
+        className="mb-2 max-w-md text-center text-sm italic text-muted-foreground"
       >
-        <motion.p
-          key={currentTip}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          className="italic"
-        >
-          💡 {currentTip}
-        </motion.p>
-      </motion.div>
+        💡 {currentTip}
+      </motion.p>
 
       <motion.div
-        className="mb-2 hidden flex-col items-center gap-2 md:flex"
+        className="mb-2 hidden text-xs tracking-wider text-muted-foreground md:flex"
         variants={item}
       >
-        <div className="text-xs tracking-wider text-muted-foreground">
-          Use ↑ ↓ ← → arrows to navigate, Enter to confirm
-        </div>
+        Use ↑ ↓ ← → arrows to navigate, Enter to confirm
       </motion.div>
 
-      <motion.div className="mb-6 flex items-center gap-4" variants={item}>
-        <div className="inline-flex items-center gap-2">
-          <Wifi className="h-4 w-4 animate-pulse text-green-500" />
-          <span className="text-sm text-muted-foreground">
-            {playerCount} players online
-          </span>
-        </div>
+      <motion.div className="mb-6 flex gap-2" variants={item}>
+        <Wifi className="size-5 animate-pulse text-green-500" />
+        <span className="text-sm text-muted-foreground">
+          {playerCount} players online
+        </span>
       </motion.div>
 
       <div className="grid w-full max-w-4xl gap-4 px-4 sm:grid-cols-2 md:pl-0 lg:px-0">

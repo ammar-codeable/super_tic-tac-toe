@@ -168,21 +168,13 @@ export function GameModeCard({
               <CardDescription>{description}</CardDescription>
             </div>
           </CardHeader>
-          <CardFooter className="flex-col gap-2 p-3">
-            <div className="flex justify-center gap-4 text-sm text-muted-foreground">
-              {features.map((feature, index) => (
-                <span key={index} className="flex items-center gap-1">
-                  {feature.icon} {feature.text}
-                </span>
-              ))}
-            </div>
+          <CardFooter className="flex justify-center gap-4 text-sm text-muted-foreground">
+            {features.map((feature, index) => (
+              <span key={index} className="flex items-center gap-1">
+                {feature.icon} {feature.text}
+              </span>
+            ))}
           </CardFooter>
-          <motion.div
-            className="absolute inset-0 -z-10 bg-gradient-to-r from-primary/10 to-transparent opacity-0 group-hover:opacity-100"
-            initial={false}
-            animate={{ opacity: isSelected ? 0.1 : 0 }}
-            transition={{ duration: 0.3 }}
-          />
         </Card>
       </Link>
     </motion.div>
