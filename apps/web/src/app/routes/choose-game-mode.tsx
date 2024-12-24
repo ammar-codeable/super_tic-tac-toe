@@ -1,5 +1,6 @@
 import { GameModeCard } from "@/components/game-mode-card";
 import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
 import {
   GAME_MODES,
   GAME_MODE_LIST,
@@ -16,6 +17,18 @@ const item = {
   hidden: { opacity: 0, y: 20 },
   show: { opacity: 1, y: 0 },
 };
+
+function EmptyGameModeCard() {
+  return (
+    <motion.div variants={item} className="h-full">
+      <Card className="relative h-full border-2 border-dashed border-muted-foreground/20 bg-transparent">
+        <p className="absolute inset-0 flex items-center justify-center text-sm text-muted-foreground">
+          More modes coming soon...
+        </p>
+      </Card>
+    </motion.div>
+  );
+}
 
 function ChooseGameMode() {
   const navigate = useNavigate();
@@ -130,7 +143,7 @@ function ChooseGameMode() {
             }
           />
         ))}
-        <GameModeCard mode={null} isSelected={false} />
+        <EmptyGameModeCard />
       </div>
 
       <motion.div

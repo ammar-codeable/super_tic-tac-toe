@@ -118,7 +118,7 @@ export function GameModeCard({
   isSelected,
   extraBadge,
 }: GameModeConfig & {
-  mode: GameMode | null;
+  mode: GameMode;
   isSelected?: boolean;
   extraBadge?: React.ReactNode;
 }) {
