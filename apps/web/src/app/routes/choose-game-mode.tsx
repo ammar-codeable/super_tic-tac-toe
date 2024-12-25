@@ -1,6 +1,7 @@
 import { GameModeCard } from "@/components/game-mode-card";
 import { Card } from "@/components/ui/card";
 import { GAME_MODE_LIST, type GameMode } from "@/constants/game-modes";
+import { useKeyboardNavigation } from "@/hooks/use-keyboard-navigation";
 import { usePlayerCount } from "@/hooks/use-player-count";
 import { getRandomTip } from "@super-tic-tac-toe/constants/game-tips";
 import { motion } from "framer-motion";
@@ -32,42 +33,12 @@ function ChooseGameMode() {
   const [currentTip, setCurrentTip] = useState(getRandomTip());
   const playerCount = usePlayerCount();
 
-  useEffect(() => {
-    const modes = [...GAME_MODE_LIST, null] as const;
-    const handleKeyboard = (e: KeyboardEvent) => {
-      const currentIndex = GAME_MODE_LIST.indexOf(selectedMode as GameMode);
-      let newIndex = currentIndex;
-
-      switch (e.key) {
-        case "ArrowLeft":
-          newIndex =
-            currentIndex % 2 === 0 ? currentIndex + 1 : currentIndex - 1;
-          break;
-        case "ArrowRight":
-          newIndex =
-            currentIndex % 2 === 0 ? currentIndex + 1 : currentIndex - 1;
-          break;
-        case "ArrowUp":
-          newIndex = currentIndex < 2 ? currentIndex + 2 : currentIndex - 2;
-          break;
-        case "ArrowDown":
-          newIndex = currentIndex >= 2 ? currentIndex - 2 : currentIndex + 2;
-          break;
-        case "Enter":
-          if (selectedMode) {
-            navigate(`/play/${selectedMode}`);
-          }
-          return;
-      }
-
-      if (modes[newIndex] !== null) {
-        setSelectedMode(modes[newIndex] as any);
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyboard);
-    return () => window.removeEventListener("keydown", handleKeyboard);
-  }, [selectedMode, navigate]);
+  useKeyboardNavigation({
+    currentIndex: selectedMode ? GAME_MODE_LIST.indexOf(selectedMode) : 0,
+    gridSize: { rows: 2, cols: 2 },
+    onNavigate: (newIndex) => setSelectedMode(GAME_MODE_LIST[newIndex]),
+    onSelect: () => selectedMode && navigate(`/play/${selectedMode}`),
+  });
 
   useEffect(() => {
     const interval = setInterval(() => {
