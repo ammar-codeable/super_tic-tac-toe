@@ -3,7 +3,7 @@ import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
 import { TicTacToeBackground } from "@/components/tic-tac-toe-background";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Outlet } from "react-router-dom";
+import { Outlet } from "react-router";
 import { Toaster } from "sonner";
 
 function Root() {

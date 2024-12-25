@@ -7,7 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 function DisconnectModal({}: {}) {
   return (

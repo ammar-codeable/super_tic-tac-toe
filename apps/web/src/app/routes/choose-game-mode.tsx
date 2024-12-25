@@ -7,7 +7,7 @@ import { getRandomTip } from "@super-tic-tac-toe/constants/game-tips";
 import { motion } from "framer-motion";
 import { Wifi } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 const item = {
   hidden: { opacity: 0, y: 20 },

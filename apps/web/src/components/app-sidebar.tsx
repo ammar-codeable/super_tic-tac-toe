@@ -15,7 +15,7 @@ import {
 import { useIsMobile } from "@/hooks/use-is-mobile";
 import { ChevronRight, HelpCircle } from "lucide-react";
 import { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router";
 
 function NavigationItems() {
   const NAVIGATION_ITEMS = [

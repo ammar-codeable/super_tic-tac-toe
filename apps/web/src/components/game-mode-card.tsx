@@ -10,7 +10,7 @@ import { GAME_MODES, GameMode } from "@/constants/game-modes";
 import { cn } from "@/lib/cn";
 import { motion } from "framer-motion";
 import { cloneElement, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 const item = {
   hidden: { opacity: 0, y: 20 },

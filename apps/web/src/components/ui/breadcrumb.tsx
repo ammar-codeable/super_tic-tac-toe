@@ -1,7 +1,7 @@
 import { Slot } from "@radix-ui/react-slot";
 import { ChevronRight, MoreHorizontal } from "lucide-react";
 import * as React from "react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import { cn } from "@/lib/cn";
 

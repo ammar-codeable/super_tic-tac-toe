@@ -24,7 +24,7 @@ import { cn } from "@/lib/cn";
 import { motion } from "framer-motion";
 import { Gamepad2, Home } from "lucide-react";
 import { Fragment } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router";
 import ThemeToggle from "./theme-toggle";
 
 function BreadcrumbNav() {
