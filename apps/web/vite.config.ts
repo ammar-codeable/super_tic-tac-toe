@@ -7,10 +7,6 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": "/src",
-      "@super-tic-tac-toe/constants": path.resolve(
-        __dirname,
-        "../../packages/constants/src",
-      ),
       "@super-tic-tac-toe/utils": path.resolve(
         __dirname,
         "../../packages/utils/src",

@@ -1,9 +1,9 @@
 import { GameModeCard } from "@/components/game-mode-card";
 import { Card } from "@/components/ui/card";
 import { GAME_MODE_LIST, type GameMode } from "@/constants/game-modes";
+import { getRandomTip } from "@/constants/game-tips";
 import { useKeyboardNavigation } from "@/hooks/use-keyboard-navigation";
 import { usePlayerCount } from "@/hooks/use-player-count";
-import { getRandomTip } from "@super-tic-tac-toe/constants/game-tips";
 import { motion } from "framer-motion";
 import { Wifi } from "lucide-react";
 import { useEffect, useState } from "react";

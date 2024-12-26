@@ -1,5 +1,4 @@
 const GAME_TIPS = [
-  // Basic Rules
   "Win three squares in a row to win a local board!",
   "Win three local boards in a row to win the game!",
   "You can only play in the board corresponding to your opponent's last move",
