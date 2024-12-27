@@ -1,6 +1,6 @@
-import GameOverModal from "@/components/game-over-modal";
-import GridLines from "@/components/grid-lines";
-import SubBoard from "@/components/sub-board";
+import GameOverModal from "@/features/game/components/game-over-modal";
+import GridLines from "@/features/game/components/grid-lines";
+import SubBoard from "@/features/game/components/sub-board";
 import calculateResult from "@super-tic-tac-toe/utils/calculate-result";
 import { useState } from "react";
 

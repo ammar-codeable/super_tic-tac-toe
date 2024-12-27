@@ -1,4 +1,4 @@
-import Square from "@/components/square";
+import Square from "@/features/game/components/square";
 import { cn } from "@/lib/cn";
 import calculateResult from "@super-tic-tac-toe/utils/calculate-result";
 import { motion } from "framer-motion";

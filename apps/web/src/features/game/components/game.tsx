@@ -3,7 +3,7 @@ import calculateResult from "@super-tic-tac-toe/utils/calculate-result";
 import getActiveBoards from "@super-tic-tac-toe/utils/get-active-boards";
 import getMainBoardState from "@super-tic-tac-toe/utils/get-main-board-state";
 import { useRef } from "react";
-import Chat from "./chat";
+import Chat from "@/features/chat/components/chat";
 import GameOverModal from "./game-over-modal";
 import MainBoard from "./main-board";
 import MoveNavigator from "./move-navigator";

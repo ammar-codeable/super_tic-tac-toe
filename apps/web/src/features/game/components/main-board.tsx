@@ -1,6 +1,6 @@
-import SubBoard from "@/components/sub-board";
-import GridLines from "@/components/grid-lines";
 import { motion } from "framer-motion";
+import GridLines from "./grid-lines";
+import SubBoard from "./sub-board";
 
 function MainBoard({
   mainBoardState,

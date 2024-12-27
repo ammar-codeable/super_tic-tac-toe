@@ -1,8 +1,8 @@
-import ChoosePlayerModal from "@/components/choose-player-modal";
-import DisconnectModal from "@/components/disconnect-modal";
-import Game from "@/components/game";
 import Loader from "@/components/loader";
-import ResignConfirmationModal from "@/components/resign-confirmation-modal";
+import ChoosePlayerModal from "@/features/game/components/choose-player-modal";
+import DisconnectModal from "@/features/game/components/disconnect-modal";
+import Game from "@/features/game/components/game";
+import ResignConfirmationModal from "@/features/game/components/resign-confirmation-modal";
 import { useSocket } from "@/hooks/use-socket";
 import { ChatMessage } from "@super-tic-tac-toe/types/chat-schemas";
 import { useState } from "react";

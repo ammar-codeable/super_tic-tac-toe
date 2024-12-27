@@ -1,4 +1,4 @@
-import Game from "@/components/game";
+import Game from "@/features/game/components/game";
 import { useState } from "react";
 
 function OfflineGame() {
