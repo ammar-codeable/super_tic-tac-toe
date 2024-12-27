@@ -1,9 +1,9 @@
-import ChooseGameMode from "@/app/routes/choose-game-mode";
-import OfflineGame from "@/app/routes/offline-game";
-import OnlineGame from "@/app/routes/online-game";
 import Root from "@/app/routes/root";
 import { Navigate, Route, Routes } from "react-router";
-import ClassicGame from "./routes/classic-game";
+import ClassicGame from "@/app/routes/classic/classic";
+import OfflineGame from "@/app/routes/offline/offline";
+import OnlineGame from "@/app/routes/online/online";
+import ChooseGameMode from "@/app/routes/play/play";
 
 export const routes = (
   <Routes>
