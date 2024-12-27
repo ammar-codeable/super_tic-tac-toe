@@ -20,9 +20,9 @@ function ResignConfirmationModal({
 }) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="flex h-fit flex-col items-center justify-around gap-6">
-        <DialogHeader className="flex items-center">
-          <DialogTitle className="text-3xl">Resign Game</DialogTitle>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Resign Game</DialogTitle>
           <DialogDescription>
             Are you sure you want to resign?
           </DialogDescription>

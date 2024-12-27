@@ -1,11 +1,5 @@
 import { Button } from "@/components/ui/button";
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -13,6 +7,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { useState } from "react";
 import { Link } from "react-router";
 
@@ -49,9 +49,9 @@ function GameOverModal({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="flex h-fit flex-col items-center justify-around gap-6">
-        <DialogHeader className="flex items-center">
-          <DialogTitle className="text-3xl">{gameStatus}</DialogTitle>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{gameStatus}</DialogTitle>
           <DialogDescription>Game Over</DialogDescription>
         </DialogHeader>
         <DialogFooter>

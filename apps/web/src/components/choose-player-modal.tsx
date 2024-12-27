@@ -21,9 +21,9 @@ function ChoosePlayerModal({
 
   return (
     <Dialog open={true}>
-      <DialogContent className="flex h-fit flex-col items-center justify-around gap-6">
-        <DialogHeader className="flex items-center">
-          <DialogTitle className="text-3xl">
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>
             {!chosenMark ? "Select Player" : "Waiting for opponent..."}
           </DialogTitle>
           <DialogDescription className="text-pretty text-center">

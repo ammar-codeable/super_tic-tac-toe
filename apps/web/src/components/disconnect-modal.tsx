@@ -12,9 +12,9 @@ import { Link } from "react-router";
 function DisconnectModal({}: {}) {
   return (
     <Dialog open={true}>
-      <DialogContent className="flex h-fit flex-col items-center justify-around gap-6">
-        <DialogHeader className="flex items-center">
-          <DialogTitle className="text-3xl">Game disconnected...</DialogTitle>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Game disconnected...</DialogTitle>
         </DialogHeader>
         <DialogFooter className="flex gap-x-8">
           <DialogClose asChild>
