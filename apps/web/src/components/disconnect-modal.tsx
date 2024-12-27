@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { Link } from "react-router";
 
-function DisconnectModal({}: {}) {
+function DisconnectModal() {
   return (
     <Dialog open={true}>
       <DialogContent>
