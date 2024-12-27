@@ -10,13 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import { useState } from "react";
 
-function ChoosePlayerModal({
-  socket,
-  gameId,
-}: {
-  socket: (message: any) => void;
-  gameId: string;
-}) {
+function ChoosePlayerModal({ socket }: { socket: (message: any) => void }) {
   const [chosenMark, setChosenMark] = useState("");
 
   return (

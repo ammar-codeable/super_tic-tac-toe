@@ -74,7 +74,7 @@ function OnlineGame() {
     setMessages([]);
   };
 
-  const { socket, sendMessage, gameId } = useSocket(
+  const { socket, sendMessage } = useSocket(
     setWaiting,
     setPlayerMark,
     setDisconnected,
@@ -94,7 +94,7 @@ function OnlineGame() {
   }
 
   if (!disconnected && !playerMark) {
-    return <ChoosePlayerModal socket={sendMessage} gameId={gameId} />;
+    return <ChoosePlayerModal socket={sendMessage} />;
   }
 
   return (
