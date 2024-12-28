@@ -5,8 +5,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useTheme } from "@/contexts/theme-provider";
 import { cn } from "@/lib/cn";
-import { useTheme } from "@/providers/theme-provider";
 import { Moon, Sun } from "lucide-react";
 
 function ThemeToggle({ className }: { className?: string }) {

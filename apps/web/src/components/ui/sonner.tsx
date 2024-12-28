@@ -1,4 +1,4 @@
-import { useTheme } from "@/providers/theme-provider";
+import { useTheme } from "@/contexts/theme-provider";
 import { Toaster as Sonner } from "sonner";
 
 type ToasterProps = React.ComponentProps<typeof Sonner>;
