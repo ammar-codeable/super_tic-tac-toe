@@ -1,4 +1,4 @@
-import Loader from "@/components/loader";
+import Loader from "@/components/ui/loader";
 import ChoosePlayerModal from "@/features/game/components/choose-player-modal";
 import DisconnectModal from "@/features/game/components/disconnect-modal";
 import Game from "@/features/game/components/game";
