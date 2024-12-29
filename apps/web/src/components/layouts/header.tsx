@@ -25,7 +25,7 @@ import { motion } from "framer-motion";
 import { Gamepad2, Home } from "lucide-react";
 import { Fragment } from "react";
 import { Link, useLocation } from "react-router";
-import ThemeToggle from "./theme-toggle";
+import ThemeToggle from "@/components/theme-toggle";
 
 function BreadcrumbNav() {
   const location = useLocation();
