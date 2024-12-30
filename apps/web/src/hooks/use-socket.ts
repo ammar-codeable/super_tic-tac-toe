@@ -1,4 +1,3 @@
-import { ChatMessage } from "@super-tic-tac-toe/types/chat-schemas";
 import { ServerMessageSchema } from "@super-tic-tac-toe/types/server-message-schemas";
 import { validateMessage } from "@super-tic-tac-toe/utils/validate-message";
 import React, { useEffect, useRef } from "react";
@@ -9,7 +8,7 @@ export function useSocket(
   setPlayerMark: React.Dispatch<React.SetStateAction<"X" | "O" | null>>,
   setDisconnected: React.Dispatch<React.SetStateAction<boolean>>,
   setGameResult: React.Dispatch<React.SetStateAction<string | null>>,
-  setMessages: React.Dispatch<React.SetStateAction<ChatMessage[]>>,
+  setMessages: React.Dispatch<React.SetStateAction<{text: string, fromSelf: boolean }[]>>,
   handlePlay: (boardId: number, cellId: number, yourMove: boolean) => void,
   resetGame: () => void,
   setRematchDeclined: React.Dispatch<React.SetStateAction<boolean>>,
@@ -51,7 +50,7 @@ export function useSocket(
           break;
 
         case "chat":
-          setMessages((prev) => [...prev, ...msg.chat]);
+          setMessages((prev) => [...prev, { text: msg.chat, fromSelf: false }]);
           break;
 
         case "error":

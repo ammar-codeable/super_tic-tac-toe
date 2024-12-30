@@ -1,5 +1,4 @@
 import {
-  ChatMessage,
   DrawOfferMessage,
   Mark,
   MoveMessage,
@@ -64,19 +63,13 @@ export function handleResignGame(
 }
 
 export function handleChatMessage(
-  message: ChatMessage,
-  game: Game,
-  currentPlayer: Player,
+  message: { chat: string },
   opponent: Player,
 ) {
-  const senderRole =
-    currentPlayer === game.players.player1 ? "player1" : "player2";
-  const chatMessage: ChatMessage = {
-    text: message.chat.text,
-    sender: senderRole,
-  };
-  addMessage(message.gameId, chatMessage);
-  sendSocketMessage([opponent.socket], { type: "chat", chat: [chatMessage] });
+  sendSocketMessage([opponent.socket], { 
+    type: "chat", 
+    chat: message.chat 
+  });
 }
 
 export function handleDrawOffer(

@@ -78,7 +78,7 @@ export function handleMessage(ws: WebSocket, data: any) {
       handleResignGame(message.gameId, currentPlayer, opponent);
       break;
     case "chat":
-      handleChatMessage(message, game, currentPlayer, opponent);
+      handleChatMessage(message, opponent);
       break;
     case "draw-offer":
       handleDrawOffer(message, currentPlayer, opponent);

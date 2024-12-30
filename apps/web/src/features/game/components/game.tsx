@@ -1,4 +1,3 @@
-import { ChatMessage } from "@super-tic-tac-toe/types/chat-schemas";
 import calculateResult from "@super-tic-tac-toe/utils/calculate-result";
 import getActiveBoards from "@super-tic-tac-toe/utils/get-active-boards";
 import getMainBoardState from "@super-tic-tac-toe/utils/get-main-board-state";
@@ -7,6 +6,11 @@ import Chat from "@/features/chat/components/chat";
 import GameOverModal from "./game-over-modal";
 import MainBoard from "./main-board";
 import MoveNavigator from "./move-navigator";
+
+type MessageWithSender = {
+  text: string;
+  fromSelf: boolean;
+};
 
 function Game({
   currentMove,
@@ -35,8 +39,8 @@ function Game({
   playerMark?: string | null;
   onResign?: () => void;
   onDrawOffer?: () => void;
-  messages?: ChatMessage[] | undefined;
-  setMessages?: React.Dispatch<React.SetStateAction<ChatMessage[]>> | undefined;
+  messages?: MessageWithSender[];
+  setMessages?: React.Dispatch<React.SetStateAction<MessageWithSender[]>>;
   socket?: WebSocket | null;
   onRematch?: () => void;
   disconnected?: boolean;
@@ -98,7 +102,7 @@ function Game({
           <Chat
             messages={messages}
             setMessages={setMessages}
-            socket={sendMessage}
+            sendMessage={sendMessage}
             playerMark={playerMark!}
           />
         </div>

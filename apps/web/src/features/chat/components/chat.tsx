@@ -1,33 +1,30 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
-import { ChatMessage } from "@super-tic-tac-toe/types/chat-schemas";
 import { useRef } from "react";
+
+type Message = {
+  text: string;
+  fromSelf: boolean;
+};
 
 function Chat({
   messages,
   setMessages,
-  socket,
-  playerMark,
+  sendMessage,
 }: {
-  messages: ChatMessage[];
-  setMessages: React.Dispatch<React.SetStateAction<ChatMessage[]>>;
-  socket: (message: any) => void;
-  playerMark: string | null;
+  messages: Message[];
+  setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
+  sendMessage: (message: any) => void;
 }) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const text = textareaRef.current?.value.trim();
-    if (text && socket) {
+    if (text) {
       textareaRef.current!.value = "";
-      const newMessage = {
-        text,
-        sender:
-          playerMark === "X" ? "player1" : ("player2" as "player1" | "player2"),
-      };
-      setMessages((prev) => [...prev, newMessage]);
-      socket({ type: "chat", chat: { text } });
+      setMessages((prev) => [...prev, { text, fromSelf: true }]);
+      sendMessage({ type: "chat", chat: text });
     }
   };
 
@@ -51,16 +48,12 @@ function Chat({
               <div
                 key={index}
                 className={`flex ${
-                  (playerMark === "X" ? "player1" : "player2") ===
-                  message.sender
-                    ? "justify-end"
-                    : "justify-start"
+                  message.fromSelf ? "justify-end" : "justify-start"
                 }`}
               >
                 <div
                   className={`break-words rounded-2xl px-4 py-2 ${
-                    (playerMark === "X" ? "player1" : "player2") ===
-                    message.sender
+                    message.fromSelf
                       ? "bg-primary text-primary-foreground"
                       : "bg-muted text-muted-foreground"
                   }`}
