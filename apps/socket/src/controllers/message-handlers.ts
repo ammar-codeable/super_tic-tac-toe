@@ -6,7 +6,6 @@ import {
 } from "@super-tic-tac-toe/types/client-message-schemas";
 import ws from "ws";
 import {
-  addMessage,
   getGame,
   handleResign,
   resetGame,

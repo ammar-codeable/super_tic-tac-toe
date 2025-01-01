@@ -1,4 +1,3 @@
-import { ChatMessage } from "@super-tic-tac-toe/types/chat-schemas";
 import calculateResult from "@super-tic-tac-toe/utils/calculate-result";
 import { v4 as uuidv4 } from "uuid";
 import { WebSocket } from "ws";
@@ -23,7 +22,6 @@ function createNewGame(
       .map(() => Array(9).fill(null)),
     reducedMainBoardState: Array(9).fill(null),
     result: null,
-    messages: [],
   };
   return [gameId, game];
 }
@@ -91,12 +89,6 @@ function handleResign(
   return result;
 }
 
-function addMessage(gameId: string, message: ChatMessage) {
-  const game = getGame(gameId);
-  if (!game) return;
-  game.messages.push(message);
-}
-
 function resetGame(gameId: string) {
   const game = getGame(gameId);
   if (!game) return;
@@ -108,7 +100,6 @@ function resetGame(gameId: string) {
     .map(() => Array(9).fill(null));
   game.reducedMainBoardState = Array(9).fill(null);
   game.result = null;
-  game.messages = [];
 }
 
 function swapPlayerMarks(gameId: string) {
@@ -130,7 +121,6 @@ function findPlayerGame(socket: WebSocket): [string, Game] | undefined {
 
 export {
   addGame,
-  addMessage,
   createNewGame,
   findPlayerGame,
   getGame,

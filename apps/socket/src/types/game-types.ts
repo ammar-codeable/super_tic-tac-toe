@@ -1,4 +1,3 @@
-import { ChatMessage } from "@super-tic-tac-toe/types/chat-schemas";
 import { WebSocket } from "ws";
 import { Mark } from "@super-tic-tac-toe/types/client-message-schemas";
 
@@ -14,7 +13,6 @@ export type Game = {
   mainBoardState: (Mark | null)[][];
   reducedMainBoardState: (Mark | "DRAW" | null)[];
   result: GameResult;
-  messages: ChatMessage[];
 };
 
 export type GameResult =

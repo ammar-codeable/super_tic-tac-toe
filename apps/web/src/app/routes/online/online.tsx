@@ -4,7 +4,6 @@ import DisconnectModal from "@/features/game/components/disconnect-modal";
 import Game from "@/features/game/components/game";
 import ResignConfirmationModal from "@/features/game/components/resign-confirmation-modal";
 import { useSocket } from "@/hooks/use-socket";
-import { ChatMessage } from "@super-tic-tac-toe/types/chat-schemas";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -23,7 +22,9 @@ function OnlineGame() {
 
   const [gameResult, setGameResult] = useState<string | null>(null);
 
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [messages, setMessages] = useState<
+    { text: string; fromSelf: boolean }[]
+  >([]);
 
   const [rematchDeclined, setRematchDeclined] = useState(false);
 
