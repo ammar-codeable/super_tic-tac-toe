@@ -5,10 +5,11 @@ WORKDIR /app
 RUN npm install -g pnpm
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-COPY apps/socket/package.json pnpm-lock.yaml ./socket/
-COPY packages/*/package.json pnpm-lock.yaml ./packages/
+COPY apps/socket/package.json ./socket/
+COPY packages/types/package.json  ./packages/types/
+COPY packages/utils/package.json  ./packages/utils/
 
-RUN pnpm --filter @super-tic-tac-toe/socket install
+RUN pnpm install
 
 COPY packages ./packages
 COPY apps/socket ./socket
