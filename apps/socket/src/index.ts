@@ -1,7 +1,6 @@
 import cors from "cors";
 import { config } from "dotenv";
 import express from "express";
-import { readFileSync } from "fs";
 import https from "https";
 import { WebSocketServer } from "ws";
 import {
@@ -21,18 +20,18 @@ const port = process.env.PORT;
 
 let server;
 if (process.env.NODE_ENV === "production") {
-  const certPath = process.env.SSL_CERT_PATH;
-  const keyPath = process.env.SSL_KEY_PATH;
+  const cert = process.env.SSL_CERT;
+  const key = process.env.SSL_KEY;
 
-  if (!certPath || !keyPath) {
+  if (!cert || !key) {
     throw new Error(
-      "SSL certificate paths not configured in environment variables",
+      "SSL certificate values not configured in environment variables",
     );
   }
 
   const httpsOptions = {
-    cert: readFileSync(certPath),
-    key: readFileSync(keyPath),
+    cert,
+    key,
   };
 
   server = https.createServer(httpsOptions, app).listen(port);
