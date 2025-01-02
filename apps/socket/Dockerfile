@@ -20,13 +20,14 @@ FROM node:20-slim
 WORKDIR /app
 
 COPY --from=builder /app/socket/dist .
+COPY ./ssl ./ssl
 
-ENV SSL_CERT_PATH=/root/ssl/cert.pem
-ENV SSL_KEY_PATH=/root/ssl/key.pem
+ENV SSL_CERT_PATH=./ssl/cert.pem
+ENV SSL_KEY_PATH=./ssl/key.pem
 
 ENV NODE_ENV=production
-ENV PORT=8080
+ENV PORT=8443
 
-EXPOSE 8080
+EXPOSE 8443
 
 ENTRYPOINT ["node", "index.js"]
