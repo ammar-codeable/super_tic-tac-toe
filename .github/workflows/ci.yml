@@ -14,4 +14,12 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Build socket server Docker image
-        run: docker build -f ./apps/socket/Dockerfile .
+        run: docker build -f ./apps/socket/Dockerfile -t ammarcodeable/super-tic-tac-toe_socket .
+
+      - name: Start container
+        run: |
+          docker run -d --name socket-test ammarcodeable/super-tic-tac-toe_socket
+          sleep 2
+
+      - name: Check container logs
+        run: docker logs socket-test
