@@ -23,3 +23,6 @@ jobs:
 
       - name: Check container logs
         run: docker logs socket-test
+
+      - name: Check container status
+        run: if [ "$(docker inspect -f='{{.State.Status}}' socket-test)" != "running" ]; then exit 1; fi
