@@ -26,3 +26,7 @@ jobs:
 
       - name: Check container status
         run: if [ "$(docker inspect -f='{{.State.Status}}' socket-test)" != "running" ]; then exit 1; fi
+
+      - name: Push to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" -p
+        run: docker push ammarcodeable/super-tic-tac-toe_socket
