@@ -7,6 +7,63 @@ type Message = {
   fromSelf: boolean;
 };
 
+function MessageBubble({ message }: { message: Message }) {
+  return (
+    <div className={`flex ${message.fromSelf ? "justify-end" : "justify-start"}`}>
+      <div
+        className={`break-words rounded-2xl px-4 py-2 ${
+          message.fromSelf
+            ? "bg-primary text-primary-foreground"
+            : "bg-muted text-muted-foreground"
+        }`}
+      >
+        {message.text}
+      </div>
+    </div>
+  );
+}
+
+function ChatInput({
+  onSendMessage,
+}: {
+  onSendMessage: (text: string) => void;
+}) {
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const text = textareaRef.current?.value.trim();
+    if (text) {
+      textareaRef.current!.value = "";
+      onSendMessage(text);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSubmit(e);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="flex gap-2">
+      <Textarea
+        ref={textareaRef}
+        placeholder="Type your message..."
+        className="max-h-[100px] min-h-[50px] resize-none rounded-xl bg-background"
+        onKeyDown={handleKeyDown}
+      />
+      <button
+        type="submit"
+        className="shrink-0 rounded-xl bg-primary px-4 text-primary-foreground transition-colors hover:bg-primary/90"
+      >
+        Send
+      </button>
+    </form>
+  );
+}
+
 function Chat({
   messages,
   setMessages,
@@ -16,23 +73,9 @@ function Chat({
   setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
   sendMessage: (message: any) => void;
 }) {
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const text = textareaRef.current?.value.trim();
-    if (text) {
-      textareaRef.current!.value = "";
-      setMessages((prev) => [...prev, { text, fromSelf: true }]);
-      sendMessage({ type: "chat", chat: text });
-    }
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      handleSubmit(e);
-    }
+  const handleSendMessage = (text: string) => {
+    setMessages((prev) => [...prev, { text, fromSelf: true }]);
+    sendMessage({ type: "chat", chat: text });
   };
 
   return (
@@ -45,42 +88,14 @@ function Chat({
         <ScrollArea className="h-full">
           <div className="flex flex-col gap-3 p-4">
             {messages.map((message, index) => (
-              <div
-                key={index}
-                className={`flex ${
-                  message.fromSelf ? "justify-end" : "justify-start"
-                }`}
-              >
-                <div
-                  className={`break-words rounded-2xl px-4 py-2 ${
-                    message.fromSelf
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-muted text-muted-foreground"
-                  }`}
-                >
-                  {message.text}
-                </div>
-              </div>
+              <MessageBubble key={index} message={message} />
             ))}
           </div>
         </ScrollArea>
       </div>
 
       <div className="shrink-0 border-t bg-muted/30 p-3">
-        <form onSubmit={handleSubmit} className="flex gap-2">
-          <Textarea
-            ref={textareaRef}
-            placeholder="Type your message..."
-            className="max-h-[100px] min-h-[50px] resize-none rounded-xl bg-background"
-            onKeyDown={handleKeyDown}
-          />
-          <button
-            type="submit"
-            className="shrink-0 rounded-xl bg-primary px-4 text-primary-foreground transition-colors hover:bg-primary/90"
-          >
-            Send
-          </button>
-        </form>
+        <ChatInput onSendMessage={handleSendMessage} />
       </div>
     </div>
   );
