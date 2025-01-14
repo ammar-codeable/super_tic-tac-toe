@@ -6,7 +6,7 @@ import { useState } from "react";
 
 function ClassicGame() {
   const [board, setBoard] = useState<(string | null)[]>(Array(9).fill(null));
-  const [currentPlayer, setCurrentPlayer] = useState<"X" | "O">("X");
+  const currentPlayer = board.filter(Boolean).length % 2 === 0 ? "X" : "O";
   const gameResult = calculateResult(board);
 
   const handlePlay = (boardId: number, cellId: number) => {
@@ -15,12 +15,10 @@ function ClassicGame() {
     const newBoard = [...board];
     newBoard[cellId] = currentPlayer;
     setBoard(newBoard);
-    setCurrentPlayer(currentPlayer === "X" ? "O" : "X");
   };
 
   const handleRestart = () => {
     setBoard(Array(9).fill(null));
-    setCurrentPlayer("X");
   };
 
   return (
