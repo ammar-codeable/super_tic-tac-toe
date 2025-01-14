@@ -9,8 +9,8 @@ function ClassicGame() {
   const currentPlayer = board.filter(Boolean).length % 2 === 0 ? "X" : "O";
   const gameResult = calculateResult(board);
 
-  const handlePlay = (boardId: number, cellId: number) => {
-    if (board[cellId] || gameResult) return;
+  const handlePlay = (_: number, cellId: number) => {
+    if (gameResult) return;
 
     const newBoard = [...board];
     newBoard[cellId] = currentPlayer;
