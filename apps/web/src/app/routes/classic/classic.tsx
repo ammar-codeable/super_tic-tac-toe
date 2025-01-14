@@ -23,8 +23,7 @@ function ClassicGame() {
 
   return (
     <div className="flex h-full flex-col items-center justify-center">
-      <div className="relative w-full max-w-md">
-        <GridLines />
+      <div className="relative w-full max-w-2xl">
         <SubBoard
           boardId={0}
           subBoardState={board}

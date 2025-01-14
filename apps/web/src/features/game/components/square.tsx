@@ -29,7 +29,9 @@ function Square({
   } else if (cellValue === "O") {
     value = <Circle size="" />;
   } else if (isActiveSquare) {
-    value = currentPlayerTurn === "X" ? <X /> : <Circle />;
+    value = currentPlayerTurn === "X" ? 
+      <X className="size-1/2 opacity-60" /> : 
+      <Circle className="size-1/2 opacity-60" />;
   }
 
   const item = {
