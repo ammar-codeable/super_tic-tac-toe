@@ -1,7 +1,8 @@
+import { Button } from "@/components/ui/button";
 import GameOverModal from "@/features/game/components/game-over-modal";
-import GridLines from "@/features/game/components/grid-lines";
 import SubBoard from "@/features/game/components/sub-board";
 import calculateResult from "@super-tic-tac-toe/utils/calculate-result";
+import { RefreshCcw } from "lucide-react";
 import { useState } from "react";
 
 function ClassicGame() {
@@ -22,7 +23,7 @@ function ClassicGame() {
   };
 
   return (
-    <div className="flex h-full flex-col items-center justify-center">
+    <div className="flex h-full flex-col items-center justify-center gap-4">
       <div className="relative w-full max-w-2xl">
         <SubBoard
           boardId={0}
@@ -35,7 +36,10 @@ function ClassicGame() {
           showWinAnimation={false}
         />
       </div>
-
+      <Button onClick={handleRestart} className="flex gap-2">
+        <RefreshCcw className="h-5 w-5" />
+        <p>Restart Game</p>
+      </Button>
       {gameResult && (
         <GameOverModal
           gameResult={gameResult}
