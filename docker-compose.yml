@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  socket:
+    image: ammarcodeable/super-tic-tac-toe_socket:latest
+    container_name: super-tic-tac-toe-socket
+    restart: unless-stopped
+    ports:
+      - "443:443"
+    environment:
+      - NODE_ENV=development
+      - PORT=443
+    networks:
+      - super-tic-tac-toe-network
+
+networks:
+  super-tic-tac-toe-network:
+    driver: bridge

@@ -22,6 +22,6 @@ WORKDIR /app
 
 COPY --from=builder /app/apps/socket/dist .
 
-EXPOSE 8443
+EXPOSE 443
 
 ENTRYPOINT ["node", "index.js"]
